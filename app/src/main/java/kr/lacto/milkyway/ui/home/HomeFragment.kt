@@ -25,7 +25,6 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -41,7 +40,6 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-
         super.onViewCreated(view, savedInstanceState)
         mapView = view.findViewById(R.id.mapView)
         mapView.onCreate(savedInstanceState)
