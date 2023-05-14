@@ -12,14 +12,19 @@
         tools:layout="@layout/fragment_home" />
 
     <fragment
-        android:id="@+id/navigation_dashboard"
-        android:name="kr.lacto.milkyway.ui.dashboard.DashboardFragment"
-        android:label="@string/title_dashboard"
-        tools:layout="@layout/fragment_dashboard" />
+        android:id="@+id/navigation_search"
+        android:name="kr.lacto.milkyway.ui.search.SearchFragment"
+        android:label="@string/title_search"
+        tools:layout="@layout/fragment_information" />
 
     <fragment
-        android:id="@+id/navigation_notifications"
-        android:name="kr.lacto.milkyway.ui.notifications.NotificationsFragment"
-        android:label="@string/title_notifications"
-        tools:layout="@layout/fragment_notifications" />
+        android:id="@+id/navigation_information"
+        android:name="kr.lacto.milkyway.ui.information.InformationFragment"
+        android:label="@string/title_information"
+        tools:layout="@layout/fragment_information" />
+    <fragment
+        android:id="@+id/navigation_settings"
+        android:name="kr.lacto.milkyway.ui.settings.SettingsFragment"
+        android:label="@string/title_settings"
+        tools:layout="@layout/fragment_settings" />
 </navigation>

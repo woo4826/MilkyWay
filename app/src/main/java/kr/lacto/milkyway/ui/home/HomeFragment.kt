@@ -108,12 +108,12 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
 
     override fun onPause() {
         super.onPause()
-        mapView.onPause()
+//        mapView.onPause()
     }
 
     override fun onStop() {
         super.onStop()
-        mapView.onStop()
+//        mapView.onStop()
     }
 
     override fun onDestroyView() {

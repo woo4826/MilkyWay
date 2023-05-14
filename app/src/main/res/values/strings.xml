@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">MilkyWay</string>
-    <string name="title_home">Home</string>
-    <string name="title_dashboard">Dashboard</string>
-    <string name="title_notifications">Notifications</string>
+    <string name="title_home">메인</string>
+    <string name="title_search">검색</string>
+    <string name="title_information">수유정보</string>
+    <string name="title_settings">설정</string>
 </resources>

@@ -1,10 +1,10 @@
-package kr.lacto.milkyway.ui.dashboard
+package kr.lacto.milkyway.ui.information
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
-class DashboardViewModel : ViewModel() {
+class InformationViewModel : ViewModel() {
 
     private val _text = MutableLiveData<String>().apply {
         value = "This is dashboard Fragment"
