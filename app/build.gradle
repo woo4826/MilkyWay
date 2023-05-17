@@ -4,11 +4,11 @@ plugins {
 }
 
 android {
-    namespace 'kr.lacto.milkyway'
+    namespace 'kr.racto.milkyway'
     compileSdk 33
 
     defaultConfig {
-        applicationId "kr.lacto.milkyway"
+        applicationId "kr.racto.milkyway"
         minSdk 31
         targetSdk 33
         versionCode 1

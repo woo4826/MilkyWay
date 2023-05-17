@@ -7,24 +7,24 @@
 
     <fragment
         android:id="@+id/navigation_home"
-        android:name="kr.lacto.milkyway.ui.home.HomeFragment"
+        android:name="kr.racto.milkyway.ui.home.HomeFragment"
         android:label="@string/title_home"
         tools:layout="@layout/fragment_home" />
 
     <fragment
         android:id="@+id/navigation_search"
-        android:name="kr.lacto.milkyway.ui.search.SearchFragment"
+        android:name="kr.racto.milkyway.ui.search.SearchFragment"
         android:label="@string/title_search"
         tools:layout="@layout/fragment_information" />
 
     <fragment
         android:id="@+id/navigation_information"
-        android:name="kr.lacto.milkyway.ui.information.InformationFragment"
+        android:name="kr.racto.milkyway.ui.information.InformationFragment"
         android:label="@string/title_information"
         tools:layout="@layout/fragment_information" />
     <fragment
         android:id="@+id/navigation_settings"
-        android:name="kr.lacto.milkyway.ui.settings.SettingsFragment"
+        android:name="kr.racto.milkyway.ui.settings.SettingsFragment"
         android:label="@string/title_settings"
         tools:layout="@layout/fragment_settings" />
 </navigation>

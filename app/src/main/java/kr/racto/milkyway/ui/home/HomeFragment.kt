@@ -1,4 +1,4 @@
-package kr.lacto.milkyway.ui.home
+package kr.racto.milkyway.ui.home
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -12,8 +12,8 @@ import com.naver.maps.map.MapView
 import com.naver.maps.map.NaverMap
 import com.naver.maps.map.OnMapReadyCallback
 import com.naver.maps.map.overlay.Marker
-import kr.lacto.milkyway.R
-import kr.lacto.milkyway.databinding.FragmentHomeBinding
+import kr.racto.milkyway.R
+import kr.racto.milkyway.databinding.FragmentHomeBinding
 
 
 class HomeFragment : Fragment(), OnMapReadyCallback {

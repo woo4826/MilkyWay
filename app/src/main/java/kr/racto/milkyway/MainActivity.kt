@@ -1,4 +1,4 @@
-package kr.lacto.milkyway
+package kr.racto.milkyway
 
 import android.graphics.Color
 import android.os.Build
@@ -10,7 +10,8 @@ import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import kr.lacto.milkyway.databinding.ActivityMainBinding
+import kr.racto.milkyway.databinding.ActivityMainBinding
+
 
 class MainActivity : AppCompatActivity() {
 
