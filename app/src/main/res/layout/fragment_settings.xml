@@ -1,22 +1,141 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.settings.SettingsFragment">
-
-    <TextView
-        android:id="@+id/text_notifications"
-        android:layout_width="match_parent"
+    android:gravity="center"
+    android:orientation="vertical"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintLeft_toLeftOf="parent"
+    app:layout_constraintRight_toRightOf="parent"
+    app:layout_constraintTop_toTopOf="parent"
+    >
+    <LinearLayout
+        android:layout_width="352dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:textAlignment="center"
-        android:textSize="20sp"
+        android:gravity="center"
+        android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <Button
+            android:id="@+id/settings_join"
+            android:layout_width="162dp"
+            android:layout_height="48dp"
+            android:layout_marginRight="18dp"
+            android:text="회원가입"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/settings_login"
+            android:layout_width="162dp"
+            android:layout_height="48dp"
+            android:text="로그인"
+            android:textStyle="bold" />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="352dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/settings_review_list"
+        android:gravity="center"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="77dp">
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="46dp"
+            android:text="사용자 작성 리뷰"
+            android:textSize="16dp"
+            android:paddingLeft="20dp"
+            android:gravity="center_vertical"/>
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_arrow"
+            android:layout_gravity="end|center_vertical"
+            android:paddingRight="17dp"/>
+    </LinearLayout>
+
+    <View
+        android:layout_width="352dp"
+        android:layout_height="1dp"
+        android:background="#A1AEBF"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"/>
+    <TextView
+        android:layout_width="352dp"
+        android:layout_height="46dp"
+        android:id="@+id/settings_logout"
+        android:text="로그아웃"
+        android:textSize="16dp"
+        android:paddingLeft="20dp"
+        android:gravity="center_vertical"/>
+    <LinearLayout
+        android:layout_width="352dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/settings_auto_login"
+        android:gravity="center"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="46dp"
+            android:text="자동 로그인"
+            android:textSize="16dp"
+            android:paddingLeft="20dp"
+            android:gravity="center_vertical"/>
+
+    </LinearLayout>
+    <View
+        android:layout_width="352dp"
+        android:layout_height="1dp"
+        android:background="#A1AEBF"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"/>
+    <TextView
+        android:layout_width="352dp"
+        android:layout_height="46dp"
+        android:id="@+id/settings_agreement"
+        android:text="이용약관"
+        android:textSize="16dp"
+        android:paddingLeft="20dp"
+        android:gravity="center_vertical"/>
+    <TextView
+        android:layout_width="352dp"
+        android:layout_height="46dp"
+        android:id="@+id/settings_privacy"
+        android:text="개인정보 처리방침"
+        android:textSize="16dp"
+        android:paddingLeft="20dp"
+        android:gravity="center_vertical"/>
+    <TextView
+        android:layout_width="352dp"
+        android:layout_height="46dp"
+        android:id="@+id/settings_developer"
+        android:text="개발자 contact"
+        android:textSize="16dp"
+        android:paddingLeft="20dp"
+        android:gravity="center_vertical"/>
+    <TextView
+        android:layout_width="352dp"
+        android:layout_height="46dp"
+        android:id="@+id/settings_pensource_license"
+        android:text="Opensource Lisence"
+        android:textSize="16dp"
+        android:paddingLeft="20dp"
+        android:gravity="center_vertical"/>
+
+
+</LinearLayout>
