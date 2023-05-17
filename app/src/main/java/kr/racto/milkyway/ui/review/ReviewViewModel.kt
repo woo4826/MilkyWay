@@ -1,4 +1,4 @@
-package kr.lacto.milkyway.ui.review
+package kr.racto.milkyway.ui.review
 
 import androidx.lifecycle.ViewModel
 

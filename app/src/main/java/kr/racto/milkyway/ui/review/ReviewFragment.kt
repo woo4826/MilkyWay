@@ -1,12 +1,12 @@
-package kr.lacto.milkyway.ui.review
+package kr.racto.milkyway.ui.review
 
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import kr.lacto.milkyway.R
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
+import kr.racto.milkyway.R
 
 class ReviewFragment : Fragment() {
 
