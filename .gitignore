@@ -107,3 +107,4 @@ outTmp/
 kotlin-ide/
 /.gradle/
 /.idea/
+local.properties
