@@ -1,16 +1,20 @@
 package kr.racto.milkyway
 
+import android.app.Activity
+import android.content.Intent
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.view.WindowManager
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import kr.racto.milkyway.databinding.ActivityMainBinding
+import kr.racto.milkyway.ui.settings.SettingsFragment
 
 
 class MainActivity : AppCompatActivity() {
@@ -45,7 +49,10 @@ class MainActivity : AppCompatActivity() {
             )
         )
         navView.setupWithNavController(navController)
+        settinginit()
     }
+
+
 
     private fun setStatusBarTransparent() {
         if (Build.VERSION.SDK_INT >= 19) {
@@ -65,4 +72,12 @@ class MainActivity : AppCompatActivity() {
         winAttr.flags = if (on) winAttr.flags or bits else winAttr.flags and bits.inv()
         window.attributes = winAttr
     }
+
+    private fun settinginit() {
+        val check=intent.getIntExtra("settings",-1)
+        if(check==0){
+            findNavController(R.id.nav_host_fragment_activity_main).navigate(R.id.navigation_settings)
+        }
+    }
+
 }
