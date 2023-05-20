@@ -20,6 +20,15 @@
             android:name=".ui.settings.AgreementActivity"
             android:exported="false" />
         <activity
+            android:name=".ui.settings.DeveloperActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.settings.OpensourceActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.settings.PrivacyActivity"
+            android:exported="false" />
+        <activity
             android:name=".login.JoinActivity"
             android:exported="false" />
         <activity

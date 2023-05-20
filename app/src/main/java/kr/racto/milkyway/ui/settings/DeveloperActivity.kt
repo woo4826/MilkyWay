@@ -4,7 +4,6 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import kr.racto.milkyway.MainActivity
-import kr.racto.milkyway.R
 import kr.racto.milkyway.databinding.ActivityDeveloperBinding
 
 class DeveloperActivity : AppCompatActivity() {

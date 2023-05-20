@@ -72,13 +72,16 @@ class SettingsFragment : Fragment() {
             startActivity(i)
         }
         binding.settingsPrivacy.setOnClickListener {
-
+            val i= Intent(requireContext(),PrivacyActivity::class.java)
+            startActivity(i)
         }
         binding.settingsDeveloper.setOnClickListener {
-
+            val i= Intent(requireContext(),DeveloperActivity::class.java)
+            startActivity(i)
         }
         binding.settingsOpensourceLicense.setOnClickListener {
-
+            val i= Intent(requireContext(),OpensourceActivity::class.java)
+            startActivity(i)
         }
 
     }
