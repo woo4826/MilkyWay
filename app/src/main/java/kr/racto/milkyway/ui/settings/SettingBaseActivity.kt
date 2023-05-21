@@ -23,6 +23,7 @@ class SettingBaseActivity : AppCompatActivity() {
                 1->ft.replace(R.id.settings_frame,Privacy()).commit()
                 2->ft.replace(R.id.settings_frame,Developer()).commit()
                 3->ft.replace(R.id.settings_frame,Opensource()).commit()
+                4->ft.replace(R.id.settings_frame,ReviewManagement()).commit()
             }
         }
         binding.iconBack.setOnClickListener{

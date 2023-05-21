@@ -37,28 +37,7 @@ class SettingsFragment : Fragment() {
         val root: View = binding.root
 
         init()
-        init2()
         return root
-    }
-
-    private fun init2() {
-        val i=Intent(requireContext(),SettingBaseActivity::class.java)
-        binding.settingsAgreement.setOnClickListener {
-            i.putExtra("setting_base",0)
-            startActivity(i)
-        }
-        binding.settingsPrivacy.setOnClickListener {
-            i.putExtra("setting_base",1)
-            startActivity(i)
-        }
-        binding.settingsDeveloper.setOnClickListener {
-            i.putExtra("setting_base",2)
-            startActivity(i)
-        }
-        binding.settingsOpensourceLicense.setOnClickListener {
-            i.putExtra("setting_base",3)
-            startActivity(i)
-        }
     }
 
 
@@ -70,10 +49,6 @@ class SettingsFragment : Fragment() {
         binding.settingsLogin.setOnClickListener {
             val i= Intent(requireContext(),LoginActivity::class.java)
             startActivity(i)
-        }
-        binding.settingsReviewList.setOnClickListener {
-            //사용자 작성 리뷰 화면으로 넘어가는거 구성
-
         }
         binding.settingsLogout.setOnClickListener {
             val i= Intent(requireContext(),FirstActivity::class.java)
@@ -87,22 +62,28 @@ class SettingsFragment : Fragment() {
             }
             binding.settingsAutoLogin.setImageResource(toggleImg[toggle_check])
         }
-//        binding.settingsAgreement.setOnClickListener {
-//            val i= Intent(requireContext(),AgreementActivity::class.java)
-//            startActivity(i)
-//        }
-//        binding.settingsPrivacy.setOnClickListener {
-//            val i= Intent(requireContext(),PrivacyActivity::class.java)
-//            startActivity(i)
-//        }
-//        binding.settingsDeveloper.setOnClickListener {
-//            val i= Intent(requireContext(),DeveloperActivity::class.java)
-//            startActivity(i)
-//        }
-//        binding.settingsOpensourceLicense.setOnClickListener {
-//            val i= Intent(requireContext(),OpensourceActivity::class.java)
-//            startActivity(i)
-//        }
+        val nextIntent=Intent(requireContext(),SettingBaseActivity::class.java)
+        binding.settingsAgreement.setOnClickListener {
+            nextIntent.putExtra("setting_base",0)
+            startActivity(nextIntent)
+        }
+        binding.settingsPrivacy.setOnClickListener {
+            nextIntent.putExtra("setting_base",1)
+            startActivity(nextIntent)
+        }
+        binding.settingsDeveloper.setOnClickListener {
+            nextIntent.putExtra("setting_base",2)
+            startActivity(nextIntent)
+        }
+        binding.settingsOpensourceLicense.setOnClickListener {
+            nextIntent.putExtra("setting_base",3)
+            startActivity(nextIntent)
+        }
+        binding.settingsReviewList.setOnClickListener {
+            //사용자 작성 리뷰 화면으로 넘어가는거 구성
+            nextIntent.putExtra("setting_base",4)
+            startActivity(nextIntent)
+        }
 
     }
 
