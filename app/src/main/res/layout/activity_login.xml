@@ -11,15 +11,15 @@
 
 
     <EditText
-        android:id="@+id/editId"
+        android:id="@+id/editEmail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="아이디를 입력하세요"/>
+        android:hint="이메일을 입력하세요"/>
     <EditText
         android:id="@+id/editpw"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="비밀번호를 입력하세요"/>
+        android:hint="비밀번호를 입력하세요"/>
     <Button
         android:id="@+id/loginbtn"
         android:layout_width="wrap_content"
