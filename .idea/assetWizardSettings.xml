@@ -18,7 +18,7 @@
                                 <PersistentState>
                                   <option name="values">
                                     <map>
-                                      <entry key="url" value="file:$USER_HOME$/Library/Android/sdk/icons/material/materialicons/toggle_on/baseline_toggle_on_24.xml" />
+                                      <entry key="url" value="file:$USER_HOME$/Library/Android/sdk/icons/material/materialicons/delete_forever/baseline_delete_forever_24.xml" />
                                     </map>
                                   </option>
                                 </PersistentState>
@@ -29,7 +29,7 @@
                         <option name="values">
                           <map>
                             <entry key="color" value="6c5ce7" />
-                            <entry key="outputName" value="ic_toggle_on" />
+                            <entry key="outputName" value="baseline_delete_forever_24" />
                             <entry key="sourceFile" value="$PROJECT_DIR$/../../milkyway/ic_home.svg" />
                           </map>
                         </option>

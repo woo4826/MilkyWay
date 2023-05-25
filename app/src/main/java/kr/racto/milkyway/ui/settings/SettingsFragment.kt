@@ -5,11 +5,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import com.google.firebase.auth.FirebaseAuth
 import kr.racto.milkyway.FirstActivity
-import kr.racto.milkyway.MainActivity
 import kr.racto.milkyway.R
 import kr.racto.milkyway.databinding.FragmentSettingsBinding
 import kr.racto.milkyway.login.JoinActivity
@@ -19,7 +18,7 @@ class SettingsFragment : Fragment() {
 
     private var _binding: FragmentSettingsBinding? = null
     val toggleImg= listOf<Int>(R.drawable.toggle_on,R.drawable.toggle_off)
-    var toggle_check=0
+    var toggle_check=0 //toggle_check==0 자동로그인 활성화, toggle_check==1 자동로그인 비활성화
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -51,13 +50,14 @@ class SettingsFragment : Fragment() {
             startActivity(i)
         }
         binding.settingsLogout.setOnClickListener {
+            FirebaseAuth.getInstance().signOut()
             val i= Intent(requireContext(),FirstActivity::class.java)
             startActivity(i)
         }
         binding.settingsAutoLogin.setOnClickListener {
-            if(toggle_check==0){
+            if(toggle_check==0){ //자동로그인 기능 비활성화
                 toggle_check=1
-            }else{
+            }else{ //자동로그인 기능 활성화
                 toggle_check=0
             }
             binding.settingsAutoLogin.setImageResource(toggleImg[toggle_check])
