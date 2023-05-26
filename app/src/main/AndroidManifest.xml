@@ -17,9 +17,11 @@
         android:theme="@style/Theme.MilkyWay"
         tools:targetApi="31">
         <activity
+            android:name=".review.MainReviewActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.settings.SettingBaseActivity"
             android:exported="false" />
-
         <activity
             android:name=".login.JoinActivity"
             android:exported="false" />

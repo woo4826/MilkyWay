@@ -93,10 +93,6 @@ class SettingsFragment : Fragment() {
     }
 
     fun AutoLogin(): Boolean {
-        if(toggle_check==0){
-            return true
-        }else{
-            return false
-        }
+        return toggle_check==0
     }
 }
