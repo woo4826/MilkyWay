@@ -1,12 +1,13 @@
 package kr.racto.milkyway.login
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
-import kr.racto.milkyway.R
+import kr.racto.milkyway.MainActivity
 import kr.racto.milkyway.databinding.ActivityLoginBinding
 
 class LoginActivity : AppCompatActivity() {
@@ -28,6 +29,8 @@ class LoginActivity : AppCompatActivity() {
                     if (task.isSuccessful) {
                         // Sign in success, update UI with the signed-in user's information
                         Toast.makeText(this, "로그인 성공", Toast.LENGTH_LONG).show()
+                        val next=Intent(this, MainActivity::class.java)
+                        startActivity(next)
                     } else {
                         // If sign in fails, display a message to the user.
                         Toast.makeText(this, "로그인 실패", Toast.LENGTH_LONG).show()

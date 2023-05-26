@@ -9,9 +9,9 @@ import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import kr.racto.milkyway.databinding.ActivityFirstBinding
+import kr.racto.milkyway.login.App
 import kr.racto.milkyway.login.JoinActivity
 import kr.racto.milkyway.login.LoginActivity
-import kr.racto.milkyway.ui.settings.SettingsFragment
 
 
 class FirstActivity : AppCompatActivity() {
@@ -21,7 +21,7 @@ class FirstActivity : AppCompatActivity() {
         binding = ActivityFirstBinding.inflate(layoutInflater)
         setContentView(binding.root)
         init()
-        setAutoLogin()
+        check()
     }
 
 
@@ -40,26 +40,32 @@ class FirstActivity : AppCompatActivity() {
         }
     }
 
-    fun setAutoLogin(){
-        val check=SettingsFragment().AutoLogin()
+    fun check(){
+        val autoCheck=application as App
+        var check: Boolean
+        synchronized(autoCheck){
+            check=autoCheck.getSharedValue()
+        }
         if(check){
-            val mAuth = FirebaseAuth.getInstance()
-            val user: FirebaseUser? = mAuth.getCurrentUser()
+            Auto()
+        }
+    }
 
-            if(user!=null){
-                user.getIdToken(true).addOnCompleteListener { task ->
-                    if (task.isSuccessful) {
-                        val idToken = task.result.token
-                        Log.d(TAG, "아이디 토큰 = $idToken")
-                        val homeMove_intent = Intent(applicationContext, MainActivity::class.java)
-                        startActivity(homeMove_intent)
-                    }
+    fun Auto(){
+        val mAuth = FirebaseAuth.getInstance()
+        val user: FirebaseUser? = mAuth.getCurrentUser()
+
+        if(user!=null){
+            user.getIdToken(true).addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    val idToken = task.result.token
+                    Log.d(TAG, "아이디 토큰 = $idToken")
+                    val homeMove_intent = Intent(applicationContext, MainActivity::class.java)
+                    startActivity(homeMove_intent)
                 }
-            }else{
-                Toast.makeText(this,"앱을 최초 실행한다",Toast.LENGTH_SHORT).show()
             }
         }else{
-            Toast.makeText(this,"자동로그인 설정이 되어있지 않다",Toast.LENGTH_SHORT).show()
+            Toast.makeText(this,"앱을 최초 실행한다",Toast.LENGTH_SHORT).show()
         }
     }
 }

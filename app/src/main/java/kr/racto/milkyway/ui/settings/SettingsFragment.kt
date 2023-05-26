@@ -11,14 +11,15 @@ import com.google.firebase.auth.FirebaseAuth
 import kr.racto.milkyway.FirstActivity
 import kr.racto.milkyway.R
 import kr.racto.milkyway.databinding.FragmentSettingsBinding
+import kr.racto.milkyway.login.App
 import kr.racto.milkyway.login.JoinActivity
 import kr.racto.milkyway.login.LoginActivity
 
 class SettingsFragment : Fragment() {
 
     private var _binding: FragmentSettingsBinding? = null
-    val toggleImg= listOf<Int>(R.drawable.toggle_on,R.drawable.toggle_off)
-    var toggle_check=0 //toggle_check==0 자동로그인 활성화, toggle_check==1 자동로그인 비활성화
+    val toggleImg= listOf<Int>(R.drawable.toggle_off,R.drawable.toggle_on)
+    var toggle_check=1 //toggle_check==1 자동로그인 활성화, toggle_check==0 자동로그인 비활성화
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -35,10 +36,23 @@ class SettingsFragment : Fragment() {
         _binding = FragmentSettingsBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
+        AutoLoginImg()
         init()
         return root
     }
 
+
+    private fun AutoLoginImg(){
+        val autoCheck= requireActivity().application as App
+        synchronized(autoCheck){
+            if(autoCheck.getSharedValue()){ //자동로그인 기능 활성화
+                toggle_check=1
+            }else{ //자동로그인 기능 비활성화
+                toggle_check=0
+            }
+        }
+        binding.settingsAutoLogin.setImageResource(toggleImg[toggle_check])
+    }
 
     private fun init() {
         binding.settingsJoin.setOnClickListener {
@@ -55,10 +69,15 @@ class SettingsFragment : Fragment() {
             startActivity(i)
         }
         binding.settingsAutoLogin.setOnClickListener {
-            if(toggle_check==0){ //자동로그인 기능 비활성화
-                toggle_check=1
-            }else{ //자동로그인 기능 활성화
-                toggle_check=0
+            val autoCheck= requireActivity().application as App
+            synchronized(autoCheck){
+                if(toggle_check==0){ //자동로그인 기능 활성화
+                    toggle_check=1
+                    autoCheck.setSharedValue(true)
+                }else{ //자동로그인 기능 비활성화
+                    toggle_check=0
+                    autoCheck.setSharedValue(false)
+                }
             }
             binding.settingsAutoLogin.setImageResource(toggleImg[toggle_check])
         }
@@ -90,9 +109,5 @@ class SettingsFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-    }
-
-    fun AutoLogin(): Boolean {
-        return toggle_check==0
     }
 }
