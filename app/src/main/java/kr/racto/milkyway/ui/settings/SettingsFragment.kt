@@ -91,4 +91,12 @@ class SettingsFragment : Fragment() {
         super.onDestroyView()
         _binding = null
     }
+
+    fun AutoLogin(): Boolean {
+        if(toggle_check==0){
+            return true
+        }else{
+            return false
+        }
+    }
 }
