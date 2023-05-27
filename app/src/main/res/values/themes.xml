@@ -18,5 +18,8 @@
         <!-- Customize your theme here. -->
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
+
+        <item name="colorControlHighlight">#80C7CDFF</item>
+
     </style>
 </resources>

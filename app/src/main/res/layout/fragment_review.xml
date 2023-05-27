@@ -8,7 +8,38 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:text="ReviewFragment1"/>
+        android:layout_gravity="center_horizontal"
+        android:text="수유실의 시설/환경은 어떠셨나요?"
+        android:textSize="23sp"
+        android:textStyle="bold"
+        android:layout_marginTop="150dp"/>
+    <TextView
+        android:id="@+id/name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:text="XX 수유실"
+        android:textStyle="bold"
+        android:textColor="#3D3D3D"
+        android:layout_marginTop="200dp"/>
+
+    <RatingBar
+        android:id="@+id/ratingbar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:isIndicator="false"
+        tools:ignore="SpeakableTextPresentCheck"
+        android:layout_marginTop="270dp"/>
+
+    <TextView
+        android:id="@+id/rating_text"
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="325dp"
+        android:layout_gravity="center_horizontal"
+        android:gravity="center"
+        android:textColor="#3D3D3D"
+        android:textSize="15sp"/>
 
 </FrameLayout>
