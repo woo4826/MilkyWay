@@ -1,12 +1,14 @@
 package kr.racto.milkyway.ui.settings
 
 import android.content.Intent
-import android.graphics.Path.Op
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import kr.racto.milkyway.MainActivity
 import kr.racto.milkyway.R
 import kr.racto.milkyway.databinding.ActivitySettingBaseBinding
+import java.io.BufferedReader
+import java.io.InputStream
+import java.io.InputStreamReader
 
 class SettingBaseActivity : AppCompatActivity() {
     lateinit var binding:ActivitySettingBaseBinding
@@ -32,5 +34,18 @@ class SettingBaseActivity : AppCompatActivity() {
             startActivity(nextIntent)
         }
 
+    }
+
+    fun readFile(fileName:Int):String{
+        val inputStream: InputStream = resources.openRawResource(fileName)
+        val reader = BufferedReader(InputStreamReader(inputStream))
+        val stringBuilder = StringBuilder()
+        var line: String? = reader.readLine()
+        while (line != null) {
+            stringBuilder.append(line+"\n")
+            line = reader.readLine()
+        }
+        reader.close()
+        return stringBuilder.toString()
     }
 }

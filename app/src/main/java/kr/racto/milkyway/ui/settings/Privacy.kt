@@ -1,20 +1,27 @@
 package kr.racto.milkyway.ui.settings
 
 import android.os.Bundle
+import android.text.method.ScrollingMovementMethod
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import kr.racto.milkyway.R
+import kr.racto.milkyway.databinding.FragmentPrivacyBinding
 
 class Privacy : Fragment() {
-
+    lateinit var binding:FragmentPrivacyBinding
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_privacy, container, false)
+        binding= FragmentPrivacyBinding.inflate(inflater,container,false)
+
+        val main= activity as SettingBaseActivity
+        binding.contents.text=main.readFile(R.raw.privacy)
+        binding.contents.movementMethod= ScrollingMovementMethod()
+        return binding.root
     }
 
 }
