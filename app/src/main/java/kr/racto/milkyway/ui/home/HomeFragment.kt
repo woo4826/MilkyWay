@@ -8,11 +8,14 @@ import androidx.annotation.UiThread
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.naver.maps.geometry.LatLng
+import com.naver.maps.map.LocationTrackingMode
 import com.naver.maps.map.MapView
 import com.naver.maps.map.NaverMap
 import com.naver.maps.map.OnMapReadyCallback
 import com.naver.maps.map.overlay.Marker
+import com.naver.maps.map.util.FusedLocationSource
 import kr.racto.milkyway.R
+import kr.racto.milkyway.RoomModel
 import kr.racto.milkyway.databinding.FragmentHomeBinding
 
 
@@ -21,6 +24,8 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
     private var _binding: FragmentHomeBinding? = null
     private lateinit var naverMap: NaverMap
     private lateinit var mapView: MapView
+    private lateinit var locationSource: FusedLocationSource
+    private val LOCATION_PERMISSION_REQUEST_CODE = 1000
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -35,6 +40,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
 
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         val root: View = binding.root
+        locationSource = FusedLocationSource(this, LOCATION_PERMISSION_REQUEST_CODE)
 
         return root
     }
@@ -44,20 +50,55 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
         mapView = view.findViewById(R.id.mapView)
         mapView.onCreate(savedInstanceState)
         mapView.getMapAsync(this)
+    }
 
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<String>,
+        grantResults: IntArray
+    ) {
+        if (locationSource.onRequestPermissionsResult(
+                requestCode, permissions,
+                grantResults
+            )
+        ) {
+            if (!locationSource.isActivated) { // 권한 거부됨
+                naverMap.locationTrackingMode = LocationTrackingMode.None
+            }
+            return
+        }
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+    }
+
+    fun dummyData(): ArrayList<RoomModel> {
+        var roomList = ArrayList<RoomModel>()
+        roomList.add(
+            RoomModel(
+                roomName = "1번 수유실",
+                lat = 37.5670135,
+                lon = 126.9783740,
+                address = "서울시 광진구 아차산로",
+                detailAddress = "3층",
+                reviews = ArrayList<String>()
+            )
+        )
+        return roomList
 
     }
 
     fun initMap() {
-        val marker = Marker()
-        var markerList = ArrayList<Marker>()
+        var roomList = dummyData()
+        for (i in roomList) {
 
-        markerList.add(Marker(LatLng(37.5670135, 126.9783740)))
-        markerList.add(Marker(LatLng(37.5671135, 126.9783740)))
-        markerList.add(Marker(LatLng(37.5672135, 126.9783740)))
-        markerList.add(Marker(LatLng(37.5673135, 126.9783740)))
-        for (i in markerList)
-            i.map = naverMap
+            val marker = Marker(LatLng(i.lat!!, i.lon!!))
+            marker.map = naverMap
+//            marker.setOnClickListener {
+//
+//            }
+        }
+
+
+//            i.map = naverMap
 //        val infoWindow = InfoWindow()
 //        infoWindow.position = LatLng(37.5666102, 126.9783881)
 //        infoWindow.map = naverMap
@@ -91,6 +132,9 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
     @UiThread
     override fun onMapReady(map: NaverMap) {
         naverMap = map
+        naverMap.locationSource = locationSource
+        val uiSettings = naverMap.uiSettings
+        uiSettings.isLocationButtonEnabled = true
         initMap()
     }
 
@@ -102,16 +146,6 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
     override fun onResume() {
         super.onResume()
         mapView.onResume()
-    }
-
-    override fun onPause() {
-        super.onPause()
-//        mapView.onPause()
-    }
-
-    override fun onStop() {
-        super.onStop()
-//        mapView.onStop()
     }
 
     override fun onDestroyView() {

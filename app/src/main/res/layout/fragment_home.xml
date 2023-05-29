@@ -30,35 +30,4 @@
 
     </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/ll_main_bottom_sheet"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="#ACACAC"
-        android:maxHeight="500dp"
-        android:orientation="vertical"
-        app:behavior_hideable="false"
-        app:behavior_peekHeight="120dp"
-        app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
-
-        <TextView
-            android:id="@+id/bottom_sheet_title"
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:gravity="center"
-            android:text="수유실 리스트"
-            android:textColor="@android:color/black"
-            android:textSize="12dp"
-            android:textStyle="bold" />
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_main_bottom_sheet"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:clipToPadding="false"
-            android:paddingBottom="20dp"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
-
-    </LinearLayout>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
