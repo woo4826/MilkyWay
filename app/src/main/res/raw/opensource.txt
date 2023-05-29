@@ -1,0 +1,19 @@
+MilkyWay 오픈 소스 라이선스
+
+racto는 Firebase 서비스를 사용하여 MilkyWay을 개발하였습니다. Firebase 관련 종속성을 아래와 같이 추가하여 사용하였습니다
+    1. com.google.firebase:firebase-bom:32.0.0
+       - Firebase SDK 버전 관리를 위한 Build-Order Manager입니다.
+
+    2. com.google.firebase:firebase-database-ktx:20.2.1
+       - Firebase Realtime Database를 사용하기 위한 Kotlin 확장 라이브러리입니다.
+
+    3. com.google.firebase:firebase-analytics:21.2.2
+       - Firebase Analytics를 사용하기 위한 라이브러리입니다.
+
+    4. com.google.firebase:firebase-auth-ktx:22.0.0
+       - Firebase Authentication을 사용하기 위한 Kotlin 확장 라이브러리입니다.
+
+Firebase 종속성은 Firebase의 서비스 및 기능을 활용하기 위해 사용되었으며, 각 라이브러리는 Firebase의 라이선스에 따릅니다. Firebase의 라이선스 내용 및 규정은 Firebase의 공식 문서에서 확인할 수 있습니다.
+Firebase와 관련된 모든 저작권은 Google LLC에게 있으며, racto는 Firebase 서비스를 사용하는 데에 따른 법적 책임을 부담합니다.
+
+
