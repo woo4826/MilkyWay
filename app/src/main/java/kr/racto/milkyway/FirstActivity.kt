@@ -1,15 +1,14 @@
 package kr.racto.milkyway
 
-import android.content.ContentValues.TAG
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import kr.racto.milkyway.databinding.ActivityFirstBinding
-import kr.racto.milkyway.login.App
 import kr.racto.milkyway.login.JoinActivity
 import kr.racto.milkyway.login.LoginActivity
 
@@ -41,31 +40,28 @@ class FirstActivity : AppCompatActivity() {
     }
 
     fun check(){
-        val autoCheck=application as App
-        var check: Boolean
-        synchronized(autoCheck){
-            check=autoCheck.getSharedValue()
-        }
-        if(check){
-            Auto()
-        }
-    }
+        val database = FirebaseDatabase.getInstance()
+        val usersRef = database.getReference("users")
+        // Firebase 실시간 데이터베이스의 "users" 노드에서 자동 로그인 정보 가져오기
+        val currentUser = FirebaseAuth.getInstance().currentUser
+        currentUser?.let {
+            val userId = it.uid
 
-    fun Auto(){
-        val mAuth = FirebaseAuth.getInstance()
-        val user: FirebaseUser? = mAuth.getCurrentUser()
-
-        if(user!=null){
-            user.getIdToken(true).addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    val idToken = task.result.token
-                    Log.d(TAG, "아이디 토큰 = $idToken")
-                    val homeMove_intent = Intent(applicationContext, MainActivity::class.java)
-                    startActivity(homeMove_intent)
+            usersRef.child(userId).child("autoLogin").addListenerForSingleValueEvent(object :
+                ValueEventListener {
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    val autoLoginEnabled = dataSnapshot.getValue(Boolean::class.java)
+                    if (autoLoginEnabled == true) {
+                        // 자동 로그인 설정이 활성화된 경우 처리 로직 추가
+                        val homeMove_intent = Intent(applicationContext, MainActivity::class.java)
+                        startActivity(homeMove_intent)
+                    }
                 }
-            }
-        }else{
-            Toast.makeText(this,"앱을 최초 실행한다",Toast.LENGTH_SHORT).show()
+
+                override fun onCancelled(error: DatabaseError) {
+                    // 데이터베이스 읽기 오류 처리
+                }
+            })
         }
     }
 }

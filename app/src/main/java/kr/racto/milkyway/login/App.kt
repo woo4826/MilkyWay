@@ -12,15 +12,4 @@ open class App :Application() {
         super.onCreate()
     }
 
-    private var auto_login:Boolean=true
-
-    @Synchronized
-    fun getSharedValue():Boolean{
-        return auto_login
-    }
-
-    @Synchronized
-    fun setSharedValue(value: Boolean) {
-        auto_login=value
-    }
 }
