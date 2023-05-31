@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -117,7 +118,16 @@ class SettingsFragment : Fragment() {
             nextIntent.putExtra("setting_base",4)
             startActivity(nextIntent)
         }
-
+        binding.settingsWithdrawal.setOnClickListener {
+            if(user!=null){
+                val uid=user.uid
+                user.delete()
+                usersRef.child(uid).removeValue()
+                Toast.makeText(requireContext(),"회원탈퇴가 완료되었습니다.",Toast.LENGTH_SHORT).show()
+            }else{
+                Toast.makeText(requireContext(),"회원이 아닙니다.",Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 
     override fun onDestroyView() {

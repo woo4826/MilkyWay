@@ -1,5 +1,6 @@
 package kr.racto.milkyway.login
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
@@ -7,6 +8,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.ktx.Firebase
+import kr.racto.milkyway.FirstActivity
 import kr.racto.milkyway.databinding.ActivityJoinBinding
 
 class JoinActivity : AppCompatActivity() {
@@ -55,7 +57,9 @@ class JoinActivity : AppCompatActivity() {
                             val usersRef = database.getReference("users")
                             val currentUser = FirebaseAuth.getInstance().currentUser
 
-                            usersRef.child(currentUser!!.uid).child("autoLogin").setValue(true)
+                            usersRef.child(currentUser!!.uid).child("autoLogin").setValue(false)
+                            val next= Intent(this,FirstActivity::class.java)
+                            startActivity(next)
                         } else {
                             // If sign in fails, display a message to the user.
                             Toast.makeText(this, "회원가입 실패", Toast.LENGTH_LONG).show()

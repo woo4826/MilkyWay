@@ -2,7 +2,6 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center"
@@ -139,6 +138,21 @@
         android:layout_height="46dp"
         android:id="@+id/settings_opensource_license"
         android:text="Opensource License"
+        android:textSize="16dp"
+        android:paddingLeft="20dp"
+        android:gravity="center_vertical"/>
+
+    <View
+        android:layout_width="352dp"
+        android:layout_height="1dp"
+        android:background="#A1AEBF"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"/>
+    <TextView
+        android:layout_width="352dp"
+        android:layout_height="46dp"
+        android:id="@+id/settings_withdrawal"
+        android:text="회원탈퇴"
         android:textSize="16dp"
         android:paddingLeft="20dp"
         android:gravity="center_vertical"/>
