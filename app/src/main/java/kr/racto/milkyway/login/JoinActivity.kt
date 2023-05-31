@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.ktx.Firebase
 import kr.racto.milkyway.databinding.ActivityJoinBinding
 
@@ -50,6 +51,11 @@ class JoinActivity : AppCompatActivity() {
                         if (task.isSuccessful) {
                             // Sign in success, update UI with the signed-in user's information
                             Toast.makeText(this, "화원가입 성공", Toast.LENGTH_LONG).show()
+                            val database = FirebaseDatabase.getInstance()
+                            val usersRef = database.getReference("users")
+                            val currentUser = FirebaseAuth.getInstance().currentUser
+
+                            usersRef.child(currentUser!!.uid).child("autoLogin").setValue(true)
                         } else {
                             // If sign in fails, display a message to the user.
                             Toast.makeText(this, "회원가입 실패", Toast.LENGTH_LONG).show()

@@ -46,22 +46,23 @@ class FirstActivity : AppCompatActivity() {
         val currentUser = FirebaseAuth.getInstance().currentUser
         currentUser?.let {
             val userId = it.uid
-
-            usersRef.child(userId).child("autoLogin").addListenerForSingleValueEvent(object :
-                ValueEventListener {
-                override fun onDataChange(dataSnapshot: DataSnapshot) {
-                    val autoLoginEnabled = dataSnapshot.getValue(Boolean::class.java)
-                    if (autoLoginEnabled == true) {
-                        // 자동 로그인 설정이 활성화된 경우 처리 로직 추가
-                        val homeMove_intent = Intent(applicationContext, MainActivity::class.java)
-                        startActivity(homeMove_intent)
+            if(currentUser.uid==userId){
+                usersRef.child(userId).child("autoLogin").addListenerForSingleValueEvent(object :
+                    ValueEventListener {
+                    override fun onDataChange(dataSnapshot: DataSnapshot) {
+                        val autoLoginEnabled = dataSnapshot.getValue(Boolean::class.java)
+                        if (autoLoginEnabled == true) {
+                            // 자동 로그인 설정이 활성화된 경우 처리 로직 추가
+                            val homeMove_intent = Intent(applicationContext, MainActivity::class.java)
+                            startActivity(homeMove_intent)
+                        }
                     }
-                }
 
-                override fun onCancelled(error: DatabaseError) {
-                    // 데이터베이스 읽기 오류 처리
-                }
-            })
+                    override fun onCancelled(error: DatabaseError) {
+                        // 데이터베이스 읽기 오류 처리
+                    }
+                })
+            }
         }
     }
 }
