@@ -2,6 +2,7 @@ package kr.racto.milkyway.ui.settings
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -52,6 +53,7 @@ class SettingsFragment : Fragment() {
     private fun AutoLoginImg(){
         lifecycleScope.launch {
             if(user!=null){
+                Log.i("user_check",user.uid)
                 withContext(Dispatchers.IO){
                     val check=usersRef.child(user.uid).child("autoLogin").get().await().getValue(Boolean::class.java)!!
                     if(check){
@@ -60,9 +62,10 @@ class SettingsFragment : Fragment() {
                         toggle_check=0
                     }
                 }
-                binding.settingsAutoLogin.setImageResource(toggleImg[toggle_check])
             }
+            binding.settingsAutoLogin.setImageResource(toggleImg[toggle_check])
         }
+
     }
 
     private fun init() {

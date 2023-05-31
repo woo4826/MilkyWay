@@ -28,6 +28,7 @@ class FirstActivity : AppCompatActivity() {
         binding.nonmemberbtn.setOnClickListener {
             val i = Intent(this, MainActivity::class.java)
             startActivity(i)
+            FirebaseAuth.getInstance().signOut()
         }
         binding.loginbtn.setOnClickListener {
             val i = Intent(this, LoginActivity::class.java)
@@ -57,7 +58,6 @@ class FirstActivity : AppCompatActivity() {
                             startActivity(homeMove_intent)
                         }
                     }
-
                     override fun onCancelled(error: DatabaseError) {
                         // 데이터베이스 읽기 오류 처리
                     }
