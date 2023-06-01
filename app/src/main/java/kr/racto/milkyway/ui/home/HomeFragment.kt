@@ -3,18 +3,23 @@ package kr.racto.milkyway.ui.home
 import APIS
 import SearchReqDTO
 import SearchResDTO
+import android.Manifest
+import android.content.pm.PackageManager
+import android.location.Location
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.UiThread
+import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import com.naver.maps.map.LocationTrackingMode
-import com.naver.maps.map.MapView
-import com.naver.maps.map.NaverMap
-import com.naver.maps.map.OnMapReadyCallback
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
+import com.naver.maps.geometry.LatLng
+import com.naver.maps.map.*
+import com.naver.maps.map.overlay.Marker
 import com.naver.maps.map.util.FusedLocationSource
 import kr.racto.milkyway.R
 import kr.racto.milkyway.databinding.FragmentHomeBinding
@@ -30,10 +35,11 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
     private lateinit var mapView: MapView
     private lateinit var locationSource: FusedLocationSource
     private val LOCATION_PERMISSION_REQUEST_CODE = 1000
-    val api = APIS.create()
+    var markerList: MutableList<Marker> = mutableListOf()
 
-    // This property is only valid between onCreateView and
-    // onDestroyView.
+    val api = APIS.create()
+    private lateinit var fusedLocationClient: FusedLocationProviderClient
+
     private val binding get() = _binding!!
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -45,6 +51,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
 
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         val root: View = binding.root
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireContext())
         locationSource = FusedLocationSource(this, LOCATION_PERMISSION_REQUEST_CODE)
 
         return root
@@ -70,30 +77,53 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
             if (!locationSource.isActivated) { // 권한 거부됨
                 naverMap.locationTrackingMode = LocationTrackingMode.None
             }
+            naverMap.locationTrackingMode = LocationTrackingMode.Follow
+
             return
         }
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
     }
 
-    fun initMap() {
+
+    fun setMarkers(lat: Double, lon: Double) {
+
         val req = SearchReqDTO(
-            searchKeyword = "광진",
+            searchKeyword = "(내주변검색)",
             roomTypeCode = "",
-            mylat = "",
-            mylng = "",
+            mylat = lat.toString(),
+            mylng = lon.toString(),
             pageNo = "1"
         )
+        print(req.toString())
         api.roomListByLatLon(req).enqueue(object : Callback<SearchResDTO> {
             override fun onResponse(call: Call<SearchResDTO>, response: Response<SearchResDTO>) {
                 Log.d("log", response.toString())
                 Log.d("log", response.body().toString())
-                response.body()
-//                for (i in response.) {
-//
-//                    val marker = Marker(LatLng(i.lat!!, i.lon!!))
-//                    marker.map = naverMap
-//
-//                }
+                if (response.body() != null && response.body()!!.nursingRoomDTO.isNotEmpty()) {
+                    markerList.onEach { e ->
+                        e.map = null
+                    }
+                    markerList.clear()
+                    markerList.addAll(response.body()!!.nursingRoomDTO.map { e ->
+                        Marker(LatLng(e.gpsLat!!.toDouble(), e.gpsLong!!.toDouble()))
+                    }.toList().onEach { e -> e.map = naverMap })
+                    markerList.onEach { marker ->
+                        marker.setOnClickListener { overlay
+                            ->
+
+                            val cameraUpdate = CameraUpdate.scrollAndZoomTo(
+                                LatLng(
+                                    marker.position.latitude,
+                                    marker.position.longitude
+                                ), 15.0
+                            ).animate(CameraAnimation.Easing, 360)
+
+                            naverMap.moveCamera(cameraUpdate)
+
+                            true
+                        }
+                    }
+                }
             }
 
             override fun onFailure(call: Call<SearchResDTO>, t: Throwable) {
@@ -111,12 +141,75 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
     }
 
     @UiThread
-    override fun onMapReady(map: NaverMap) {
-        naverMap = map
+    override fun onMapReady(naverMap: NaverMap) {
+        this.naverMap = naverMap
+        // 내장 위치 추적 기능 사용
         naverMap.locationSource = locationSource
-        val uiSettings = naverMap.uiSettings
-        uiSettings.isLocationButtonEnabled = true
-        initMap()
+        naverMap.addOnCameraChangeListener { reason, animated ->
+//            Log.i("NaverMap", "카메라 변경 - reson: $reason, animated: $animated")
+
+            // 주소 텍스트 세팅 및 확인 버튼 비활성화
+//            binding.tvLocation.run {
+//                text = "위치 이동 중"
+//                setTextColor(Color.parseColor("#c4c4c4"))
+//            }
+
+        }
+
+        // 카메라의 움직임 종료에 대한 이벤트 리스너 인터페이스.
+        naverMap.addOnCameraIdleListener {
+            setMarkers(
+                naverMap.cameraPosition.target.latitude,
+                naverMap.cameraPosition.target.longitude
+            )
+//            // 좌표 -> 주소 변환 텍스트 세팅, 버튼 활성화
+//            binding.tvLocation.run {
+//                text = getAddress(
+//                    naverMap.cameraPosition.target.latitude,
+//                    naverMap.cameraPosition.target.longitude
+//                )
+//                setTextColor(Color.parseColor("#2d2d2d"))
+//            }
+//            binding.btnConfirm.run {
+//                setBackgroundResource(R.drawable.rect_round_ffd464_radius_8)
+//                setTextColor(Color.parseColor("#FF000000"))
+//                isEnabled = true
+//            }
+        }
+
+        if (ActivityCompat.checkSelfPermission(
+                requireContext(),
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                requireContext(),
+                Manifest.permission.ACCESS_COARSE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            return
+        }
+        // 사용자 현재 위치 받아오기
+        var currentLocation: Location?
+        fusedLocationClient.lastLocation
+            .addOnSuccessListener { location: Location? ->
+                currentLocation = location
+                // 위치 오버레이의 가시성은 기본적으로 false로 지정되어 있습니다. 가시성을 true로 변경하면 지도에 위치 오버레이가 나타납니다.
+                // 파랑색 점, 현재 위치 표시
+                naverMap.locationOverlay.run {
+                    isVisible = true
+                    position = LatLng(currentLocation!!.latitude, currentLocation!!.longitude)
+                }
+
+                // 카메라 현재위치로 이동
+                val cameraUpdate = CameraUpdate.scrollTo(
+                    LatLng(
+                        currentLocation!!.latitude,
+                        currentLocation!!.longitude
+                    )
+                )
+                naverMap.moveCamera(cameraUpdate)
+
+
+            }
     }
 
     override fun onStart() {
