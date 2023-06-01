@@ -108,3 +108,4 @@ kotlin-ide/
 /.gradle/
 /.idea/
 local.properties
+*.properties

@@ -1,6 +1,7 @@
 package kr.racto.milkyway.ui.home
 
 import APIS
+import NursingRoomDTO
 import SearchReqDTO
 import SearchResDTO
 import android.Manifest
@@ -20,6 +21,7 @@ import com.google.android.gms.location.LocationServices
 import com.naver.maps.geometry.LatLng
 import com.naver.maps.map.*
 import com.naver.maps.map.overlay.Marker
+import com.naver.maps.map.overlay.OverlayImage
 import com.naver.maps.map.util.FusedLocationSource
 import kr.racto.milkyway.R
 import kr.racto.milkyway.databinding.FragmentHomeBinding
@@ -29,14 +31,15 @@ import retrofit2.Response
 
 
 class HomeFragment : Fragment(), OnMapReadyCallback {
-
     private var _binding: FragmentHomeBinding? = null
     private lateinit var naverMap: NaverMap
     private lateinit var mapView: MapView
     private lateinit var locationSource: FusedLocationSource
     private val LOCATION_PERMISSION_REQUEST_CODE = 1000
     var markerList: MutableList<Marker> = mutableListOf()
+    var roomList: MutableList<NursingRoomDTO> = mutableListOf()
 
+    //    var selectedMarkerTag: String? = null
     val api = APIS.create()
     private lateinit var fusedLocationClient: FusedLocationProviderClient
 
@@ -94,7 +97,6 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
             mylng = lon.toString(),
             pageNo = "1"
         )
-        print(req.toString())
         api.roomListByLatLon(req).enqueue(object : Callback<SearchResDTO> {
             override fun onResponse(call: Call<SearchResDTO>, response: Response<SearchResDTO>) {
                 Log.d("log", response.toString())
@@ -104,23 +106,35 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
                         e.map = null
                     }
                     markerList.clear()
-                    markerList.addAll(response.body()!!.nursingRoomDTO.map { e ->
-                        Marker(LatLng(e.gpsLat!!.toDouble(), e.gpsLong!!.toDouble()))
-                    }.toList().onEach { e -> e.map = naverMap })
+                    roomList.clear()
+                    markerList.addAll(response.body()!!.nursingRoomDTO.map { item
+                        ->
+                        Marker(LatLng(item.gpsLat!!.toDouble(), item.gpsLong!!.toDouble()))
+
+                    }.toList())
+                    roomList.addAll(response.body()!!.nursingRoomDTO)
+                    if (markerList.isEmpty())
+                        return
+                    for (i in 0 until markerList.size) {
+                        markerList[i].apply {
+                            icon = OverlayImage.fromResource(R.drawable.marker_icon)
+                            tag = roomList[i].roomNo ?: ""
+                            captionMinZoom = 15.0
+                            captionMaxZoom = 21.0
+                            captionText = roomList[i].roomName ?: ""
+                            captionRequestedWidth = 150
+                            if (roomList[i].roomName != roomList[i].location) {
+                                subCaptionText = roomList[i].location ?: ""
+                                subCaptionTextSize = 10f
+
+                            }
+                            map = naverMap
+                        }
+
+                    }
                     markerList.onEach { marker ->
-                        marker.setOnClickListener { overlay
-                            ->
-
-                            val cameraUpdate = CameraUpdate.scrollAndZoomTo(
-                                LatLng(
-                                    marker.position.latitude,
-                                    marker.position.longitude
-                                ), 15.0
-                            ).animate(CameraAnimation.Easing, 360)
-
-                            naverMap.moveCamera(cameraUpdate)
-
-                            true
+                        marker.setOnClickListener { overlay ->
+                            markerClickListener(marker)
                         }
                     }
                 }
@@ -133,6 +147,23 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
             }
         })
 
+    }
+
+    fun markerClickListener(marker: Marker): Boolean {
+        val cameraUpdate = CameraUpdate.scrollAndZoomTo(
+            LatLng(
+                marker.position.latitude,
+                marker.position.longitude
+            ), 15.0
+        ).animate(CameraAnimation.Easing, 360)
+
+        naverMap.moveCamera(cameraUpdate)
+//        if (selectedMarkerTag != null && marker.tag == selectedMarkerTag) {
+//            //open room detail fragment
+//            Toast.makeText(requireContext(), "두번클릭", Toast.LENGTH_SHORT)
+//        }
+
+        return true
     }
 
     override fun onDestroy() {
@@ -155,8 +186,9 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
 //            }
 
         }
+//        naverMap.setOnMapClickListener { _1, _2 -> this@HomeFragment.selectedMarkerTag = null }
+        
 
-        // 카메라의 움직임 종료에 대한 이벤트 리스너 인터페이스.
         naverMap.addOnCameraIdleListener {
             setMarkers(
                 naverMap.cameraPosition.target.latitude,
