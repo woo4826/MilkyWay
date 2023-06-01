@@ -1,22 +1,26 @@
 package kr.racto.milkyway.ui.home
 
+import APIS
+import SearchReqDTO
+import SearchResDTO
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.UiThread
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import com.naver.maps.geometry.LatLng
 import com.naver.maps.map.LocationTrackingMode
 import com.naver.maps.map.MapView
 import com.naver.maps.map.NaverMap
 import com.naver.maps.map.OnMapReadyCallback
-import com.naver.maps.map.overlay.Marker
 import com.naver.maps.map.util.FusedLocationSource
 import kr.racto.milkyway.R
-import kr.racto.milkyway.RoomModel
 import kr.racto.milkyway.databinding.FragmentHomeBinding
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 
 class HomeFragment : Fragment(), OnMapReadyCallback {
@@ -26,6 +30,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
     private lateinit var mapView: MapView
     private lateinit var locationSource: FusedLocationSource
     private val LOCATION_PERMISSION_REQUEST_CODE = 1000
+    val api = APIS.create()
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -70,57 +75,33 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
     }
 
-    fun dummyData(): ArrayList<RoomModel> {
-        var roomList = ArrayList<RoomModel>()
-        roomList.add(
-            RoomModel(
-                roomName = "1번 수유실",
-                lat = 37.5670135,
-                lon = 126.9783740,
-                address = "서울시 광진구 아차산로",
-                detailAddress = "3층",
-                reviews = ArrayList<String>()
-            )
-        )
-        return roomList
-
-    }
-
     fun initMap() {
-        var roomList = dummyData()
-        for (i in roomList) {
-
-            val marker = Marker(LatLng(i.lat!!, i.lon!!))
-            marker.map = naverMap
-//            marker.setOnClickListener {
+        val req = SearchReqDTO(
+            searchKeyword = "광진",
+            roomTypeCode = "",
+            mylat = "",
+            mylng = "",
+            pageNo = "1"
+        )
+        api.roomListByLatLon(req).enqueue(object : Callback<SearchResDTO> {
+            override fun onResponse(call: Call<SearchResDTO>, response: Response<SearchResDTO>) {
+                Log.d("log", response.toString())
+                Log.d("log", response.body().toString())
+                response.body()
+//                for (i in response.) {
 //
-//            }
-        }
-
-
-//            i.map = naverMap
-//        val infoWindow = InfoWindow()
-//        infoWindow.position = LatLng(37.5666102, 126.9783881)
-//        infoWindow.map = naverMap
-//       naverMap.setOnMapClickListener(
+//                    val marker = Marker(LatLng(i.lat!!, i.lon!!))
+//                    marker.map = naverMap
 //
-//       )
-//// 마커를 클릭하면:
-//        val listener = Overlay.OnClickListener { overlay ->
-//            val marker = overlay as Marker
-//
-//            if (marker.infoWindow == null) {
-//                // 현재 마커에 정보 창이 열려있지 않을 경우 엶
-//                infoWindow.open(marker)
-//            } else {
-//                // 이미 현재 마커에 정보 창이 열려있을 경우 닫음
-//                infoWindow.close()
-//            }
-//
-//            true
-//        }
+//                }
+            }
 
-//        marker.onClickListener = listener
+            override fun onFailure(call: Call<SearchResDTO>, t: Throwable) {
+                // 실패
+                Log.d("log", t.message.toString())
+                Log.d("log", "fail")
+            }
+        })
 
     }
 
