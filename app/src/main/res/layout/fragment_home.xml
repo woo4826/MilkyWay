@@ -1,25 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:animateLayoutChanges="true"
+
     tools:context=".ui.home.HomeFragment">
 
-    <LinearLayout
+    <FrameLayout
+
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
-
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/searchTextInput"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:hint="asdf"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+        android:layout_height="match_parent">
 
         <com.naver.maps.map.MapView
             android:id="@+id/mapView"
@@ -27,7 +19,40 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             app:layout_constraintTop_toBottomOf="@+id/searchTextInput" />
+    </FrameLayout>
 
-    </LinearLayout>
+    <TextView
+        android:id="@+id/room_info"
+        android:layout_width="0dp"
+        android:layout_height="73dp"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginBottom="8dp"
+        android:background="@drawable/rect_round_white_radius_8"
+        android:gravity="center"
+        android:paddingHorizontal="12dp"
+        android:textColor="#6C5CE7"
+        app:layout_constraintBottom_toTopOf="@id/btnMove"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:text="서울특별시 강남구" />
 
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btnMove"
+        android:layout_width="0dp"
+        android:layout_height="52dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="23.74dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="56dp"
+        android:backgroundTint="#6C5CE7"
+        android:text="상세 페이지로 이동"
+        android:textColor="@color/white"
+        android:textSize="14dp"
+        android:textStyle="bold"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

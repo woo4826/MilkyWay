@@ -38,8 +38,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
     private val LOCATION_PERMISSION_REQUEST_CODE = 1000
     var markerList: MutableList<Marker> = mutableListOf()
     var roomList: MutableList<NursingRoomDTO> = mutableListOf()
-
-    //    var selectedMarkerTag: String? = null
+    
     val api = APIS.create()
     private lateinit var fusedLocationClient: FusedLocationProviderClient
 
@@ -56,7 +55,11 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
         val root: View = binding.root
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireContext())
         locationSource = FusedLocationSource(this, LOCATION_PERMISSION_REQUEST_CODE)
-
+        setBottomInfo(View.INVISIBLE)
+        binding.btnMove.run {
+            setAllowClickWhenDisabled(false)
+            isEnabled = false
+        }
         return root
     }
 
@@ -126,7 +129,6 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
                             if (roomList[i].roomName != roomList[i].location) {
                                 subCaptionText = roomList[i].location ?: ""
                                 subCaptionTextSize = 10f
-
                             }
                             map = naverMap
                         }
@@ -158,12 +160,44 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
         ).animate(CameraAnimation.Easing, 360)
 
         naverMap.moveCamera(cameraUpdate)
-//        if (selectedMarkerTag != null && marker.tag == selectedMarkerTag) {
-//            //open room detail fragment
-//            Toast.makeText(requireContext(), "두번클릭", Toast.LENGTH_SHORT)
-//        }
-
+        val room = getRoomByRoomId(marker.tag.toString())
+        if (room != null) {
+            setBottomInfo(View.VISIBLE, room)
+        } else {
+            setBottomInfo(View.INVISIBLE, room)
+        }
         return true
+    }
+
+    fun setBottomInfo(state: Int, room: NursingRoomDTO? = null) {
+        if (room == null || state == View.INVISIBLE) {
+            binding.run {
+                roomInfo.text = ""
+                btnMove.isEnabled = false
+                binding.roomInfo.visibility = View.INVISIBLE
+                binding.btnMove.visibility = View.INVISIBLE
+                btnMove.setOnClickListener {
+                }
+            }
+        } else {
+            binding.run {
+                roomInfo.text = room.roomName + "\n" + room.location
+                btnMove.isEnabled = true
+                binding.roomInfo.visibility = View.VISIBLE
+                binding.btnMove.visibility = View.VISIBLE
+                btnMove.setOnClickListener {
+                    //move to detail page
+                }
+            }
+        }
+    }
+
+    fun getRoomByRoomId(roomId: String): NursingRoomDTO? {
+        val res = roomList.find { e -> e.roomNo === roomId }
+        if (res != null) {
+            return res
+        }
+        return null
     }
 
     override fun onDestroy() {
@@ -178,35 +212,21 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
         naverMap.locationSource = locationSource
         naverMap.addOnCameraChangeListener { reason, animated ->
 //            Log.i("NaverMap", "카메라 변경 - reson: $reason, animated: $animated")
+            if (reason != 0) //아래의 cameraIdleListener 에서의 움직임을 비활성화
+                setBottomInfo(View.INVISIBLE)
 
-            // 주소 텍스트 세팅 및 확인 버튼 비활성화
-//            binding.tvLocation.run {
-//                text = "위치 이동 중"
-//                setTextColor(Color.parseColor("#c4c4c4"))
-//            }
 
         }
-//        naverMap.setOnMapClickListener { _1, _2 -> this@HomeFragment.selectedMarkerTag = null }
-        
+        naverMap.setOnMapClickListener { _1, _2 ->
+            setBottomInfo(View.INVISIBLE)
+        }
+
 
         naverMap.addOnCameraIdleListener {
             setMarkers(
                 naverMap.cameraPosition.target.latitude,
                 naverMap.cameraPosition.target.longitude
             )
-//            // 좌표 -> 주소 변환 텍스트 세팅, 버튼 활성화
-//            binding.tvLocation.run {
-//                text = getAddress(
-//                    naverMap.cameraPosition.target.latitude,
-//                    naverMap.cameraPosition.target.longitude
-//                )
-//                setTextColor(Color.parseColor("#2d2d2d"))
-//            }
-//            binding.btnConfirm.run {
-//                setBackgroundResource(R.drawable.rect_round_ffd464_radius_8)
-//                setTextColor(Color.parseColor("#FF000000"))
-//                isEnabled = true
-//            }
         }
 
         if (ActivityCompat.checkSelfPermission(
@@ -224,7 +244,6 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
         fusedLocationClient.lastLocation
             .addOnSuccessListener { location: Location? ->
                 currentLocation = location
-                // 위치 오버레이의 가시성은 기본적으로 false로 지정되어 있습니다. 가시성을 true로 변경하면 지도에 위치 오버레이가 나타납니다.
                 // 파랑색 점, 현재 위치 표시
                 naverMap.locationOverlay.run {
                     isVisible = true
