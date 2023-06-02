@@ -13,13 +13,37 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <com.naver.maps.map.MapView
-            android:id="@+id/mapView"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="1"
-            app:layout_constraintTop_toBottomOf="@+id/searchTextInput" />
+            android:orientation="vertical"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/top_logo" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:text="헤더 영역입니다."
+                    android:textAlignment="center" />
+            </LinearLayout>
+
+            <com.naver.maps.map.MapView
+                android:id="@+id/mapView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </LinearLayout>
+
     </FrameLayout>
+
 
     <TextView
         android:id="@+id/room_info"
@@ -34,7 +58,7 @@
         app:layout_constraintBottom_toTopOf="@id/btnMove"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        tools:text="서울특별시 강남구" />
+        tools:text="" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btnMove"

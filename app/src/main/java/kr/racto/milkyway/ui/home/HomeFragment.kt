@@ -28,6 +28,7 @@ import kr.racto.milkyway.databinding.FragmentHomeBinding
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import kotlin.math.*
 
 
 class HomeFragment : Fragment(), OnMapReadyCallback {
@@ -38,7 +39,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
     private val LOCATION_PERMISSION_REQUEST_CODE = 1000
     var markerList: MutableList<Marker> = mutableListOf()
     var roomList: MutableList<NursingRoomDTO> = mutableListOf()
-    
+
     val api = APIS.create()
     private lateinit var fusedLocationClient: FusedLocationProviderClient
 
@@ -90,9 +91,24 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
     }
 
+    private val earthRadius = 6372.8 * 1000
 
-    fun setMarkers(lat: Double, lon: Double) {
+    private var beforeLat: Double? = null
+    private var beforeLon: Double? = null
+    fun needToFetch(currentLat: Double, currentLon: Double): Boolean {
+        if (beforeLat == null || beforeLon == null) return true
+        val dLat = Math.toRadians(beforeLat!! - currentLat)
+        val dLon = Math.toRadians(beforeLon!! - currentLon)
+        val a =
+            sin(dLat / 2).pow(2.0) + sin(dLon / 2).pow(2.0) * cos(Math.toRadians(beforeLat!!)) * cos(
+                Math.toRadians(currentLat)
+            )
+        val c = 2 * asin(sqrt(a))
+        return (earthRadius * c).toInt() > 200
+    }
 
+    private fun setMarkers(lat: Double, lon: Double) {
+        if (!needToFetch(lat, lon)) return
         val req = SearchReqDTO(
             searchKeyword = "(내주변검색)",
             roomTypeCode = "",
@@ -140,6 +156,8 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
                         }
                     }
                 }
+                beforeLat = lat
+                beforeLon = lon
             }
 
             override fun onFailure(call: Call<SearchResDTO>, t: Throwable) {
@@ -164,7 +182,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
         if (room != null) {
             setBottomInfo(View.VISIBLE, room)
         } else {
-            setBottomInfo(View.INVISIBLE, room)
+            setBottomInfo(View.INVISIBLE)
         }
         return true
     }
