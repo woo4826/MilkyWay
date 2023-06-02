@@ -13,7 +13,7 @@
         android:text="수유실 이름"
         android:textSize="23sp"
         android:textStyle="bold"
-        android:layout_marginTop="80dp"/>
+        android:layout_marginTop="20dp"/>
 
     <RatingBar
         android:id="@+id/ratingbar"
@@ -22,13 +22,13 @@
         android:layout_gravity="center_horizontal"
         android:isIndicator="false"
         tools:ignore="SpeakableTextPresentCheck"
-        android:layout_marginTop="130dp"/>
+        android:layout_marginTop="70dp"/>
 
     <TextView
         android:id="@+id/rating_text"
         android:layout_width="50dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="185dp"
+        android:layout_marginTop="125dp"
         android:layout_gravity="center_horizontal"
         android:gravity="center"
         android:textColor="#3D3D3D"
@@ -39,7 +39,7 @@
         android:layout_width="320dp"
         android:layout_height="45dp"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="230dp"
+        android:layout_marginTop="170dp"
         android:clickable="true"
         android:foreground="?android:attr/selectableItemBackground"
         app:cardBackgroundColor="#FBFBFB"
@@ -68,13 +68,26 @@
 
     </androidx.cardview.widget.CardView>
 
+    <androidx.cardview.widget.CardView
+        android:layout_width="320dp"
+        android:layout_height="100dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="230dp"
+        app:cardBackgroundColor="#FBFBFB"
+        app:cardCornerRadius="8dp">
+        <ImageView
+            android:id="@+id/review_photo"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+    </androidx.cardview.widget.CardView>
+
 
     <androidx.cardview.widget.CardView
         android:id="@+id/review_contents"
         android:layout_width="320dp"
-        android:layout_height="300dp"
+        android:layout_height="210dp"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="310dp"
+        android:layout_marginTop="360dp"
         app:cardBackgroundColor="#FBFBFB"
         app:cardCornerRadius="8dp"
         tools:ignore="DuplicateClickableBoundsCheck">
@@ -98,5 +111,5 @@
         android:text="완료"
         android:textStyle="bold"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="640dp"/>
+        android:layout_marginTop="610dp"/>
 </FrameLayout>

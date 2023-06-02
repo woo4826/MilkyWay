@@ -124,6 +124,8 @@ class SettingsFragment : Fragment() {
                 user.delete()
                 usersRef.child(uid).removeValue()
                 Toast.makeText(requireContext(),"회원탈퇴가 완료되었습니다.",Toast.LENGTH_SHORT).show()
+                val next=Intent(requireContext(),FirstActivity::class.java)
+                startActivity(next)
             }else{
                 Toast.makeText(requireContext(),"회원이 아닙니다.",Toast.LENGTH_SHORT).show()
             }

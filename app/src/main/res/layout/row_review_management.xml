@@ -29,14 +29,15 @@
                 android:layout_height="30dp"
                 android:orientation="horizontal"
                 android:layout_marginVertical="7dp">
-                <TextView
+                <RatingBar
                     android:id="@+id/rating"
-                    android:text="평점: "
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="30dp"
-                    android:padding="3dp"
-                    android:gravity="center_vertical"/>
+                    style="@android:style/Widget.DeviceDefault.RatingBar.Small"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:isIndicator="true"
+                    android:layout_gravity="center"
+                    android:numStars="5" />
+
                 <View
                     android:layout_width="1dp"
                     android:layout_height="16dp"
@@ -46,7 +47,8 @@
                 <TextView
                     android:id="@+id/date"
                     android:text="날짜: "
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
                     android:layout_height="30dp"
                     android:padding="3dp"
                     android:gravity="center_vertical"/>
