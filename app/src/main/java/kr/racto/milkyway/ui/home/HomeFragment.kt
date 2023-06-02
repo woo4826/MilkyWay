@@ -16,6 +16,7 @@ import androidx.annotation.UiThread
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import coil.load
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.naver.maps.geometry.LatLng
@@ -23,8 +24,13 @@ import com.naver.maps.map.*
 import com.naver.maps.map.overlay.Marker
 import com.naver.maps.map.overlay.OverlayImage
 import com.naver.maps.map.util.FusedLocationSource
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import kr.racto.milkyway.R
 import kr.racto.milkyway.databinding.FragmentHomeBinding
+import org.jsoup.Jsoup
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -32,6 +38,9 @@ import kotlin.math.*
 
 
 class HomeFragment : Fragment(), OnMapReadyCallback {
+    private val binding get() = _binding!!
+    val scope = CoroutineScope(Dispatchers.IO)
+
     private var _binding: FragmentHomeBinding? = null
     private lateinit var naverMap: NaverMap
     private lateinit var mapView: MapView
@@ -43,7 +52,6 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
     val api = APIS.create()
     private lateinit var fusedLocationClient: FusedLocationProviderClient
 
-    private val binding get() = _binding!!
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -97,14 +105,24 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
     private var beforeLon: Double? = null
     fun needToFetch(currentLat: Double, currentLon: Double): Boolean {
         if (beforeLat == null || beforeLon == null) return true
-        val dLat = Math.toRadians(beforeLat!! - currentLat)
-        val dLon = Math.toRadians(beforeLon!! - currentLon)
+
+        return (earthRadius * getDistance(
+            beforeLat!!,
+            beforeLon!!,
+            currentLat,
+            currentLon
+        )).toInt() > 200
+    }
+
+    fun getDistance(lat1: Double, lon1: Double, lat2: Double, lon2: Double): Int {
+        val dLat = Math.toRadians(lat2 - lat1)
+        val dLon = Math.toRadians(lon2 - lon1)
         val a =
-            sin(dLat / 2).pow(2.0) + sin(dLon / 2).pow(2.0) * cos(Math.toRadians(beforeLat!!)) * cos(
-                Math.toRadians(currentLat)
+            sin(dLat / 2).pow(2.0) + sin(dLon / 2).pow(2.0) * cos(Math.toRadians(lat2)) * cos(
+                Math.toRadians(lat1)
             )
         val c = 2 * asin(sqrt(a))
-        return (earthRadius * c).toInt() > 200
+        return (earthRadius * c).toInt()
     }
 
     private fun setMarkers(lat: Double, lon: Double) {
@@ -169,45 +187,150 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
 
     }
 
+    var isImgLoading: Boolean = false
+    fun getRoomMainImgUrl(roomId: String) {
+        scope.launch {
+            withContext(Dispatchers.Main) {
+                isImgLoading = true
+                binding.run {
+//                    mainImg.set
+                }
+            }
+            val imgParseUrl = "https://sooyusil.com/home/42.htm?roomNo=${roomId}"
+            val doc = Jsoup.connect(imgParseUrl).get()
+            val mainUrlSelector = "#displayImg"
+            val urlList: MutableList<String> = mutableListOf()
+            try {
+                urlList.add("https://sooyusil.com" + doc.select("#displayImg")[0].attributes()["src"])
+            } catch (e: IndexOutOfBoundsException) {
+
+            }
+            val subUrlSelector = ".setImg"
+            try {
+                urlList.addAll(
+                    doc.select(".setImg")
+                        .map { item -> "https://sooyusil.com" + item.attributes()["src"] }.toList()
+                )
+            } catch (e: IndexOutOfBoundsException) {
+            }
+
+            withContext(Dispatchers.Main) {
+                isImgLoading = false
+                binding.run {
+                    mainImg.load(urlList[0]) {
+                        crossfade(true)
+                        placeholder(R.drawable.testimg)
+                    }
+                    if (urlList.size > 1) {
+                        subImg1.load(urlList[1]) {
+                            crossfade(true)
+                            placeholder(R.drawable.testimg)
+                        }
+                    }
+                    if (urlList.size > 2) {
+                        subImg2.load(urlList[2]) {
+                            crossfade(true)
+                            placeholder(R.drawable.testimg)
+                        }
+                    }
+                    if (urlList.size > 3) {
+                        subImg3.load(urlList[3]) {
+                            crossfade(true)
+                            placeholder(R.drawable.testimg)
+                        }
+                    }
+                    detailRow1.visibility = View.VISIBLE
+
+                }
+            }
+        }
+
+
+    }
+
     fun markerClickListener(marker: Marker): Boolean {
+
         val cameraUpdate = CameraUpdate.scrollAndZoomTo(
             LatLng(
                 marker.position.latitude,
                 marker.position.longitude
             ), 15.0
         ).animate(CameraAnimation.Easing, 360)
-
         naverMap.moveCamera(cameraUpdate)
-        val room = getRoomByRoomId(marker.tag.toString())
+        val roomId = marker.tag.toString()
+        val room = getRoomByRoomId(roomId)
+        getRoomMainImgUrl(roomId)
+
         if (room != null) {
-            setBottomInfo(View.VISIBLE, room)
+            setBottomInfo(View.VISIBLE, room, marker)
         } else {
             setBottomInfo(View.INVISIBLE)
         }
         return true
     }
 
-    fun setBottomInfo(state: Int, room: NursingRoomDTO? = null) {
+    fun setBottomInfo(state: Int, room: NursingRoomDTO? = null, marker: Marker? = null) {
         if (room == null || state == View.INVISIBLE) {
+
             binding.run {
-                roomInfo.text = ""
                 btnMove.isEnabled = false
-                binding.roomInfo.visibility = View.INVISIBLE
+                binding.detailRow1.visibility = View.INVISIBLE
+                binding.detailRow2.visibility = View.INVISIBLE
                 binding.btnMove.visibility = View.INVISIBLE
                 btnMove.setOnClickListener {
                 }
+//                roomInfo.text = ""
             }
         } else {
+            if (marker != null)
+                getCurrentLocation(marker)
             binding.run {
                 roomInfo.text = room.roomName + "\n" + room.location
                 btnMove.isEnabled = true
-                binding.roomInfo.visibility = View.VISIBLE
+                binding.detailRow2.visibility = View.VISIBLE
                 binding.btnMove.visibility = View.VISIBLE
                 btnMove.setOnClickListener {
                     //move to detail page
                 }
             }
         }
+    }
+
+    fun getCurrentLocation(marker: Marker) {
+        if (ActivityCompat.checkSelfPermission(
+                requireContext(),
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                requireContext(),
+                Manifest.permission.ACCESS_COARSE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            return
+        }
+        var currentLocation: Location?
+
+        fusedLocationClient.lastLocation
+            .addOnSuccessListener { location: Location? ->
+                currentLocation = location
+                // 파랑색 점, 현재 위치 표시
+                naverMap.locationOverlay.run {
+                    isVisible = true
+                    position = LatLng(currentLocation!!.latitude, currentLocation!!.longitude)
+                }
+                binding.roomDistanceInfo.run {
+                    text = "직선거리: ${
+                        getDistance(
+                            marker.position.longitude,
+                            marker.position.latitude,
+                            currentLocation!!.longitude,
+                            currentLocation!!.latitude
+                        )
+                    }m"
+                    visibility = View.VISIBLE
+                }
+
+
+            }
     }
 
     fun getRoomByRoomId(roomId: String): NursingRoomDTO? {

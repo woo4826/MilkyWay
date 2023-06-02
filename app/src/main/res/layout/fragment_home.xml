@@ -44,21 +44,92 @@
 
     </FrameLayout>
 
+    <LinearLayout
+        android:id="@+id/detailRow1"
+        android:layout_width="0dp"
+        android:layout_height="73dp"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginBottom="8dp"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:paddingHorizontal="12dp"
+        app:layout_constraintBottom_toTopOf="@id/detailRow2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
 
-    <TextView
-        android:id="@+id/room_info"
+        <ImageView
+            android:id="@+id/mainImg"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_weight="1" />
+
+        <ImageView
+            android:id="@+id/subImg1"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_weight="1" />
+
+        <ImageView
+            android:id="@+id/subImg2"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_weight="1" />
+
+        <ImageView
+            android:id="@+id/subImg3"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_weight="1" />
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/detailRow2"
         android:layout_width="0dp"
         android:layout_height="73dp"
         android:layout_marginHorizontal="16dp"
         android:layout_marginBottom="8dp"
         android:background="@drawable/rect_round_white_radius_8"
         android:gravity="center"
+        android:orientation="horizontal"
         android:paddingHorizontal="12dp"
-        android:textColor="#6C5CE7"
         app:layout_constraintBottom_toTopOf="@id/btnMove"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        tools:text="" />
+        app:layout_constraintStart_toStartOf="parent">
+
+        <TextView
+            android:id="@+id/dummy"
+            android:layout_width="wrap_content"
+            android:layout_height="73dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:paddingHorizontal="12dp"
+            android:textColor="#6C5CE7"
+            tools:text="" />
+
+        <TextView
+            android:id="@+id/room_info"
+
+            android:layout_width="wrap_content"
+            android:layout_height="73dp"
+            android:layout_weight="7"
+            android:gravity="center"
+            android:paddingHorizontal="12dp"
+            android:textColor="#6C5CE7"
+            tools:text="" />
+
+        <TextView
+            android:id="@+id/room_distance_info"
+            android:layout_width="wrap_content"
+            android:layout_height="73dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:paddingHorizontal="12dp"
+            android:textColor="#6C5CE7"
+            tools:text="" />
+
+    </LinearLayout>
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btnMove"
