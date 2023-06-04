@@ -10,6 +10,7 @@
 
     <FrameLayout
 
+        android:id="@+id/frameLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -44,6 +45,22 @@
 
     </FrameLayout>
 
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab_tracking"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginBottom="16dp"
+        android:contentDescription="추적"
+        android:src="@drawable/baseline_my_location_24"
+        android:textAlignment="center"
+        android:tint="@color/purple_500"
+        app:backgroundTint="@color/purple_500"
+        app:fabCustomSize="48dp"
+        app:layout_constraintBottom_toTopOf="@+id/detailRow1"
+        app:layout_constraintStart_toStartOf="@+id/frameLayout"
+        app:maxImageSize="24dp" />
+
     <LinearLayout
         android:id="@+id/detailRow1"
         android:layout_width="0dp"
@@ -52,7 +69,7 @@
         android:layout_marginBottom="8dp"
         android:gravity="center"
         android:orientation="horizontal"
-        android:paddingHorizontal="12dp"
+
         app:layout_constraintBottom_toTopOf="@id/detailRow2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
@@ -60,27 +77,26 @@
         <ImageView
             android:id="@+id/mainImg"
             android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_height="match_parent"
             android:layout_weight="1" />
 
         <ImageView
             android:id="@+id/subImg1"
             android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_height="match_parent"
             android:layout_weight="1" />
 
         <ImageView
             android:id="@+id/subImg2"
             android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_height="match_parent"
             android:layout_weight="1" />
 
         <ImageView
             android:id="@+id/subImg3"
             android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_height="match_parent"
             android:layout_weight="1" />
-
 
     </LinearLayout>
 

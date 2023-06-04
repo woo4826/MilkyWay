@@ -69,6 +69,9 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
             setAllowClickWhenDisabled(false)
             isEnabled = false
         }
+        binding.fabTracking.setOnClickListener {
+            cameraMoveTo()
+        }
         return root
     }
 
@@ -111,7 +114,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
             beforeLon!!,
             currentLat,
             currentLon
-        )).toInt() > 200
+        )).toInt() > 1000
     }
 
     fun getDistance(lat1: Double, lon1: Double, lat2: Double, lon2: Double): Int {
@@ -192,6 +195,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
         scope.launch {
             withContext(Dispatchers.Main) {
                 isImgLoading = true
+
                 binding.run {
 //                    mainImg.set
                 }
@@ -201,19 +205,19 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
             val mainUrlSelector = "#displayImg"
             val urlList: MutableList<String> = mutableListOf()
             try {
-                urlList.add("https://sooyusil.com" + doc.select("#displayImg")[0].attributes()["src"])
+                urlList.add("https://sooyusil.com" + doc.select(mainUrlSelector)[0].attributes()["src"])
             } catch (e: IndexOutOfBoundsException) {
 
             }
             val subUrlSelector = ".setImg"
+            urlList.clear()
             try {
                 urlList.addAll(
-                    doc.select(".setImg")
+                    doc.select(subUrlSelector)
                         .map { item -> "https://sooyusil.com" + item.attributes()["src"] }.toList()
                 )
             } catch (e: IndexOutOfBoundsException) {
             }
-
             withContext(Dispatchers.Main) {
                 isImgLoading = false
                 binding.run {
@@ -381,6 +385,41 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
             return
         }
         // 사용자 현재 위치 받아오기
+        var currentLocation: Location?
+        fusedLocationClient.lastLocation
+            .addOnSuccessListener { location: Location? ->
+                currentLocation = location
+                // 파랑색 점, 현재 위치 표시
+                naverMap.locationOverlay.run {
+                    isVisible = true
+                    position = LatLng(currentLocation!!.latitude, currentLocation!!.longitude)
+                }
+
+                // 카메라 현재위치로 이동
+                val cameraUpdate = CameraUpdate.scrollTo(
+                    LatLng(
+                        currentLocation!!.latitude,
+                        currentLocation!!.longitude
+                    )
+                )
+                naverMap.moveCamera(cameraUpdate)
+
+
+            }
+    }
+
+    fun cameraMoveTo() {
+
+        if (ActivityCompat.checkSelfPermission(
+                requireContext(),
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                requireContext(),
+                Manifest.permission.ACCESS_COARSE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            return
+        }
         var currentLocation: Location?
         fusedLocationClient.lastLocation
             .addOnSuccessListener { location: Location? ->
