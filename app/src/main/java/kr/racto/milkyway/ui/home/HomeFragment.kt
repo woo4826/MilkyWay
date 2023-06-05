@@ -5,6 +5,7 @@ import NursingRoomDTO
 import SearchReqDTO
 import SearchResDTO
 import android.Manifest
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Location
 import android.os.Bundle
@@ -15,6 +16,7 @@ import android.view.ViewGroup
 import androidx.annotation.UiThread
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
 import coil.load
 import com.google.android.gms.location.FusedLocationProviderClient
@@ -28,8 +30,10 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import kr.racto.milkyway.MainActivity
 import kr.racto.milkyway.R
 import kr.racto.milkyway.databinding.FragmentHomeBinding
+import kr.racto.milkyway.ui.MyViewModel
 import org.jsoup.Jsoup
 import retrofit2.Call
 import retrofit2.Callback
@@ -40,6 +44,7 @@ import kotlin.math.*
 class HomeFragment : Fragment(), OnMapReadyCallback {
     private val binding get() = _binding!!
     val scope = CoroutineScope(Dispatchers.IO)
+    val model: MyViewModel by activityViewModels()
 
     private var _binding: FragmentHomeBinding? = null
     private lateinit var naverMap: NaverMap
@@ -48,6 +53,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
     private val LOCATION_PERMISSION_REQUEST_CODE = 1000
     var markerList: MutableList<Marker> = mutableListOf()
     var roomList: MutableList<NursingRoomDTO> = mutableListOf()
+
 
     val api = APIS.create()
     private lateinit var fusedLocationClient: FusedLocationProviderClient
@@ -80,6 +86,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
         mapView = view.findViewById(R.id.mapView)
         mapView.onCreate(savedInstanceState)
         mapView.getMapAsync(this)
+
     }
 
     override fun onRequestPermissionsResult(
@@ -266,12 +273,18 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
         getRoomMainImgUrl(roomId)
 
         if (room != null) {
+            model.setLiveData(room)
+            (activity as MainActivity).showModal()
+        }
+
+        if (room != null) {
             setBottomInfo(View.VISIBLE, room, marker)
         } else {
             setBottomInfo(View.INVISIBLE)
         }
         return true
     }
+
 
     fun setBottomInfo(state: Int, room: NursingRoomDTO? = null, marker: Marker? = null) {
         if (room == null || state == View.INVISIBLE) {

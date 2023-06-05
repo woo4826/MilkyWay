@@ -1,25 +1,26 @@
 package kr.racto.milkyway
 
-import android.app.Activity
-import android.content.Intent
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.view.WindowManager
-import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import kr.racto.milkyway.databinding.ActivityMainBinding
-import kr.racto.milkyway.ui.settings.SettingsFragment
+import kr.racto.milkyway.ui.DetailFragment
+import kr.racto.milkyway.ui.MyViewModel
 
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
+    val modalBottomSheet = DetailFragment()
+    val myViewModel: MyViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,7 +53,9 @@ class MainActivity : AppCompatActivity() {
         settinginit()
     }
 
-
+    fun showModal(){
+        modalBottomSheet.show(supportFragmentManager, modalBottomSheet.tag)
+    }
 
     private fun setStatusBarTransparent() {
         if (Build.VERSION.SDK_INT >= 19) {
