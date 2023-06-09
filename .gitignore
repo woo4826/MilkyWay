@@ -107,5 +107,5 @@ outTmp/
 kotlin-ide/
 /.gradle/
 /.idea/
+.gradle/buildOutputCleanup/cache.properties
 local.properties
-*.properties
