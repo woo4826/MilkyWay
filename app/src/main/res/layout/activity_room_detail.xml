@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="20dp"
+    tools:context=".ui.RoomDetailActivity">
+
+    <LinearLayout
+        android:id="@+id/room_info"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="30dp"
+        android:padding="30dp"
+        android:background="@drawable/room_detail_layout"
+        android:orientation="vertical">
+
+        <TextView
+            android:text="수유실 이름"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <TextView
+            android:text="수유실 주소"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <TextView
+            android:text="수유실 이름"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="30dp"
+        android:padding="30dp"
+        android:background="@drawable/room_detail_layout"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <Button
+                android:text="평균 평점"
+                android:textSize="12dp"
+                android:id="@+id/reviewAvg"
+                android:layout_weight="1"
+                android:layout_marginRight="100dp"
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"/>
+            <Button
+                android:text="+    리뷰등록"
+                android:textSize="12sp"
+                android:id="@+id/reviewAdd"
+                android:layout_weight="1"
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"/>
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>
