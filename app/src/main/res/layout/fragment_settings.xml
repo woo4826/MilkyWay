@@ -4,55 +4,57 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center"
-    android:orientation="vertical"
-    app:layout_constraintBottom_toBottomOf="parent"
-    app:layout_constraintLeft_toLeftOf="parent"
-    app:layout_constraintRight_toRightOf="parent"
-    app:layout_constraintTop_toTopOf="parent"
-    >
-    <LinearLayout
-        android:layout_width="352dp"
+    android:gravity="center_horizontal"
+    android:orientation="vertical">
+<!--    <LinearLayout-->
+<!--        android:id="@+id/not_user"-->
+<!--        android:layout_width="352dp"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:gravity="center"-->
+<!--        android:orientation="horizontal">-->
+<!--        <Button-->
+<!--            android:id="@+id/settings_join"-->
+<!--            android:layout_width="162dp"-->
+<!--            android:layout_height="48dp"-->
+<!--            android:layout_marginRight="18dp"-->
+<!--            android:text="회원가입"-->
+<!--            android:textStyle="bold" />-->
+
+<!--        <Button-->
+<!--            android:id="@+id/settings_login"-->
+<!--            android:layout_width="162dp"-->
+<!--            android:layout_height="48dp"-->
+<!--            android:text="로그인"-->
+<!--            android:textStyle="bold" />-->
+<!--    </LinearLayout>-->
+    <TextView
+        android:id="@+id/userID"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:orientation="horizontal"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <Button
-            android:id="@+id/settings_join"
-            android:layout_width="162dp"
-            android:layout_height="48dp"
-            android:layout_marginRight="18dp"
-            android:text="회원가입"
-            android:textStyle="bold" />
-
-        <Button
-            android:id="@+id/settings_login"
-            android:layout_width="162dp"
-            android:layout_height="48dp"
-            android:text="로그인"
-            android:textStyle="bold" />
-    </LinearLayout>
+        android:text="사용자 이메일"
+        android:textSize="25sp"
+        android:textStyle="bold"
+        android:textColor="@color/black"
+        android:layout_marginTop="70dp"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="반갑습니다!"
+        android:textSize="15sp"
+        android:layout_marginTop="10dp"/>
     <LinearLayout
         android:layout_width="352dp"
         android:layout_height="wrap_content"
         android:id="@+id/settings_review_list"
         android:gravity="center"
         android:orientation="horizontal"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="77dp">
+        android:layout_marginTop="55dp">
         <TextView
             android:layout_width="0dp"
             android:layout_weight="1"
-            android:layout_height="46dp"
+            android:layout_height="50dp"
             android:text="사용자 작성 리뷰"
-            android:textSize="16dp"
+            android:textSize="18sp"
             android:paddingLeft="20dp"
             android:gravity="center_vertical"/>
         <ImageView
@@ -67,31 +69,27 @@
         android:layout_width="352dp"
         android:layout_height="1dp"
         android:background="#A1AEBF"
-        android:layout_marginTop="5dp"
-        android:layout_marginBottom="5dp"/>
+        android:layout_marginTop="6dp"
+        android:layout_marginBottom="6dp"/>
     <TextView
         android:layout_width="352dp"
-        android:layout_height="46dp"
+        android:layout_height="50dp"
         android:id="@+id/settings_logout"
         android:text="로그아웃"
-        android:textSize="16dp"
+        android:textSize="18sp"
         android:paddingLeft="20dp"
         android:gravity="center_vertical"/>
     <LinearLayout
         android:layout_width="352dp"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:orientation="horizontal"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:orientation="horizontal">
         <TextView
             android:layout_width="0dp"
             android:layout_weight="1"
-            android:layout_height="46dp"
+            android:layout_height="50dp"
             android:text="자동 로그인"
-            android:textSize="16dp"
+            android:textSize="18sp"
             android:paddingLeft="20dp"
             android:gravity="center_vertical"/>
         <ImageView
@@ -107,38 +105,39 @@
         android:layout_width="352dp"
         android:layout_height="1dp"
         android:background="#A1AEBF"
-        android:layout_marginTop="5dp"
-        android:layout_marginBottom="5dp"/>
+        android:layout_marginTop="6dp"
+        android:layout_marginBottom="6dp"/>
+
     <TextView
         android:layout_width="352dp"
-        android:layout_height="46dp"
+        android:layout_height="50dp"
         android:id="@+id/settings_agreement"
         android:text="이용약관"
-        android:textSize="16dp"
+        android:textSize="18sp"
         android:paddingLeft="20dp"
         android:gravity="center_vertical"/>
     <TextView
         android:layout_width="352dp"
-        android:layout_height="46dp"
+        android:layout_height="50dp"
         android:id="@+id/settings_privacy"
         android:text="개인정보 처리방침"
-        android:textSize="16dp"
+        android:textSize="18sp"
         android:paddingLeft="20dp"
         android:gravity="center_vertical"/>
     <TextView
         android:layout_width="352dp"
-        android:layout_height="46dp"
+        android:layout_height="50dp"
         android:id="@+id/settings_developer"
         android:text="개발자 contact"
-        android:textSize="16dp"
+        android:textSize="18sp"
         android:paddingLeft="20dp"
         android:gravity="center_vertical"/>
     <TextView
         android:layout_width="352dp"
-        android:layout_height="46dp"
+        android:layout_height="50dp"
         android:id="@+id/settings_opensource_license"
         android:text="Opensource License"
-        android:textSize="16dp"
+        android:textSize="18sp"
         android:paddingLeft="20dp"
         android:gravity="center_vertical"/>
 
@@ -146,16 +145,15 @@
         android:layout_width="352dp"
         android:layout_height="1dp"
         android:background="#A1AEBF"
-        android:layout_marginTop="5dp"
-        android:layout_marginBottom="5dp"/>
+        android:layout_marginTop="6dp"
+        android:layout_marginBottom="6dp"/>
     <TextView
         android:layout_width="352dp"
-        android:layout_height="46dp"
+        android:layout_height="50dp"
         android:id="@+id/settings_withdrawal"
         android:text="회원탈퇴"
-        android:textSize="16dp"
+        android:textSize="18sp"
         android:paddingLeft="20dp"
         android:gravity="center_vertical"/>
-
 
 </LinearLayout>

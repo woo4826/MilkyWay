@@ -1,17 +1,25 @@
 package kr.racto.milkyway
 
+import android.content.DialogInterface
+import android.content.Intent
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.view.WindowManager
+import android.widget.Toast
 import androidx.activity.viewModels
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import kr.racto.milkyway.databinding.ActivityMainBinding
+import kr.racto.milkyway.login.JoinActivity
+import kr.racto.milkyway.login.LoginActivity
 import kr.racto.milkyway.ui.DetailFragment
 import kr.racto.milkyway.ui.MyViewModel
 
@@ -21,6 +29,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     val modalBottomSheet = DetailFragment()
     val myViewModel: MyViewModel by viewModels()
+    val user: FirebaseUser? = FirebaseAuth.getInstance().getCurrentUser()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,6 +50,24 @@ class MainActivity : AppCompatActivity() {
         val navController = findNavController(R.id.nav_host_fragment_activity_main)
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
+        //비회원인 경우, 아예 설정 파트로들어갈 수 없게 구현
+        navController.addOnDestinationChangedListener{_,destination,_->
+            if(destination.id==R.id.navigation_settings && user==null){
+                navController.navigateUp()
+                val builder= AlertDialog.Builder(this)
+                builder.setTitle("Milky Way 시작하기")
+                    .setMessage("회원인 경우 더 많은 서비스를 누리실 수 있습니다.")
+                    .setPositiveButton("회원가입",DialogInterface.OnClickListener { dialog, id ->
+                        val nextIntent= Intent(this, JoinActivity::class.java)
+                        startActivity(nextIntent)
+                    })
+                    .setNegativeButton("로그인",DialogInterface.OnClickListener { dialog, id ->
+                        val nextIntent= Intent(this, LoginActivity::class.java)
+                        startActivity(nextIntent)
+                    })
+                builder.show()
+            }
+        }
         val appBarConfiguration = AppBarConfiguration(
             setOf(
                 R.id.navigation_home,
@@ -77,10 +104,10 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun settinginit() {
+        val navController=findNavController(R.id.nav_host_fragment_activity_main)
         val check=intent.getIntExtra("settings",-1)
         if(check==0){
-            findNavController(R.id.nav_host_fragment_activity_main).navigate(R.id.navigation_settings)
+            navController.navigate(R.id.navigation_settings)
         }
     }
-
 }

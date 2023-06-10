@@ -69,25 +69,11 @@
     </androidx.cardview.widget.CardView>
 
     <androidx.cardview.widget.CardView
-        android:layout_width="320dp"
-        android:layout_height="100dp"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="230dp"
-        app:cardBackgroundColor="#FBFBFB"
-        app:cardCornerRadius="8dp">
-        <ImageView
-            android:id="@+id/review_photo"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
-    </androidx.cardview.widget.CardView>
-
-
-    <androidx.cardview.widget.CardView
         android:id="@+id/review_contents"
         android:layout_width="320dp"
         android:layout_height="210dp"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="360dp"
+        android:layout_marginTop="235dp"
         app:cardBackgroundColor="#FBFBFB"
         app:cardCornerRadius="8dp"
         tools:ignore="DuplicateClickableBoundsCheck">
@@ -101,6 +87,22 @@
             android:textSize="15sp"
             android:foreground="?android:attr/selectableItemBackground"
             android:hint="수유실 시설/환경/위치에 관한 리뷰" />
+    </androidx.cardview.widget.CardView>
+
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/show_img"
+        android:layout_width="320dp"
+        android:layout_height="100dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="470dp"
+        app:cardBackgroundColor="#FBFBFB"
+        app:cardCornerRadius="8dp"
+        android:visibility="gone">
+        <ImageView
+            android:id="@+id/review_photo"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
     </androidx.cardview.widget.CardView>
 
 

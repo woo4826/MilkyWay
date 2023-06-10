@@ -40,6 +40,7 @@ class secondReviewFragment : Fragment() {
         val activityResult: ActivityResultLauncher<Intent> = registerForActivityResult(
             ActivityResultContracts.StartActivityForResult()){
             if(it.resultCode== Activity.RESULT_OK && it.data!=null){
+                binding.showImg.visibility=View.VISIBLE
                 val uri=it.data!!.data
                 Glide.with(this)
                     .load(uri)

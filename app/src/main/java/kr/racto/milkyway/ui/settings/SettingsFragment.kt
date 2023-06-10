@@ -10,9 +10,11 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import com.bumptech.glide.Glide.init
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.FirebaseDatabase
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
@@ -26,6 +28,8 @@ import kr.racto.milkyway.login.LoginActivity
 class SettingsFragment : Fragment() {
 
     private var _binding: FragmentSettingsBinding? = null
+    val scope = CoroutineScope(Dispatchers.IO)
+
     val toggleImg= listOf<Int>(R.drawable.toggle_off,R.drawable.toggle_on)
     var toggle_check=1 //toggle_check==1 자동로그인 활성화, toggle_check==0 자동로그인 비활성화
 
@@ -52,10 +56,9 @@ class SettingsFragment : Fragment() {
     }
 
     private fun AutoLoginImg(){
-        lifecycleScope.launch {
-            if(user!=null){
-                Log.i("user_check",user.uid)
-                withContext(Dispatchers.IO){
+        scope.launch {
+            withContext(Dispatchers.Main){
+                if(user!=null){
                     val check=usersRef.child(user.uid).child("autoLogin").get().await().getValue(Boolean::class.java)!!
                     if(check){
                         toggle_check=1
@@ -63,38 +66,36 @@ class SettingsFragment : Fragment() {
                         toggle_check=0
                     }
                 }
+                binding.settingsAutoLogin.setImageResource(toggleImg[toggle_check])
             }
-            binding.settingsAutoLogin.setImageResource(toggleImg[toggle_check])
         }
-
     }
 
     private fun init() {
-        binding.settingsJoin.setOnClickListener {
-            val i= Intent(requireContext(),JoinActivity::class.java)
-            startActivity(i)
-        }
-        binding.settingsLogin.setOnClickListener {
-            val i= Intent(requireContext(),LoginActivity::class.java)
-            startActivity(i)
-        }
+//        binding.settingsJoin.setOnClickListener {
+//            val i= Intent(requireContext(),JoinActivity::class.java)
+//            startActivity(i)
+//        }
+//        binding.settingsLogin.setOnClickListener {
+//            val i= Intent(requireContext(),LoginActivity::class.java)
+//            startActivity(i)
+//        }
+        binding.userID.text=user!!.email
         binding.settingsLogout.setOnClickListener {
             FirebaseAuth.getInstance().signOut()
             val i= Intent(requireContext(),FirstActivity::class.java)
             startActivity(i)
         }
         binding.settingsAutoLogin.setOnClickListener {
-            if(user!=null){
-                if(toggle_check==0){ //자동로그인 기능 활성화
-                    toggle_check=1
-                    usersRef.child(user.uid).child("autoLogin").setValue(true)
+            if(toggle_check==0){ //자동로그인 기능 활성화
+                toggle_check=1
+                usersRef.child(user.uid).child("autoLogin").setValue(true)
 
-                }else{ //자동로그인 기능 비활성화
-                    toggle_check=0
-                    usersRef.child(user.uid).child("autoLogin").setValue(false)
-                }
-                binding.settingsAutoLogin.setImageResource(toggleImg[toggle_check])
+            }else{ //자동로그인 기능 비활성화
+                toggle_check=0
+                usersRef.child(user.uid).child("autoLogin").setValue(false)
             }
+            binding.settingsAutoLogin.setImageResource(toggleImg[toggle_check])
         }
         val nextIntent=Intent(requireContext(),SettingBaseActivity::class.java)
         binding.settingsAgreement.setOnClickListener {
@@ -119,16 +120,12 @@ class SettingsFragment : Fragment() {
             startActivity(nextIntent)
         }
         binding.settingsWithdrawal.setOnClickListener {
-            if(user!=null){
-                val uid=user.uid
-                user.delete()
-                usersRef.child(uid).removeValue()
-                Toast.makeText(requireContext(),"회원탈퇴가 완료되었습니다.",Toast.LENGTH_SHORT).show()
-                val next=Intent(requireContext(),FirstActivity::class.java)
-                startActivity(next)
-            }else{
-                Toast.makeText(requireContext(),"회원이 아닙니다.",Toast.LENGTH_SHORT).show()
-            }
+            val uid=user.uid
+            user.delete()
+            usersRef.child(uid).removeValue()
+            Toast.makeText(requireContext(),"회원탈퇴가 완료되었습니다.",Toast.LENGTH_SHORT).show()
+            val next=Intent(requireContext(),FirstActivity::class.java)
+            startActivity(next)
         }
     }
 
