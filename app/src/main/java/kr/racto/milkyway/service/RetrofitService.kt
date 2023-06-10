@@ -19,7 +19,7 @@ interface APIS {
 
     companion object {
         private const val BASE_URL = "https://sooyusil.com/" // 주소
-
+        private const val BACK_URL = "https://codeagain.kro.kr/api/"
         fun create(): APIS {
 
 
