@@ -11,6 +11,7 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
@@ -54,18 +55,7 @@ class MainActivity : AppCompatActivity() {
         navController.addOnDestinationChangedListener{_,destination,_->
             if(destination.id==R.id.navigation_settings && user==null){
                 navController.navigateUp()
-                val builder= AlertDialog.Builder(this)
-                builder.setTitle("Milky Way 시작하기")
-                    .setMessage("회원인 경우 더 많은 서비스를 누리실 수 있습니다.")
-                    .setPositiveButton("회원가입",DialogInterface.OnClickListener { dialog, id ->
-                        val nextIntent= Intent(this, JoinActivity::class.java)
-                        startActivity(nextIntent)
-                    })
-                    .setNegativeButton("로그인",DialogInterface.OnClickListener { dialog, id ->
-                        val nextIntent= Intent(this, LoginActivity::class.java)
-                        startActivity(nextIntent)
-                    })
-                builder.show()
+                ProfileDialog(this).show()
             }
         }
         val appBarConfiguration = AppBarConfiguration(
@@ -110,4 +100,5 @@ class MainActivity : AppCompatActivity() {
             navController.navigate(R.id.navigation_settings)
         }
     }
+
 }
