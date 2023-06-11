@@ -34,6 +34,7 @@ import kr.racto.milkyway.MainActivity
 import kr.racto.milkyway.R
 import kr.racto.milkyway.databinding.FragmentHomeBinding
 import kr.racto.milkyway.ui.MyViewModel
+import kr.racto.milkyway.ui.RoomDetailActivity
 import org.jsoup.Jsoup
 import retrofit2.Call
 import retrofit2.Callback
@@ -308,6 +309,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
                 binding.btnMove.visibility = View.VISIBLE
                 btnMove.setOnClickListener {
                     //move to detail page
+                    val i  = Intent(activity, RoomDetailActivity::class.java)
                 }
             }
         }

@@ -9,4 +9,7 @@ class MyViewModel:ViewModel() {
     fun setLiveData(room: NursingRoomDTO){
         selectedRoom.value = room
     }
+    fun getLiveData(): NursingRoomDTO? {
+        return selectedRoom.value
+    }
 }

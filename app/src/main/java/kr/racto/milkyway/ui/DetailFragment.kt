@@ -31,10 +31,26 @@ class DetailFragment : BottomSheetDialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val room = model.selectedRoom
-        binding!!.roomName.text = room.value?.roomName
-        binding!!.roomAddress.text = room.value?.address
+        val roomDictionary = HashMap<String, String>()
+        val name = room.value?.roomName
+        val address = room.value?.address
+        val callnumber = room.value?.managerTelNo
+        if(name != null){
+            binding!!.roomName.text = name
+            roomDictionary["roomName"] = name
+        }
+        if(address != null){
+            binding!!.roomAddress.text = address
+            roomDictionary["address"] = address
+        }
+        if(callnumber != null){
+            roomDictionary["managerTelNo"] = callnumber
+        }
         binding!!.btnMove.setOnClickListener {
             val intent = Intent(activity, RoomDetailActivity::class.java)
+            val bundle = Bundle()
+            bundle.putSerializable("dictionary", roomDictionary)
+            intent.putExtras(bundle)
             startActivity(intent)
         }
     }

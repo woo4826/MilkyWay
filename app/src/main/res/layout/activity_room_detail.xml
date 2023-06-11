@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="20dp"
+    android:background="@color/white"
     tools:context=".ui.RoomDetailActivity">
 
     <LinearLayout
@@ -18,15 +19,21 @@
         android:orientation="vertical">
 
         <TextView
+            android:id="@+id/room_name"
             android:text="수유실 이름"
+            android:textColor="@color/black"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
         <TextView
-            android:text="수유실 주소"
+            android:id="@+id/room_address"
+            android:text="상세 주소"
+            android:textColor="@color/black"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
         <TextView
-            android:text="수유실 이름"
+            android:id="@+id/room_callnumber"
+            android:text="수유실 연락처"
+            android:textColor="@color/black"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
 
