@@ -23,13 +23,10 @@ class FirstActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityFirstBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        check()
         handler = Handler(Looper.getMainLooper())
 
         handler!!.postDelayed(Runnable {
-            val intent = Intent(this, LoginActivity::class.java)
-            startActivity(intent)
-            finish()
+            check()
         }, 3000) // 3000밀리초 = 3초
 
 
@@ -59,6 +56,11 @@ class FirstActivity : AppCompatActivity() {
                             // 자동 로그인 설정이 활성화된 경우 처리 로직 추가
                             val homeMove_intent = Intent(applicationContext, MainActivity::class.java)
                             startActivity(homeMove_intent)
+                            finish()
+                        }
+                        else{
+                            val intent = Intent(applicationContext, LoginActivity::class.java)
+                            startActivity(intent)
                             finish()
                         }
                     }
