@@ -49,7 +49,8 @@ class ReviewManagement : Fragment() {
 
     inner class SwipeToDeleteCallback : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
         private val deleteIcon = ContextCompat.getDrawable(requireContext(), R.drawable.baseline_delete_forever_24) // 휴지통 아이콘
-        private val backgroundColor = Color.parseColor("#C7CDFF") // 배경색
+        private val backgroundColor = Color.parseColor("#80C7CDFF") // 배경색
+        private var isSwipeActive = false
         override fun onMove(
             recyclerView: RecyclerView,
             viewHolder: RecyclerView.ViewHolder,
@@ -79,7 +80,7 @@ class ReviewManagement : Fragment() {
 
             val background = RectF(
                 itemView.right.toFloat() + dX,
-                itemView.top.toFloat(),
+                itemView.top.toFloat()-convertDpToPx(5f),
                 itemView.right.toFloat(),
                 itemView.bottom.toFloat()-convertDpToPx(5f)
             )
@@ -88,9 +89,23 @@ class ReviewManagement : Fragment() {
             paint.color = backgroundColor
             c.drawRect(background, paint)
 
-            deleteIcon.draw(c)
-
+            if (isSwipeActive) {
+                deleteIcon.draw(c)
+            }
             super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
+        }
+
+        override fun onChildDrawOver(
+            c: Canvas,
+            recyclerView: RecyclerView,
+            viewHolder: RecyclerView.ViewHolder?,
+            dX: Float,
+            dY: Float,
+            actionState: Int,
+            isCurrentlyActive: Boolean
+        ) {
+            super.onChildDrawOver(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
+            isSwipeActive = isCurrentlyActive
         }
 
         override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
