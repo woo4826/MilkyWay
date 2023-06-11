@@ -1,17 +1,12 @@
 package kr.racto.milkyway
 
-import android.content.DialogInterface
-import android.content.Intent
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.view.WindowManager
-import android.widget.Toast
 import androidx.activity.viewModels
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
@@ -19,9 +14,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import kr.racto.milkyway.databinding.ActivityMainBinding
-import kr.racto.milkyway.login.JoinActivity
-import kr.racto.milkyway.login.LoginActivity
-import kr.racto.milkyway.ui.DetailFragment
+import kr.racto.milkyway.ui.detail.DetailFragment
 import kr.racto.milkyway.ui.MyViewModel
 
 

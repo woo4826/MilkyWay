@@ -7,7 +7,7 @@
     android:orientation="vertical"
     android:padding="20dp"
     android:background="@color/white"
-    tools:context=".ui.RoomDetailActivity">
+    tools:context=".ui.detail.RoomDetailActivity">
 
     <LinearLayout
         android:id="@+id/room_info"
@@ -58,13 +58,19 @@
                 android:layout_width="80dp"
                 android:layout_height="wrap_content"/>
             <Button
-                android:text="+    리뷰등록"
+                android:text="리뷰등록"
                 android:textSize="12sp"
                 android:id="@+id/reviewAdd"
                 android:layout_weight="1"
                 android:layout_width="80dp"
                 android:layout_height="wrap_content"/>
         </LinearLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
     </LinearLayout>
 
 </LinearLayout>

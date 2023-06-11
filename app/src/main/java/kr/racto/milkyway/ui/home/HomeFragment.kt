@@ -34,7 +34,7 @@ import kr.racto.milkyway.MainActivity
 import kr.racto.milkyway.R
 import kr.racto.milkyway.databinding.FragmentHomeBinding
 import kr.racto.milkyway.ui.MyViewModel
-import kr.racto.milkyway.ui.RoomDetailActivity
+import kr.racto.milkyway.ui.detail.RoomDetailActivity
 import org.jsoup.Jsoup
 import retrofit2.Call
 import retrofit2.Callback

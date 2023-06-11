@@ -1,10 +1,9 @@
-package kr.racto.milkyway.ui
+package kr.racto.milkyway.ui.detail
 
 import android.app.Dialog
 import android.content.Intent
 import android.content.res.Resources
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,12 +11,13 @@ import androidx.fragment.app.activityViewModels
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import kr.racto.milkyway.R
 import kr.racto.milkyway.databinding.FragmentDetailBinding
+import kr.racto.milkyway.ui.MyViewModel
 
 
 class DetailFragment : BottomSheetDialogFragment() {
 
     var binding: FragmentDetailBinding?=null
-    val model:MyViewModel by activityViewModels()
+    val model: MyViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -32,9 +32,13 @@ class DetailFragment : BottomSheetDialogFragment() {
         super.onViewCreated(view, savedInstanceState)
         val room = model.selectedRoom
         val roomDictionary = HashMap<String, String>()
+        val id = room.value?.roomNo
         val name = room.value?.roomName
         val address = room.value?.address
         val callnumber = room.value?.managerTelNo
+        if(id != null){
+            roomDictionary["roomId"] = id
+        }
         if(name != null){
             binding!!.roomName.text = name
             roomDictionary["roomName"] = name
