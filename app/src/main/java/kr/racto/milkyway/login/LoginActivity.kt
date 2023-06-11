@@ -38,6 +38,7 @@ class LoginActivity : AppCompatActivity() {
                             Toast.makeText(this, "로그인 성공", Toast.LENGTH_LONG).show()
                             val next = Intent(this, MainActivity::class.java)
                             startActivity(next)
+                            finish()
                         } else {
                             // If sign in fails, display a message to the user.
                             Toast.makeText(this, "로그인 실패", Toast.LENGTH_LONG).show()
@@ -53,6 +54,7 @@ class LoginActivity : AppCompatActivity() {
             val i = Intent(this, MainActivity::class.java)
             startActivity(i)
             FirebaseAuth.getInstance().signOut()
+            finish()
         }
     }
 }

@@ -17,7 +17,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kr.racto.milkyway.R
 import kr.racto.milkyway.databinding.FragmentReviewManagementBinding
-import kr.racto.milkyway.model.ReviewDTO
 import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Call
