@@ -20,23 +20,39 @@ class LoginActivity : AppCompatActivity() {
         setContentView(binding.root)
         init()
     }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        overridePendingTransition(0, 0);
+    }
+
     fun init(){
         binding.loginbtn.setOnClickListener {
             val email = binding.editEmail.text.toString()
-            val password = binding.editpw.text.toString()
-            auth.signInWithEmailAndPassword(email, password)
-                .addOnCompleteListener(this) { task ->
-                    if (task.isSuccessful) {
-                        // Sign in success, update UI with the signed-in user's information
-                        Toast.makeText(this, "로그인 성공", Toast.LENGTH_LONG).show()
-                        val next=Intent(this, MainActivity::class.java)
-                        startActivity(next)
-                    } else {
-                        // If sign in fails, display a message to the user.
-                        Toast.makeText(this, "로그인 실패", Toast.LENGTH_LONG).show()
+            val password = binding.editPassword.text.toString()
+            if(email.isNotEmpty() && password.isNotEmpty()) {
+                auth.signInWithEmailAndPassword(email, password)
+                    .addOnCompleteListener(this) { task ->
+                        if (task.isSuccessful) {
+                            // Sign in success, update UI with the signed-in user's information
+                            Toast.makeText(this, "로그인 성공", Toast.LENGTH_LONG).show()
+                            val next = Intent(this, MainActivity::class.java)
+                            startActivity(next)
+                        } else {
+                            // If sign in fails, display a message to the user.
+                            Toast.makeText(this, "로그인 실패", Toast.LENGTH_LONG).show()
+                        }
                     }
-                }
-
+            }
+        }
+        binding.joinbtn.setOnClickListener {
+            val intent = Intent(this, JoinActivity::class.java)
+            startActivity(intent)
+        }
+        binding.nonmemberbtn.setOnClickListener {
+            val i = Intent(this, MainActivity::class.java)
+            startActivity(i)
+            FirebaseAuth.getInstance().signOut()
         }
     }
 }

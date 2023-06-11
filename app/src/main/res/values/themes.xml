@@ -32,4 +32,5 @@
         <item name="android:layout_marginBottom">25dp</item>
         <item name="android:backgroundDimEnabled">false</item>
     </style>
+
 </resources>
