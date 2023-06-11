@@ -13,6 +13,7 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import kr.racto.milkyway.databinding.ActivityFirstBinding
 import kr.racto.milkyway.login.LoginActivity
+import kr.racto.milkyway.review.MainReviewActivity
 
 
 class FirstActivity : AppCompatActivity() {
@@ -58,6 +59,7 @@ class FirstActivity : AppCompatActivity() {
                             // 자동 로그인 설정이 활성화된 경우 처리 로직 추가
                             val homeMove_intent = Intent(applicationContext, MainActivity::class.java)
                             startActivity(homeMove_intent)
+                            finish()
                         }
                     }
                     override fun onCancelled(error: DatabaseError) {

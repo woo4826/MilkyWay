@@ -34,10 +34,8 @@ class SettingAdapter(var items:ArrayList<SettingsReview>): RecyclerView.Adapter<
     override fun onBindViewHolder(holder: SettingAdapter.ViewHolder, position: Int) {
         holder.binding.roomName.text=items[position].name
         holder.binding.rating.rating= items[position].rating.toFloat()
-//        holder.binding.rating.setText(items[position].rating.toString())
         holder.binding.date.setText(items[position].date)
         holder.binding.contents.text=items[position].contents
-        holder.binding.reviewImg.setImageResource(items[position].img)
     }
 
 

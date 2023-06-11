@@ -37,22 +37,6 @@ class secondReviewFragment : Fragment() {
         binding.ratingbar.rating=main.Ratingvalue.toFloat()
         binding.ratingText.text=main.Ratingvalue
 
-        val activityResult: ActivityResultLauncher<Intent> = registerForActivityResult(
-            ActivityResultContracts.StartActivityForResult()){
-            if(it.resultCode== Activity.RESULT_OK && it.data!=null){
-                binding.showImg.visibility=View.VISIBLE
-                val uri=it.data!!.data
-                Glide.with(this)
-                    .load(uri)
-                    .into(binding.reviewPhoto)
-            }
-        }
-
-        binding.photoInsert.setOnClickListener {
-            val pickImageIntent = Intent(Intent.ACTION_PICK)
-            pickImageIntent.type="image/*"
-            activityResult.launch(pickImageIntent)
-        }
 
         binding.ratingbar.setOnRatingBarChangeListener { ratingBar, rating, fromUser ->
             val value=rating.toString()

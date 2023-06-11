@@ -5,6 +5,7 @@ import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.RectF
 import android.os.Bundle
+import android.util.Log
 import android.util.TypedValue
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -16,21 +17,28 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kr.racto.milkyway.R
 import kr.racto.milkyway.databinding.FragmentReviewManagementBinding
+import kr.racto.milkyway.model.ReviewDTO
+import retrofit2.Callback
+import retrofit2.Response
+import retrofit2.Call
+
+
 
 class ReviewManagement : Fragment() {
     lateinit var binding:FragmentReviewManagementBinding
     lateinit var adapter:SettingAdapter
+
+    val reviewList= ArrayList<SettingsReview>()
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,savedInstanceState: Bundle?): View? {
-        // Inflate the layout for this fragment
         binding= FragmentReviewManagementBinding.inflate(inflater,container,false)
-        val data= ArrayList<SettingsReview>()
 
         for(i in 1..5){
-            data.add(SettingsReview("test",5.0,"2023-05-26",R.drawable.testimg,"너무 좋다~"))
+            reviewList.add(SettingsReview("test",5.0,"2023-05-26","너무 좋다~"))
         }
 
         binding.recyclerview.layoutManager=LinearLayoutManager(activity,LinearLayoutManager.VERTICAL,false)
-        adapter=SettingAdapter(data)
+        adapter=SettingAdapter(reviewList)
         binding.recyclerview.adapter=adapter
 
         val itemTouchHelper=ItemTouchHelper(SwipeToDeleteCallback())
@@ -41,7 +49,7 @@ class ReviewManagement : Fragment() {
 
     inner class SwipeToDeleteCallback : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
         private val deleteIcon = ContextCompat.getDrawable(requireContext(), R.drawable.baseline_delete_forever_24) // 휴지통 아이콘
-        private val backgroundColor = Color.parseColor("#E0E0E0") // 배경색
+        private val backgroundColor = Color.parseColor("#C7CDFF") // 배경색
         override fun onMove(
             recyclerView: RecyclerView,
             viewHolder: RecyclerView.ViewHolder,
