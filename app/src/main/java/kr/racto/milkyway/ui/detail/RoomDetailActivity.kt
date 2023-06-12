@@ -82,7 +82,6 @@ class RoomDetailActivity : AppCompatActivity() {
                 val name = dictionary["roomName"]
                 intent.putExtra("roomName",name)
                 startActivity(intent)
-                finish()
             }
         }
 

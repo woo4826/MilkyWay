@@ -29,9 +29,7 @@ class SettingBaseActivity : AppCompatActivity() {
             }
         }
         binding.iconBack.setOnClickListener{
-            val nextIntent= Intent(this, MainActivity::class.java)
-            nextIntent.putExtra("settings",0)
-            startActivity(nextIntent)
+            finish()
         }
 
     }

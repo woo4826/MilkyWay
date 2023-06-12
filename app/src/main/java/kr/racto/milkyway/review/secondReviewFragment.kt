@@ -59,9 +59,10 @@ class secondReviewFragment : Fragment() {
         }
 
         binding.completion.setOnClickListener {
-            val newIntent= Intent(requireContext(), MainActivity::class.java)
-            //review 작성한 내용 넘기기
-            startActivity(newIntent)
+//            val newIntent= Intent(requireContext(), MainActivity::class.java)
+//            //review 작성한 내용 넘기기
+//            startActivity(newIntent)
+            requireActivity().finish()
         }
     }
 

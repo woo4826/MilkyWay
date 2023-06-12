@@ -34,8 +34,7 @@ class MainReviewActivity : AppCompatActivity() {
 
         binding.iconBack.setOnClickListener{
             //이전 Activity로 화면 전환
-            val next= Intent(this, MainActivity::class.java)
-            startActivity(next)
+            finish()
         }
     }
 
