@@ -83,7 +83,7 @@ class SettingsFragment : Fragment() {
         binding.userID.text=user!!.email
         binding.settingsLogout.setOnClickListener {
             FirebaseAuth.getInstance().signOut()
-            val i= Intent(requireContext(),FirstActivity::class.java)
+            val i= Intent(requireContext(),LoginActivity::class.java)
             startActivity(i)
         }
         binding.settingsAutoLogin.setOnClickListener {
