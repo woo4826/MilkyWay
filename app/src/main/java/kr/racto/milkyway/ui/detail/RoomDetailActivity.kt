@@ -11,6 +11,7 @@ import kr.racto.milkyway.ProfileDialog
 import kr.racto.milkyway.databinding.ActivityRoomDetailBinding
 import kr.racto.milkyway.login.App.Companion.apiService
 import kr.racto.milkyway.model.RoomData
+import kr.racto.milkyway.review.MainReviewActivity
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -77,10 +78,11 @@ class RoomDetailActivity : AppCompatActivity() {
                 ProfileDialog(this).show()
             }
             else{
-                val intent = Intent(this, AddReviewActivity::class.java)
+                val intent = Intent(this, MainReviewActivity::class.java)
                 val name = dictionary["roomName"]
                 intent.putExtra("roomName",name)
                 startActivity(intent)
+                finish()
             }
         }
 
