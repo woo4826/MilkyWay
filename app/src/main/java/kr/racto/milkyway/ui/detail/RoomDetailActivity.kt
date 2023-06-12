@@ -47,18 +47,29 @@ class RoomDetailActivity : AppCompatActivity() {
 
 
 
-        val call = apiService.getRoomData(roomId)
+        val call = apiService.getRoomReviewData(roomId)
 
         call.enqueue(object : Callback<RoomData> {
             override fun onResponse(call: Call<RoomData>, response: Response<RoomData>) {
                 if (response.isSuccessful) {
                     val roomData = response.body()
-                    // JSON 데이터 사용하기
-                    // 예시: val reviewList = roomData?.reviewList
-                    // ...
+
+                    val reviewList = roomData?.reviewList
+                    val roomName = roomData?.roomName
+                    val address = roomData?.address
+                    val ratingAvg = roomData?.ratingAvg
+                    val reviewCount = roomData?.reviewCount
                 } else {
-                    // 요청이 실패한 경우
-                    Toast.makeText(this@RoomDetailActivity,"s",Toast.LENGTH_SHORT).show()
+                    if (response.code() == 500) {
+                        // 서버 내부 오류인 경우 처리
+                        Toast.makeText(this@RoomDetailActivity, "서버 내부 오류가 발생했습니다.", Toast.LENGTH_SHORT).show()
+                    } else {
+                        // 다른 상태 코드에 대한 처리
+                        // 예: response.code() == 404 - 페이지를 찾을 수 없음
+                        //     response.code() == 401 - 인증 실패
+                        //     등등
+                        Toast.makeText(this@RoomDetailActivity, "요청에 실패했습니다."+response.code().toString(), Toast.LENGTH_SHORT).show()
+                    }
                 }
             }
             override fun onFailure(call: Call<RoomData>, t: Throwable) {

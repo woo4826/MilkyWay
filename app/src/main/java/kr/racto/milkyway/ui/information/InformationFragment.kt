@@ -33,8 +33,8 @@ class InformationFragment : Fragment() {
         _binding = FragmentInformationBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        InfoList.add(Info("test", "test"))
-        InfoList.add(Info("test2", "test2"))
+        InfoList.add(Info("자주묻는질문1", "답변1"))
+        InfoList.add(Info("자주묻는질문2", "답변2"))
 
         // recyclerview가 어떤 형태로 관리될 것인지 설정
         binding.recyclerview.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)

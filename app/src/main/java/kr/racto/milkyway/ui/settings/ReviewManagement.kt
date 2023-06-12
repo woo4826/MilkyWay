@@ -11,16 +11,21 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import kr.racto.milkyway.R
 import kr.racto.milkyway.databinding.FragmentReviewManagementBinding
+import kr.racto.milkyway.login.App
+import kr.racto.milkyway.model.Review
+import kr.racto.milkyway.model.RoomData
 import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Call
-
 
 
 class ReviewManagement : Fragment() {
@@ -28,9 +33,40 @@ class ReviewManagement : Fragment() {
     lateinit var adapter:SettingAdapter
 
     val reviewList= ArrayList<SettingsReview>()
+    val user: FirebaseUser? = FirebaseAuth.getInstance().getCurrentUser()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,savedInstanceState: Bundle?): View? {
         binding= FragmentReviewManagementBinding.inflate(inflater,container,false)
+
+
+
+        val userEmail = user?.email
+        // api 수정하고 넣어야함 10은 test값
+        val call = App.apiService.getUserReviewData(10)
+
+        call.enqueue(object : Callback<List<Review>> {
+            override fun onResponse(call: Call<List<Review>>, response: Response<List<Review>>) {
+                if (response.isSuccessful) {
+                    val userReviewList = response.body()
+                    Toast.makeText(requireActivity(), "정상적으로 통신", Toast.LENGTH_SHORT).show()
+                } else {
+                    if (response.code() == 500) {
+                        // 서버 내부 오류인 경우 처리
+                        Toast.makeText(requireActivity(), "서버 내부 오류가 발생했습니다.", Toast.LENGTH_SHORT).show()
+                    } else {
+                        // 다른 상태 코드에 대한 처리
+                        // 예: response.code() == 404 - 페이지를 찾을 수 없음
+                        //     response.code() == 401 - 인증 실패
+                        //     등등
+                        Toast.makeText(requireActivity(), "요청에 실패했습니다."+response.code().toString(), Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
+            override fun onFailure(call: Call<List<Review>>, t: Throwable) {
+                // 네트워크 요청이 실패한 경우
+            }
+        })
+
 
         for(i in 1..5){
             reviewList.add(SettingsReview("test",5.0,"2023-05-26","너무 좋다~"))

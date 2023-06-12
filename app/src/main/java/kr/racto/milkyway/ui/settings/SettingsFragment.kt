@@ -72,19 +72,12 @@ class SettingsFragment : Fragment() {
     }
 
     private fun init() {
-//        binding.settingsJoin.setOnClickListener {
-//            val i= Intent(requireContext(),JoinActivity::class.java)
-//            startActivity(i)
-//        }
-//        binding.settingsLogin.setOnClickListener {
-//            val i= Intent(requireContext(),LoginActivity::class.java)
-//            startActivity(i)
-//        }
         binding.userID.text=user!!.email
         binding.settingsLogout.setOnClickListener {
             FirebaseAuth.getInstance().signOut()
             val i= Intent(requireContext(),LoginActivity::class.java)
             startActivity(i)
+            requireActivity().finish()
         }
         binding.settingsAutoLogin.setOnClickListener {
             if(toggle_check==0){ //자동로그인 기능 활성화
@@ -118,14 +111,17 @@ class SettingsFragment : Fragment() {
             //사용자 작성 리뷰 화면으로 넘어가는거 구성
             nextIntent.putExtra("setting_base",4)
             startActivity(nextIntent)
+
         }
         binding.settingsWithdrawal.setOnClickListener {
             val uid=user.uid
             user.delete()
             usersRef.child(uid).removeValue()
             Toast.makeText(requireContext(),"회원탈퇴가 완료되었습니다.",Toast.LENGTH_SHORT).show()
+
             val next=Intent(requireContext(),FirstActivity::class.java)
             startActivity(next)
+            requireActivity().finish()
         }
     }
 
