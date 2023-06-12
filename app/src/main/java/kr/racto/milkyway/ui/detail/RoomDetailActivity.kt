@@ -81,6 +81,7 @@ class RoomDetailActivity : AppCompatActivity() {
                 val intent = Intent(this, MainReviewActivity::class.java)
                 val name = dictionary["roomName"]
                 intent.putExtra("roomName",name)
+                intent.putExtra("roomId", roomId)
                 startActivity(intent)
             }
         }

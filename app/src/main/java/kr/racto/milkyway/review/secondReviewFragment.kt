@@ -10,6 +10,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
+import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat.getSystemService
@@ -59,9 +60,12 @@ class secondReviewFragment : Fragment() {
         }
 
         binding.completion.setOnClickListener {
-//            val newIntent= Intent(requireContext(), MainActivity::class.java)
-//            //review 작성한 내용 넘기기
-//            startActivity(newIntent)
+            val ratingNum = binding.ratingbar.rating // 별점 값
+            val contents = binding.contents.text.toString() // 리뷰 텍스트
+            val roomId = arguments?.getInt("roomId") // 수유실 id
+
+            // 데이터 삽입
+
             requireActivity().finish()
         }
     }

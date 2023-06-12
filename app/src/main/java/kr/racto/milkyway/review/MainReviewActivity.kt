@@ -4,6 +4,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
 import kr.racto.milkyway.MainActivity
 import kr.racto.milkyway.R
 import kr.racto.milkyway.databinding.ActivityMainReviewBinding
@@ -42,9 +43,11 @@ class MainReviewActivity : AppCompatActivity() {
         val ft = supportFragmentManager.beginTransaction()
 
         val roomName=intent.getStringExtra("roomName")
+        val roomId=intent.getIntExtra("roomId",-1)
         val nextFragment=secondReviewFragment()
         val bundle=Bundle()
         bundle.putString("roomName",roomName)
+        bundle.putInt("roomId", roomId)
         nextFragment.arguments=bundle
         ft.replace(R.id.review_frame,nextFragment).commit()
 
