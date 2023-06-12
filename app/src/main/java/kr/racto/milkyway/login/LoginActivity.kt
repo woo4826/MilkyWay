@@ -7,6 +7,12 @@ import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Dispatchers.Main
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import kr.racto.milkyway.LoadingDialog
 import kr.racto.milkyway.MainActivity
 import kr.racto.milkyway.databinding.ActivityLoginBinding
 
@@ -21,13 +27,22 @@ class LoginActivity : AppCompatActivity() {
         init()
     }
 
+    fun showLoadingDialog(){
+        val dialog=LoadingDialog(this)
+        CoroutineScope(Main).launch {
+            dialog.show()
+            delay(2000)
+            dialog.dismiss()
+        }
+    }
+
     override fun onBackPressed() {
         super.onBackPressed()
         overridePendingTransition(0, 0);
     }
-
     fun init(){
         binding.loginbtn.setOnClickListener {
+            showLoadingDialog()
             val email = binding.editEmail.text.toString()
             val password = binding.editPassword.text.toString()
             if(email.isNotEmpty() && password.isNotEmpty()) {

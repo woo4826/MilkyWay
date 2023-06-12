@@ -8,7 +8,12 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.ktx.Firebase
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers.Main
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import kr.racto.milkyway.FirstActivity
+import kr.racto.milkyway.LoadingDialog
 import kr.racto.milkyway.databinding.ActivityJoinBinding
 
 class JoinActivity : AppCompatActivity() {
@@ -21,8 +26,19 @@ class JoinActivity : AppCompatActivity() {
         setContentView(binding.root)
         init()
     }
+
+    fun showLoadingDialog(){
+        val dialog=LoadingDialog(this)
+        CoroutineScope(Main).launch {
+            dialog.show()
+            delay(2000)
+            dialog.dismiss()
+        }
+    }
+
     fun init(){
         binding.joinbtn.setOnClickListener {
+            showLoadingDialog()
             var isGoToJoin = true
             val email = binding.editEmail.text.toString()
             val password = binding.editpw.text.toString()
