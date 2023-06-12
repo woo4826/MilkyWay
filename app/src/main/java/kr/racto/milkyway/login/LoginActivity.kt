@@ -14,6 +14,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Dispatchers.Main
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
 import kr.racto.milkyway.LoadingDialog
 import kr.racto.milkyway.MainActivity
 import kr.racto.milkyway.databinding.ActivityLoginBinding
@@ -21,6 +22,9 @@ import kr.racto.milkyway.databinding.ActivityLoginBinding
 class LoginActivity : AppCompatActivity() {
     private lateinit var auth: FirebaseAuth
     lateinit var binding: ActivityLoginBinding
+    private var dialog:LoadingDialog?=null
+    private val coroutineScope = CoroutineScope(Dispatchers.Main)
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         auth = Firebase.auth
@@ -30,12 +34,12 @@ class LoginActivity : AppCompatActivity() {
     }
 
     fun showLoadingDialog(){
-        val dialog=LoadingDialog(this)
-        CoroutineScope(Main).launch {
-            dialog.show()
-            delay(2000)
-            dialog.dismiss()
-        }
+        dialog=LoadingDialog(this@LoginActivity)
+        dialog?.show()
+    }
+
+    fun dismissLoadingDialog(){
+        dialog?.dismiss()
     }
 
     override fun onBackPressed() {
@@ -50,23 +54,23 @@ class LoginActivity : AppCompatActivity() {
             inputMethodManager.hideSoftInputFromWindow(binding.root.windowToken, 0)
         }
         binding.loginbtn.setOnClickListener {
-            //showLoadingDialog() // 에러나서 일단 주석처리---------
+            showLoadingDialog() // 에러나서 일단 주석처리---------
             val email = binding.editEmail.text.toString()
             val password = binding.editPassword.text.toString()
             if(email.isNotEmpty() && password.isNotEmpty()) {
-                auth.signInWithEmailAndPassword(email, password)
-                    .addOnCompleteListener(this) { task ->
-                        if (task.isSuccessful) {
-                            // Sign in success, update UI with the signed-in user's information
-                            Toast.makeText(this, "로그인 성공", Toast.LENGTH_LONG).show()
-                            val next = Intent(this, MainActivity::class.java)
-                            startActivity(next)
-                            finish()
-                        } else {
-                            // If sign in fails, display a message to the user.
-                            Toast.makeText(this, "로그인 실패", Toast.LENGTH_LONG).show()
-                        }
+                coroutineScope.launch {
+                    try {
+                        auth.signInWithEmailAndPassword(email, password).await()
+                        Toast.makeText(this@LoginActivity, "로그인 성공", Toast.LENGTH_LONG).show()
+                        val next = Intent(this@LoginActivity, MainActivity::class.java)
+                        startActivity(next)
+                        finish()
+                    } catch (e: Exception) {
+                        Toast.makeText(this@LoginActivity, "로그인 실패", Toast.LENGTH_LONG).show()
+                    } finally {
+                        dismissLoadingDialog()
                     }
+                }
             }
         }
         binding.joinbtn.setOnClickListener {
