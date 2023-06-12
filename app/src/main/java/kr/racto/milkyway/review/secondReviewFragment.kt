@@ -42,6 +42,12 @@ class secondReviewFragment : Fragment() {
             binding.name.text=roomName
         }
 
+        binding.root.setOnClickListener {
+            // 키보드를 내리는 기능을 구현
+            val inputMethodManager = requireContext().getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+            inputMethodManager.hideSoftInputFromWindow(requireView().windowToken, 0)
+        }
+
         val main=activity as MainReviewActivity
         binding.ratingbar.rating=main.Ratingvalue.toFloat()
         binding.ratingText.text=main.Ratingvalue
