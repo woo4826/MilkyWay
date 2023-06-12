@@ -1,7 +1,9 @@
 package kr.racto.milkyway.ui.detail
 
+import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import com.bumptech.glide.Glide.init
 import kr.racto.milkyway.R
@@ -17,6 +19,13 @@ class AddReviewActivity : AppCompatActivity() {
     }
 
     fun init(){
+        binding.root.setOnClickListener {
+            // 키보드를 내리는 기능을 구현
+            val inputMethodManager =
+                getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            inputMethodManager.hideSoftInputFromWindow(binding.root.windowToken, 0)
+        }
+
         binding.rating.setOnRatingBarChangeListener { _, rating, _ ->
 
         }

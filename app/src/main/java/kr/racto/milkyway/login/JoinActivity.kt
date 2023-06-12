@@ -1,8 +1,10 @@
 package kr.racto.milkyway.login
 
+import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
@@ -37,6 +39,12 @@ class JoinActivity : AppCompatActivity() {
     }
 
     fun init(){
+        binding.root.setOnClickListener {
+            // 키보드를 내리는 기능을 구현
+            val inputMethodManager =
+                getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            inputMethodManager.hideSoftInputFromWindow(binding.root.windowToken, 0)
+        }
         binding.joinbtn.setOnClickListener {
             showLoadingDialog()
             var isGoToJoin = true
@@ -74,8 +82,7 @@ class JoinActivity : AppCompatActivity() {
                             val currentUser = FirebaseAuth.getInstance().currentUser
 
                             usersRef.child(currentUser!!.uid).child("autoLogin").setValue(false)
-                            val next= Intent(this,LoginActivity::class.java)
-                            startActivity(next)
+                            finish()
                         } else {
                             // If sign in fails, display a message to the user.
                             Toast.makeText(this, "회원가입 실패", Toast.LENGTH_LONG).show()
