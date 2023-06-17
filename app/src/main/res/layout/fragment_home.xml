@@ -103,46 +103,37 @@
     <LinearLayout
         android:id="@+id/detailRow2"
         android:layout_width="0dp"
-        android:layout_height="73dp"
-        android:layout_marginHorizontal="16dp"
-        android:layout_marginBottom="8dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="12dp"
+        android:layout_marginVertical="12dp"
         android:background="@drawable/rect_round_white_radius_8"
         android:gravity="center"
-        android:orientation="horizontal"
+        android:orientation="vertical"
         android:paddingHorizontal="12dp"
         app:layout_constraintBottom_toTopOf="@id/btnMove"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
-        <TextView
-            android:id="@+id/dummy"
-            android:layout_width="wrap_content"
-            android:layout_height="73dp"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:paddingHorizontal="12dp"
-            android:textColor="#6C5CE7"
-            tools:text="" />
 
         <TextView
             android:id="@+id/room_info"
-
-            android:layout_width="wrap_content"
-            android:layout_height="73dp"
-            android:layout_weight="7"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
             android:gravity="center"
-            android:paddingHorizontal="12dp"
+            android:maxLines="1"
             android:textColor="#6C5CE7"
+            android:textSize="12sp"
             tools:text="" />
 
         <TextView
             android:id="@+id/room_distance_info"
-            android:layout_width="wrap_content"
-            android:layout_height="73dp"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+
             android:layout_weight="1"
             android:gravity="center"
-            android:paddingHorizontal="12dp"
             android:textColor="#6C5CE7"
+            android:textSize="12sp"
             tools:text="" />
 
     </LinearLayout>

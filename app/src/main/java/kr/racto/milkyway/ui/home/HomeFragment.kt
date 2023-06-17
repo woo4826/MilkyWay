@@ -13,6 +13,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.annotation.UiThread
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
@@ -21,6 +22,8 @@ import androidx.lifecycle.ViewModelProvider
 import coil.load
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
+import com.gun0912.tedpermission.PermissionListener
+import com.gun0912.tedpermission.normal.TedPermission
 import com.naver.maps.geometry.LatLng
 import com.naver.maps.map.*
 import com.naver.maps.map.overlay.Marker
@@ -39,6 +42,7 @@ import org.jsoup.Jsoup
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.text.DecimalFormat
 import kotlin.math.*
 
 
@@ -58,6 +62,19 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
 
     val api = APIS.create()
     private lateinit var fusedLocationClient: FusedLocationProviderClient
+    var permissionlistener: PermissionListener = object : PermissionListener {
+        override fun onPermissionGranted() {
+            Toast.makeText(requireContext(), "Permission Granted", Toast.LENGTH_SHORT).show()
+        }
+
+        override fun onPermissionDenied(deniedPermissions: List<String>) {
+            Toast.makeText(
+                requireContext(),
+                "Permission Denied\n$deniedPermissions",
+                Toast.LENGTH_SHORT
+            ).show()
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -69,6 +86,13 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
 
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         val root: View = binding.root
+        TedPermission.create()
+            .setPermissionListener(permissionlistener)
+            .setDeniedMessage("If you reject permission,you can not use this service\n\nPlease turn on permissions at [Setting] > [Permission]")
+            .setPermissions(
+                Manifest.permission.ACCESS_FINE_LOCATION
+            )
+            .check()
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireContext())
         locationSource = FusedLocationSource(this, LOCATION_PERMISSION_REQUEST_CODE)
         setBottomInfo(View.INVISIBLE)
@@ -89,6 +113,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
         mapView.getMapAsync(this)
 
     }
+
 
     override fun onRequestPermissionsResult(
         requestCode: Int,
@@ -122,10 +147,10 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
             beforeLon!!,
             currentLat,
             currentLon
-        )).toInt() > 1000
+        )).toInt() > 1000 //임계값 현재 1KM 로 설정
     }
 
-    fun getDistance(lat1: Double, lon1: Double, lat2: Double, lon2: Double): Int {
+    fun getDistance(lat1: Double, lon1: Double, lat2: Double, lon2: Double): Double {
         val dLat = Math.toRadians(lat2 - lat1)
         val dLon = Math.toRadians(lon2 - lon1)
         val a =
@@ -133,7 +158,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
                 Math.toRadians(lat1)
             )
         val c = 2 * asin(sqrt(a))
-        return (earthRadius * c).toInt()
+        return (earthRadius * c)
     }
 
     private fun setMarkers(lat: Double, lon: Double) {
@@ -309,7 +334,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
                 binding.btnMove.visibility = View.VISIBLE
                 btnMove.setOnClickListener {
                     //move to detail page
-                    val i  = Intent(activity, RoomDetailActivity::class.java)
+                    val i = Intent(activity, RoomDetailActivity::class.java)
                 }
             }
         }
@@ -337,14 +362,18 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
                     position = LatLng(currentLocation!!.latitude, currentLocation!!.longitude)
                 }
                 binding.roomDistanceInfo.run {
+                    var formatter = DecimalFormat("#,###.##")
+
                     text = "직선거리: ${
-                        getDistance(
-                            marker.position.longitude,
-                            marker.position.latitude,
-                            currentLocation!!.longitude,
-                            currentLocation!!.latitude
+                        formatter.format(
+                            getDistance(
+                                marker.position.longitude,
+                                marker.position.latitude,
+                                currentLocation!!.longitude,
+                                currentLocation!!.latitude
+                            ) / 1000.0
                         )
-                    }m"
+                    }km"
                     visibility = View.VISIBLE
                 }
 
@@ -368,6 +397,8 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
     @UiThread
     override fun onMapReady(naverMap: NaverMap) {
         this.naverMap = naverMap
+        naverMap.minZoom = 12.0
+
         // 내장 위치 추적 기능 사용
         naverMap.locationSource = locationSource
         naverMap.addOnCameraChangeListener { reason, animated ->
@@ -399,28 +430,30 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
         ) {
             return
         }
+        cameraMoveTo()
         // 사용자 현재 위치 받아오기
-        var currentLocation: Location?
-        fusedLocationClient.lastLocation
-            .addOnSuccessListener { location: Location? ->
-                currentLocation = location
-                // 파랑색 점, 현재 위치 표시
-                naverMap.locationOverlay.run {
-                    isVisible = true
-                    position = LatLng(currentLocation!!.latitude, currentLocation!!.longitude)
-                }
-
-                // 카메라 현재위치로 이동
-                val cameraUpdate = CameraUpdate.scrollTo(
-                    LatLng(
-                        currentLocation!!.latitude,
-                        currentLocation!!.longitude
-                    )
-                )
-                naverMap.moveCamera(cameraUpdate)
-
-
-            }
+//        var currentLocation: Location?
+//        fusedLocationClient.lastLocation
+//            .addOnSuccessListener { location: Location? ->
+//                currentLocation = location
+//                // 파랑색 점, 현재 위치 표시
+//                naverMap.locationOverlay.run {
+//                    isVisible = true
+//                    if (currentLocation != null)
+//                        position = LatLng(currentLocation!!.latitude, currentLocation!!.longitude)
+//                }
+//
+//                // 카메라 현재위치로 이동
+//                val cameraUpdate = CameraUpdate.scrollTo(
+//                    LatLng(
+//                        currentLocation!!.latitude,
+//                        currentLocation!!.longitude
+//                    )
+//                )
+//                naverMap.moveCamera(cameraUpdate)
+//
+//
+//            }
     }
 
     fun cameraMoveTo() {
@@ -433,8 +466,10 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
                 Manifest.permission.ACCESS_COARSE_LOCATION
             ) != PackageManager.PERMISSION_GRANTED
         ) {
+            //request permission
             return
         }
+        fusedLocationClient
         var currentLocation: Location?
         fusedLocationClient.lastLocation
             .addOnSuccessListener { location: Location? ->
