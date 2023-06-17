@@ -1,9 +1,11 @@
 package kr.racto.milkyway.model
 
-data class Review(
+data class ReviewRoomDTO(
     val title: String,
     val description: String,
     val rating: Int,
     val userEmail: String,
-    val roomId: Int
+    val roomId: Int,
+    val roomName: String,
+    val address: String
 )

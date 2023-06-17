@@ -68,6 +68,7 @@ class RoomDetailActivity : AppCompatActivity() {
                         // 예: response.code() == 404 - 페이지를 찾을 수 없음
                         //     response.code() == 401 - 인증 실패
                         //     등등
+                        // 400이면 리뷰가 없다고 처리
                         Toast.makeText(this@RoomDetailActivity, "요청에 실패했습니다."+response.code().toString(), Toast.LENGTH_SHORT).show()
                     }
                 }

@@ -26,6 +26,7 @@ import kr.racto.milkyway.model.RoomData
 import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Call
+import java.net.URLEncoder
 
 
 class ReviewManagement : Fragment() {
@@ -40,15 +41,24 @@ class ReviewManagement : Fragment() {
 
 
 
-        val userEmail = user?.email
-        // api 수정하고 넣어야함 10은 test값
-        val call = App.apiService.getUserReviewData(10)
+        val userEmail = user?.email!!
+        var call: Call<List<Review>>? = null
 
+        call = App.apiService.getUserReviewData(userEmail)
         call.enqueue(object : Callback<List<Review>> {
             override fun onResponse(call: Call<List<Review>>, response: Response<List<Review>>) {
                 if (response.isSuccessful) {
                     val userReviewList = response.body()
-                    Toast.makeText(requireActivity(), "정상적으로 통신", Toast.LENGTH_SHORT).show()
+                    Log.i("review", response.body().toString())
+
+                    if (userReviewList != null) {
+                        for(i in 0 until userReviewList.size){
+                            reviewList.add(SettingsReview(userReviewList[i].roomId.toString(),userReviewList[i].rating.toDouble(),userReviewList[i].title,userReviewList[i].description))
+                        }
+                        adapter.notifyDataSetChanged()
+                    }
+
+
                 } else {
                     if (response.code() == 500) {
                         // 서버 내부 오류인 경우 처리
@@ -68,9 +78,10 @@ class ReviewManagement : Fragment() {
         })
 
 
-        for(i in 1..5){
-            reviewList.add(SettingsReview("test",5.0,"2023-05-26","너무 좋다~"))
-        }
+
+//        for(i in 1..5){
+//            reviewList.add(SettingsReview("test",5.0,"2023-05-26","너무 좋다~"))
+//        }
 
         binding.recyclerview.layoutManager=LinearLayoutManager(activity,LinearLayoutManager.VERTICAL,false)
         adapter=SettingAdapter(reviewList)
