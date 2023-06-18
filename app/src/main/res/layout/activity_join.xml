@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="50dp"
+    android:padding="16dp"
     android:background="@color/white"
     tools:context=".login.JoinActivity">
 

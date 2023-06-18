@@ -53,7 +53,7 @@ class ReviewManagement : Fragment() {
 
                     if (userReviewList != null) {
                         for(i in 0 until userReviewList.size){
-                            reviewList.add(SettingsReview(userReviewList[i].roomId.toString(),userReviewList[i].rating.toDouble(),userReviewList[i].title,userReviewList[i].description))
+                            reviewList.add(SettingsReview(userReviewList[i].roomName,userReviewList[i].rating,userReviewList[i].title,userReviewList[i].description))
                         }
                         adapter.notifyDataSetChanged()
                     }

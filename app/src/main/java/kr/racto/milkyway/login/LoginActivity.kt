@@ -54,10 +54,15 @@ class LoginActivity : AppCompatActivity() {
             inputMethodManager.hideSoftInputFromWindow(binding.root.windowToken, 0)
         }
         binding.loginbtn.setOnClickListener {
-            showLoadingDialog() // 에러나서 일단 주석처리---------
+
             val email = binding.editEmail.text.toString()
             val password = binding.editPassword.text.toString()
-            if(email.isNotEmpty() && password.isNotEmpty()) {
+            if(email.isEmpty())
+                Toast.makeText(this,"E-mail을 입력하세요",Toast.LENGTH_SHORT).show()
+            else if(password.isEmpty())
+                Toast.makeText(this,"비밀번호를 입력하세요",Toast.LENGTH_SHORT).show()
+            else {
+                showLoadingDialog() // 에러나서 일단 주석처리---------
                 coroutineScope.launch {
                     try {
                         auth.signInWithEmailAndPassword(email, password).await()

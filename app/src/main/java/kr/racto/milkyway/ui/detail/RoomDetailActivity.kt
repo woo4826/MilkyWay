@@ -12,6 +12,7 @@ import kr.racto.milkyway.databinding.ActivityRoomDetailBinding
 import kr.racto.milkyway.login.App.Companion.apiService
 import kr.racto.milkyway.model.RoomData
 import kr.racto.milkyway.review.MainReviewActivity
+import kr.racto.milkyway.ui.settings.SettingsReview
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -54,11 +55,18 @@ class RoomDetailActivity : AppCompatActivity() {
                 if (response.isSuccessful) {
                     val roomData = response.body()
 
-                    val reviewList = roomData?.reviewList
-                    val roomName = roomData?.roomName
-                    val address = roomData?.address
-                    val ratingAvg = roomData?.ratingAvg
-                    val reviewCount = roomData?.reviewCount
+                    val reviewList = roomData?.reviewList!!
+                    val roomName = roomData?.roomName!!
+                    val address = roomData?.address!!
+                    val ratingAvg = roomData?.ratingAvg!!
+                    val reviewCount = roomData?.reviewCount!!
+
+                    for(i in 0 until reviewList.size){
+                        reviewlist.add(DetailReview(reviewList[i].userEmail,reviewList[i].rating, reviewList[i].title,reviewList[i].description))
+                    }
+                    adapter.notifyDataSetChanged()
+
+
                 } else {
                     if (response.code() == 500) {
                         // 서버 내부 오류인 경우 처리

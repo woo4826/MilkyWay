@@ -77,7 +77,7 @@ class secondReviewFragment : Fragment() {
         }
 
         binding.completion.setOnClickListener {
-            val ratingNum = binding.ratingbar.rating.toInt() // 별점 값
+            val ratingNum = binding.ratingbar.rating.toDouble() // 별점 값
             val contents = binding.contents.text.toString() // 리뷰 텍스트
             val roomId = arguments?.getInt("roomId")!! // 수유실 id
             val userEmail = user?.email!!
@@ -88,7 +88,7 @@ class secondReviewFragment : Fragment() {
             val day = calendar.get(Calendar.DAY_OF_MONTH)
             val dateString = year.toString()+"-"+month.toString()+"-"+day.toString()
 
-            val review = ReviewRoomDTO(dateString,contents,ratingNum.toInt(), user?.email!!, roomId!!, roomName!!, "null")
+            val review = ReviewRoomDTO(dateString, contents, ratingNum, user?.email!!, roomId!!, roomName!!, "null")
 
             val json = """
                 {

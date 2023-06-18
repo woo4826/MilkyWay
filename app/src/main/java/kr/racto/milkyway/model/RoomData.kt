@@ -5,5 +5,6 @@ data class RoomData(
     val roomName: String,
     val address: String,
     val ratingAvg: Double,
-    val reviewCount: Int
+    val reviewCount: Int,
+    val roomId: Int
 )

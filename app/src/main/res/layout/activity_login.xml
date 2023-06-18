@@ -39,7 +39,7 @@
         android:layout_weight="3"
         android:orientation="vertical"
         android:gravity="center_horizontal"
-        android:paddingHorizontal="40dp">
+        android:paddingHorizontal="16dp">
 
         <TextView
             android:layout_width="match_parent"
@@ -52,10 +52,11 @@
         <EditText
             android:id="@+id/editEmail"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="50dp"
             android:ems="10"
             android:paddingHorizontal="20dp"
             android:textColor="@color/black"
+            android:textSize="15dp"
             android:layout_marginBottom="15dp"
             android:textColorHint="@color/grey"
             android:hint="E-mail"
@@ -65,10 +66,11 @@
         <EditText
             android:id="@+id/editPassword"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="50dp"
             android:ems="10"
             android:paddingHorizontal="20dp"
             android:textColor="@color/black"
+            android:textSize="15dp"
             android:hint="비밀번호"
             android:textColorHint="@color/grey"
             android:background="@drawable/login_input"
@@ -103,10 +105,11 @@
             android:id="@+id/loginbtn"
             android:gravity="center"
             android:textColor="@color/white"
+            android:textSize="15dp"
             android:background="@drawable/login_button"
             android:layout_marginBottom="10dp"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="50dp"
             android:text="로그인"/>
 
 
