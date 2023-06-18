@@ -21,6 +21,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import coil.load
+import coil.transform.RoundedCornersTransformation
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.gun0912.tedpermission.PermissionListener
@@ -263,23 +264,32 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
                     mainImg.load(urlList[0]) {
                         crossfade(true)
                         placeholder(R.drawable.testimg)
+                        transformations(
+                            RoundedCornersTransformation(10F)
+                        )
+
                     }
                     if (urlList.size > 1) {
                         subImg1.load(urlList[1]) {
                             crossfade(true)
                             placeholder(R.drawable.testimg)
+                            transformations(RoundedCornersTransformation(10F))
+
                         }
                     }
                     if (urlList.size > 2) {
                         subImg2.load(urlList[2]) {
                             crossfade(true)
                             placeholder(R.drawable.testimg)
+                            transformations(RoundedCornersTransformation(10F))
+
                         }
                     }
                     if (urlList.size > 3) {
                         subImg3.load(urlList[3]) {
                             crossfade(true)
                             placeholder(R.drawable.testimg)
+                            transformations(RoundedCornersTransformation(10F))
                         }
                     }
                     detailRow1.visibility = View.VISIBLE

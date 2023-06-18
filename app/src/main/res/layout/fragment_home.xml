@@ -64,6 +64,8 @@
         android:layout_marginBottom="16dp"
         android:contentDescription="추적"
         android:elevation="20dp"
+        android:minWidth="0dp"
+        android:minHeight="0dp"
         android:src="@drawable/baseline_my_location_24"
         android:textAlignment="center"
         android:tint="@color/purple_500"
@@ -81,7 +83,6 @@
         android:layout_marginBottom="8dp"
         android:gravity="center"
         android:orientation="horizontal"
-
         app:layout_constraintBottom_toTopOf="@id/detailRow2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
@@ -90,25 +91,34 @@
             android:id="@+id/mainImg"
             android:layout_width="50dp"
             android:layout_height="match_parent"
-            android:layout_weight="1" />
+            android:layout_marginRight="5dp"
+            android:layout_weight="1"
+            android:elevation="10dp" />
 
         <ImageView
             android:id="@+id/subImg1"
             android:layout_width="50dp"
             android:layout_height="match_parent"
-            android:layout_weight="1" />
+            android:layout_marginRight="5dp"
+            android:layout_weight="1"
+            android:elevation="10dp"
+
+            />
 
         <ImageView
             android:id="@+id/subImg2"
             android:layout_width="50dp"
             android:layout_height="match_parent"
-            android:layout_weight="1" />
+            android:layout_marginRight="5dp"
+            android:layout_weight="1"
+            android:elevation="10dp" />
 
         <ImageView
             android:id="@+id/subImg3"
             android:layout_width="50dp"
             android:layout_height="match_parent"
-            android:layout_weight="1" />
+            android:layout_weight="1"
+            android:elevation="10dp" />
 
     </LinearLayout>
 
@@ -116,9 +126,10 @@
         android:id="@+id/detailRow2"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="12dp"
+        android:layout_marginHorizontal="16dp"
         android:layout_marginVertical="12dp"
         android:background="@drawable/rect_round_white_radius_8"
+        android:elevation="20dp"
         android:gravity="center"
         android:orientation="vertical"
         android:paddingHorizontal="12dp"
@@ -152,21 +163,21 @@
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btnMove"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="52dp"
-        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
         android:layout_marginTop="23.74dp"
-        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
         android:layout_marginBottom="56dp"
         android:backgroundTint="#6C5CE7"
+        android:minWidth="0dp"
+        android:minHeight="0dp"
         android:text="상세 페이지로 이동"
         android:textColor="@color/white"
         android:textSize="14dp"
         android:textStyle="bold"
         android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintBottom_toBottomOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

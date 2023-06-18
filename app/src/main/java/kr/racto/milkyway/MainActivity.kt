@@ -44,13 +44,13 @@ class MainActivity : AppCompatActivity() {
         val navController = findNavController(R.id.nav_host_fragment_activity_main)
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
-        //비회원인 경우, 아예 설정 파트로들어갈 수 없게 구현
-//        navController.addOnDestinationChangedListener { _, destination, _ ->
-////            if(destination.id==R.id.navigation_settings && user==null){
-////                navController.navigateUp()
-////                ProfileDialog(this).show()
-////            }
-//        }
+//        비회원인 경우, 아예 설정 파트로들어갈 수 없게 구현
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            if (destination.id == R.id.navigation_settings && user == null) {
+                navController.navigateUp()
+                ProfileDialog(this).show()
+            }
+        }
         val appBarConfiguration = AppBarConfiguration(
             setOf(
                 R.id.navigation_home,
