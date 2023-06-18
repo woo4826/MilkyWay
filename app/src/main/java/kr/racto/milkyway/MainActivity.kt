@@ -14,8 +14,8 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import kr.racto.milkyway.databinding.ActivityMainBinding
-import kr.racto.milkyway.ui.detail.DetailFragment
 import kr.racto.milkyway.ui.MyViewModel
+import kr.racto.milkyway.ui.detail.DetailFragment
 
 
 class MainActivity : AppCompatActivity() {
@@ -23,7 +23,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     val modalBottomSheet = DetailFragment()
     val myViewModel: MyViewModel by viewModels()
-    val user: FirebaseUser? = FirebaseAuth.getInstance().getCurrentUser()
+    val user: FirebaseUser? = FirebaseAuth.getInstance().currentUser
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,12 +45,12 @@ class MainActivity : AppCompatActivity() {
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         //비회원인 경우, 아예 설정 파트로들어갈 수 없게 구현
-        navController.addOnDestinationChangedListener{_,destination,_->
-            if(destination.id==R.id.navigation_settings && user==null){
-                navController.navigateUp()
-                ProfileDialog(this).show()
-            }
-        }
+//        navController.addOnDestinationChangedListener { _, destination, _ ->
+////            if(destination.id==R.id.navigation_settings && user==null){
+////                navController.navigateUp()
+////                ProfileDialog(this).show()
+////            }
+//        }
         val appBarConfiguration = AppBarConfiguration(
             setOf(
                 R.id.navigation_home,
@@ -63,7 +63,7 @@ class MainActivity : AppCompatActivity() {
         settinginit()
     }
 
-    fun showModal(){
+    fun showModal() {
         modalBottomSheet.show(supportFragmentManager, modalBottomSheet.tag)
     }
 
@@ -87,9 +87,9 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun settinginit() {
-        val navController=findNavController(R.id.nav_host_fragment_activity_main)
-        val check=intent.getIntExtra("settings",-1)
-        if(check==0){
+        val navController = findNavController(R.id.nav_host_fragment_activity_main)
+        val check = intent.getIntExtra("settings", -1)
+        if (check == 0) {
             navController.navigate(R.id.navigation_settings)
         }
     }

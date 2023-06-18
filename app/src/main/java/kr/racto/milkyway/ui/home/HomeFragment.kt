@@ -19,6 +19,7 @@ import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import coil.load
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
@@ -96,6 +97,11 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireContext())
         locationSource = FusedLocationSource(this, LOCATION_PERMISSION_REQUEST_CODE)
         setBottomInfo(View.INVISIBLE)
+        binding.searchView.setOnClickListener {
+            val navController = findNavController()
+            navController.popBackStack()
+            navController.navigate(R.id.navigation_search)
+        }
         binding.btnMove.run {
             setAllowClickWhenDisabled(false)
             isEnabled = false
