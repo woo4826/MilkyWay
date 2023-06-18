@@ -34,6 +34,7 @@ class ReviewManagement : Fragment() {
     lateinit var adapter:SettingAdapter
 
     val reviewList= ArrayList<SettingsReview>()
+    val reviewIdList = ArrayList<Int>()
     val user: FirebaseUser? = FirebaseAuth.getInstance().getCurrentUser()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,savedInstanceState: Bundle?): View? {
@@ -52,8 +53,11 @@ class ReviewManagement : Fragment() {
                     Log.i("review", response.body().toString())
 
                     if (userReviewList != null) {
+                        reviewList.clear()
+                        reviewIdList.clear()
                         for(i in 0 until userReviewList.size){
                             reviewList.add(SettingsReview(userReviewList[i].roomName,userReviewList[i].rating,userReviewList[i].title,userReviewList[i].description))
+                            reviewIdList.add(userReviewList[i].reviewId)
                         }
                         adapter.notifyDataSetChanged()
                     }
@@ -155,7 +159,32 @@ class ReviewManagement : Fragment() {
         }
 
         override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+
             val position = viewHolder.adapterPosition
+
+            val call = App.apiService.deleteReview(reviewIdList[viewHolder.absoluteAdapterPosition])
+            call.enqueue(object : Callback<Boolean>{
+                override fun onResponse(call: Call<Boolean>, response: Response<Boolean>) {
+                    if (response.isSuccessful) {
+                        // 삭제 성공
+                    } else {
+                        if (response.code() == 500) {
+                            // 서버 내부 오류인 경우 처리
+                            Toast.makeText(requireActivity(), "서버 내부 오류가 발생했습니다.", Toast.LENGTH_SHORT).show()
+                        } else {
+                            // 다른 상태 코드에 대한 처리
+                            // 예: response.code() == 404 - 페이지를 찾을 수 없음
+                            //     response.code() == 401 - 인증 실패
+                            //     등등
+                            Toast.makeText(requireActivity(), "요청에 실패했습니다."+response.code().toString(), Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                }
+                override fun onFailure(call: Call<Boolean>, t: Throwable) {
+
+                }
+            })
+            reviewIdList.removeAt(position)
             adapter.removeItem(position)
         }
     }

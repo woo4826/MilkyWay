@@ -25,6 +25,7 @@ import kr.racto.milkyway.MainActivity
 import kr.racto.milkyway.databinding.FragmentSecondReviewBinding
 import kr.racto.milkyway.login.App.Companion.apiService
 import kr.racto.milkyway.model.ReviewRoomDTO
+import kr.racto.milkyway.ui.detail.RoomDetailActivity
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
@@ -136,7 +137,6 @@ class secondReviewFragment : Fragment() {
 
                 }
             })
-
             requireActivity().finish()
         }
     }

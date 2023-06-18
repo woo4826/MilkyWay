@@ -30,6 +30,12 @@ class RoomDetailActivity : AppCompatActivity() {
         setContentView(binding.root)
         init()
     }
+
+    override fun onRestart() {
+        super.onRestart()
+        init()
+    }
+
     fun init(){
         val i = intent
         val bundle = i.extras
@@ -55,17 +61,19 @@ class RoomDetailActivity : AppCompatActivity() {
                 if (response.isSuccessful) {
                     val roomData = response.body()
 
-                    val reviewList = roomData?.reviewList!!
+                    val reviewList = roomData?.reviewList
                     val roomName = roomData?.roomName!!
                     val address = roomData?.address!!
                     val ratingAvg = roomData?.ratingAvg!!
                     val reviewCount = roomData?.reviewCount!!
 
-                    for(i in 0 until reviewList.size){
-                        reviewlist.add(DetailReview(reviewList[i].userEmail,reviewList[i].rating, reviewList[i].title,reviewList[i].description))
+                    if(reviewList != null){
+                        reviewlist.clear()
+                        for(i in 0 until reviewList.size){
+                            reviewlist.add(DetailReview(reviewList[i].email!!,reviewList[i].rating!!, reviewList[i].title!!,reviewList[i].description!!))
+                        }
+                        adapter.notifyDataSetChanged()
                     }
-                    adapter.notifyDataSetChanged()
-
 
                 } else {
                     if (response.code() == 500) {
@@ -85,9 +93,6 @@ class RoomDetailActivity : AppCompatActivity() {
                 // 네트워크 요청이 실패한 경우
             }
         })
-
-        reviewlist.add(DetailReview("qwer@naver.com",3.0, "2023-05-13","aaaaaaa"))
-        reviewlist.add(DetailReview("1234@naver.com",3.0, "2023-05-13","sssssss"))
 
         adapter = DetailAdapter(reviewlist)
         binding.recyclerview.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)

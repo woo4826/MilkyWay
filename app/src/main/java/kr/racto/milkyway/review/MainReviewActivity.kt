@@ -8,6 +8,7 @@ import android.widget.Toast
 import kr.racto.milkyway.MainActivity
 import kr.racto.milkyway.R
 import kr.racto.milkyway.databinding.ActivityMainReviewBinding
+import kr.racto.milkyway.ui.detail.RoomDetailActivity
 
 
 class MainReviewActivity : AppCompatActivity() {

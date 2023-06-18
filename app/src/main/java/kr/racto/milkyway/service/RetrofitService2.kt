@@ -14,4 +14,6 @@ interface ApiService {
     fun getUserReviewData(@Query("email") email: String): Call<List<Review>>
     @POST("/review")
     fun insertReview(@Body body: RequestBody): Call<Boolean>
+    @DELETE("/review/{reviewId}")
+    fun deleteReview(@Path("reviewId") reviewId: Int): Call<Boolean>
 }
