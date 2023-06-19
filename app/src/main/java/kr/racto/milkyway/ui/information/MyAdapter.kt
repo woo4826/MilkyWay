@@ -49,6 +49,7 @@ class MyAdapter(var items:ArrayList<Info>):RecyclerView.Adapter<MyAdapter.ViewHo
             holder.binding.title.setTextColor(blackColor)
         }
     }
+
     override fun getItemCount(): Int {
         return items.size
     }

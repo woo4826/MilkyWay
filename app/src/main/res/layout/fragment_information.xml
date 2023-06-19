@@ -5,14 +5,18 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:layout_marginHorizontal="16dp"
+    android:layout_marginTop="16dp"
     tools:context=".ui.information.InformationFragment">
 
     <TextView
         android:id="@+id/title"
-        android:text="모유수유 궁금증"
+        android:text="모유수유 FAQ"
+        android:gravity="center"
         android:textSize="30sp"
-        android:textStyle="bold"
-        android:paddingVertical="40dp"
+        android:textColor="@color/white"
+        android:background="@drawable/infomation_title"
+        android:paddingVertical="30dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 

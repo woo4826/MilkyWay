@@ -2,7 +2,6 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingHorizontal="20dp"
     android:orientation="vertical">
 
     <LinearLayout
@@ -13,20 +12,21 @@
         <TextView
             android:id="@+id/titleQ"
             android:text="Q"
-            android:textSize="40dp"
+            android:textSize="30dp"
             android:textColor="@color/purple"
             android:textStyle="bold"
             android:fontFamily="sans-serif-light"
-            android:padding="15dp"
+            android:paddingHorizontal="10dp"
+            android:paddingVertical="15dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
         <TextView
             android:id="@+id/title"
             android:text="모유수유 질문"
-            android:textSize="18dp"
+            android:textSize="15dp"
             android:textStyle="bold"
             android:textColor="@color/black"
-            android:padding="10dp"
+            android:maxLines="1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
     </LinearLayout>
@@ -34,10 +34,12 @@
 
     <TextView
         android:id="@+id/content"
-        android:layout_marginLeft="60dp"
         android:text="정보 제공"
-        android:paddingLeft="10dp"
-        android:paddingVertical="25dp"
+        android:textColor="@color/black"
+        android:lineHeight="25dp"
+        android:paddingHorizontal="20dp"
+        android:paddingVertical="20dp"
+        android:justificationMode="inter_word"
         android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
