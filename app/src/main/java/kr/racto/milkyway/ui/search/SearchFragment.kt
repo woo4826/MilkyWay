@@ -38,9 +38,9 @@ class SearchFragment : Fragment() {
     val api = APIS.create()
     var roomList: MutableList<NursingRoomDTO?> = mutableListOf()
     private lateinit var fusedLocationClient: FusedLocationProviderClient
-    var slat: Double? =null
-    var slng : Double? =null
-    var searchKeyword : String? = null
+    var slat: Double? = null
+    var slng: Double? = null
+    var searchKeyword: String? = null
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -51,26 +51,30 @@ class SearchFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        fusedLocationClient =
+            LocationServices.getFusedLocationProviderClient(requireContext())
         init()
     }
 
     override fun onDestroyView() {
 
         super.onDestroyView()
-        binding=null
+        binding = null
     }
 
     fun init() {
-        binding!!.rvMainBottomSheet.layoutManager=
+        binding!!.rvMainBottomSheet.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         binding!!.rvMainBottomSheet.addItemDecoration(
-            DividerItemDecoration(requireContext(),
-                LinearLayoutManager.VERTICAL)
+            DividerItemDecoration(
+                requireContext(),
+                LinearLayoutManager.VERTICAL
+            )
         )
         searchAdapter = SearchAdapter(roomList)
 
         binding!!.searchButton.setOnClickListener {
-            searchKeyword=binding!!.searchEditText.text.toString()
+            searchKeyword = binding!!.searchEditText.text.toString()
             searchLoadInit()
         }
 
@@ -81,7 +85,7 @@ class SearchFragment : Fragment() {
 
                 val layoutManager = binding!!.rvMainBottomSheet.layoutManager
 
-                if (searchKeyword !=null) {
+                if (searchKeyword != null) {
                     val lastVisibleItem = (layoutManager as LinearLayoutManager)
                         .findLastCompletelyVisibleItemPosition()
 
@@ -95,8 +99,8 @@ class SearchFragment : Fragment() {
             }
         })
 
-        searchAdapter.itemClickListener = object:SearchAdapter.OnItemClickListener{
-            override fun OnItemClick(position: Int){
+        searchAdapter.itemClickListener = object : SearchAdapter.OnItemClickListener {
+            override fun OnItemClick(position: Int) {
                 /**
                  * 상세 페이지로 넘어가게 하기.
                  */
@@ -110,7 +114,6 @@ class SearchFragment : Fragment() {
                  */
                 // 현재위치 데이터
 
-                fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireContext())
 
                 if (ActivityCompat.checkSelfPermission(
                         requireContext(),
@@ -129,24 +132,33 @@ class SearchFragment : Fragment() {
                     // for ActivityCompat#requestPermissions for more details.
                     return
                 }
+
                 fusedLocationClient.lastLocation.addOnSuccessListener { location: Location? ->
-                    if(location!=null){
-                        slat=location.latitude
-                        slng=location.longitude
+                    if (location != null) {
+
+                        val searchData = searchAdapter.items[position]
+
+                        openNaverMaps(
+                            requireContext(),
+                            "walk",
+                            location.latitude,
+                            location.longitude,
+                            "내위치",
+                            searchData!!.gpsLat!!,
+                            searchData.gpsLong!!,
+                            searchData.roomName!!
+                        )
                     } else {
                         // 현재 위치를 가져올 수 없는 경우
                     }
-                }.addOnFailureListener { exception: Exception ->
-                        // 위치 정보를 가져오는 데 실패한 경우
-                    }
+                }
                 // 목적지 데이터
-                val searchData = searchAdapter.items[position]
 
-                openNaverMaps(requireContext(),"walk",slat!!,slng!!,"내위치",searchData!!.gpsLat!!,searchData!!.gpsLong!!,searchData!!.roomName!!)
             }
         }
-        binding!!.rvMainBottomSheet.adapter=searchAdapter
+        binding!!.rvMainBottomSheet.adapter = searchAdapter
     }
+
     fun searchLoadInit() {
         val req = SearchReqDTO(
             searchKeyword = searchKeyword!!,
@@ -158,7 +170,10 @@ class SearchFragment : Fragment() {
         val handler = android.os.Handler()
         handler.postDelayed({
             api.roomListByLatLon(req).enqueue(object : Callback<SearchResDTO> {
-                override fun onResponse(call: Call<SearchResDTO>, response: Response<SearchResDTO>) {
+                override fun onResponse(
+                    call: Call<SearchResDTO>,
+                    response: Response<SearchResDTO>
+                ) {
                     Log.d("log", response.toString())
                     Log.d("log", response.body().toString())
                     if (response.body() != null && response.body()!!.nursingRoomDTO.isNotEmpty()) {
@@ -175,7 +190,7 @@ class SearchFragment : Fragment() {
                     Log.d("log", "fail")
                 }
             })
-        },1000)
+        }, 1000)
     }
 
     fun searchLocation() {
@@ -191,7 +206,10 @@ class SearchFragment : Fragment() {
         val handler = android.os.Handler()
         handler.postDelayed({
             api.roomListByLatLon(req).enqueue(object : Callback<SearchResDTO> {
-                override fun onResponse(call: Call<SearchResDTO>, response: Response<SearchResDTO>) {
+                override fun onResponse(
+                    call: Call<SearchResDTO>,
+                    response: Response<SearchResDTO>
+                ) {
                     Log.d("log", response.toString())
                     Log.d("log", response.body().toString())
                     if (response.body() != null && response.body()!!.nursingRoomDTO.isNotEmpty()) {
@@ -209,13 +227,23 @@ class SearchFragment : Fragment() {
                     Log.d("log", "fail")
                 }
             })
-        },1000)
+        }, 1000)
 
     }
 
-    fun openNaverMaps(context: Context, method : String ="walk", slat : Double, slng : Double, sname : String, dlat : String, dlng : String, dname : String) {
-        val packageName="kr.racto.milkyway"
-        val url = "nmap://route/$method?slat=$slat&slng=$slng&sname=$sname&dlat=$dlat&dlng=$dlng&dname=$dname&appname=$packageName"
+    fun openNaverMaps(
+        context: Context,
+        method: String = "walk",
+        slat: Double,
+        slng: Double,
+        sname: String,
+        dlat: String,
+        dlng: String,
+        dname: String
+    ) {
+        val packageName = "kr.racto.milkyway"
+        val url =
+            "nmap://route/$method?slat=$slat&slng=$slng&sname=$sname&dlat=$dlat&dlng=$dlng&dname=$dname&appname=$packageName"
 
         val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
         intent.addCategory(Intent.CATEGORY_BROWSABLE)
@@ -234,7 +262,6 @@ class SearchFragment : Fragment() {
             context.startActivity(intent)
         }
     }
-
 
 
     private var page = 1       // 현재 페이지

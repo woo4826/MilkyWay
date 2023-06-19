@@ -485,7 +485,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
             //request permission
             return
         }
-        fusedLocationClient
+
         var currentLocation: Location?
         fusedLocationClient.lastLocation
             .addOnSuccessListener { location: Location? ->
