@@ -12,10 +12,12 @@ import android.content.pm.ResolveInfo
 import android.location.Location
 import android.net.Uri
 import android.os.Bundle
+import android.text.TextUtils
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.webkit.WebView
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -26,9 +28,13 @@ import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import kr.racto.milkyway.databinding.FragmentSearchBinding
 import kr.racto.milkyway.ui.MyViewModel
+import kr.racto.milkyway.ui.detail.RoomDetailActivity
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.net.URISyntaxException
+import java.net.URLEncoder
+
 
 class SearchFragment : Fragment() {
 
@@ -40,7 +46,11 @@ class SearchFragment : Fragment() {
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     var slat: Double? = null
     var slng: Double? = null
+    private var isLoading = false
+    private var page = 1       // 현재 페이지
+
     var searchKeyword: String? = null
+//    var searchKeyword: String? = "광진"
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -75,7 +85,14 @@ class SearchFragment : Fragment() {
 
         binding!!.searchButton.setOnClickListener {
             searchKeyword = binding!!.searchEditText.text.toString()
+            page=1
+            searchAdapter.items.clear()
+            isLoading = false
             searchLoadInit()
+
+            if((binding!!.rvMainBottomSheet.layoutManager as LinearLayoutManager?)!!.findLastCompletelyVisibleItemPosition() == searchAdapter.items.size - 1){
+                isLoading=true
+            }
         }
 
         binding!!.rvMainBottomSheet.addOnScrollListener(object : RecyclerView.OnScrollListener() {
@@ -85,14 +102,10 @@ class SearchFragment : Fragment() {
 
                 val layoutManager = binding!!.rvMainBottomSheet.layoutManager
 
-                if (searchKeyword != null) {
-                    val lastVisibleItem = (layoutManager as LinearLayoutManager)
-                        .findLastCompletelyVisibleItemPosition()
-
-                    // 마지막으로 보여진 아이템 position 이
-                    // 전체 아이템 개수보다 5개 모자란 경우, 데이터를 loadMore 한다
-                    if (layoutManager.itemCount <= lastVisibleItem + 5) {
+                if (!isLoading) {
+                    if((recyclerView.layoutManager as LinearLayoutManager?)!!.findLastCompletelyVisibleItemPosition() == searchAdapter.items.size - 1){
                         page++
+                        isLoading=true
                         searchLocation()
                     }
                 }
@@ -104,17 +117,32 @@ class SearchFragment : Fragment() {
                 /**
                  * 상세 페이지로 넘어가게 하기.
                  */
-//                val intent = searchAdapter.items[position]
-//                startActivity(intent)
+                val roomDictionary = HashMap<String, String>()
+                val nursingRoomItem = searchAdapter.items[position]
+                val id = nursingRoomItem!!.roomNo
+                val name =nursingRoomItem!!.roomName
+                val address = nursingRoomItem!!.address
+                val callnumber = nursingRoomItem!!.managerTelNo
+                if(id != null){
+                    roomDictionary["roomId"] = id
+                }
+                if(name != null){
+                    roomDictionary["roomName"] = name
+                }
+                if(address != null){
+                    roomDictionary["address"] = address
+                }
+                if(callnumber != null){
+                    roomDictionary["managerTelNo"] = callnumber
+                }
+                val i = Intent(activity, RoomDetailActivity::class.java)
+                val bundle = Bundle()
+                bundle.putSerializable("dictionary", roomDictionary)
+                i.putExtras(bundle)
+                startActivity(i)
             }
 
             override fun OnButtonClick(position: Int) {
-                /**
-                 * 길찾기로 인텐트.
-                 */
-                // 현재위치 데이터
-
-
                 if (ActivityCompat.checkSelfPermission(
                         requireContext(),
                         Manifest.permission.ACCESS_FINE_LOCATION
@@ -123,8 +151,6 @@ class SearchFragment : Fragment() {
                         Manifest.permission.ACCESS_COARSE_LOCATION
                     ) != PackageManager.PERMISSION_GRANTED
                 ) {
-                    // TODO: Consider calling
-                    //    ActivityCompat#requestPermissions
                     // here to request the missing permissions, and then overriding
                     //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
                     //                                          int[] grantResults)
@@ -194,7 +220,18 @@ class SearchFragment : Fragment() {
     }
 
     fun searchLocation() {
-        searchAdapter.setLoadingView(true)
+        val handler = android.os.Handler()
+        if(isLoading){
+            handler.postDelayed({
+                searchAdapter.items.add(null)
+                val itemsSize = searchAdapter.items.size
+                searchAdapter.notifyItemInserted(itemsSize-1)
+            },16)
+        }
+
+//        searchAdapter.items.add(null)
+//        val itemsSize = searchAdapter.items.size
+//        searchAdapter.notifyItemInserted(itemsSize-1)
 
         val req = SearchReqDTO(
             searchKeyword = searchKeyword!!,
@@ -203,7 +240,6 @@ class SearchFragment : Fragment() {
             mylng = "",
             pageNo = page.toString()
         )
-        val handler = android.os.Handler()
         handler.postDelayed({
             api.roomListByLatLon(req).enqueue(object : Callback<SearchResDTO> {
                 override fun onResponse(
@@ -213,12 +249,20 @@ class SearchFragment : Fragment() {
                     Log.d("log", response.toString())
                     Log.d("log", response.body().toString())
                     if (response.body() != null && response.body()!!.nursingRoomDTO.isNotEmpty()) {
-                        searchAdapter.setLoadingView(false)
-
+                        var itemSize= searchAdapter.items.size
+                        searchAdapter.items.removeAt(itemSize-1)
+                        itemSize=searchAdapter.items.size
+                        searchAdapter.notifyItemRemoved(itemSize)
                         searchAdapter.items.addAll(response.body()!!.nursingRoomDTO)
                         searchAdapter.notifyDataSetChanged()
 
+                    }else{
+                        var itemSize= searchAdapter.items.size
+                        searchAdapter.items.removeAt(itemSize-1)
+                        itemSize=searchAdapter.items.size
+                        searchAdapter.notifyItemRemoved(itemSize)
                     }
+                    isLoading=false
                 }
 
                 override fun onFailure(call: Call<SearchResDTO>, t: Throwable) {
@@ -227,7 +271,7 @@ class SearchFragment : Fragment() {
                     Log.d("log", "fail")
                 }
             })
-        }, 1000)
+        }, 2000)
 
     }
 
@@ -242,11 +286,25 @@ class SearchFragment : Fragment() {
         dname: String
     ) {
         val packageName = "kr.racto.milkyway"
-        val url =
-            "nmap://route/$method?slat=$slat&slng=$slng&sname=$sname&dlat=$dlat&dlng=$dlng&dname=$dname&appname=$packageName"
+        val str_encode = URLEncoder.encode(dname, "UTF-8")
 
-        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
-        intent.addCategory(Intent.CATEGORY_BROWSABLE)
+//        var url ="nmap://route/$method?dlat=$dlat&dlng=$dlng&dname=$dname"
+        var url ="nmap://route/$method?dlat=$dlat&dlng=$dlng&dname=$str_encode"
+//            "nmap://route/$method?slat=$slat&slng=$slng&sname=$sname&dlat=$dlat&dlng=$dlng&dname=$dname&appname=$packageName"
+
+        val intent: Intent
+        intent = try {
+            Intent.parseUri(url, Intent.URI_INTENT_SCHEME)
+        } catch (e: URISyntaxException) {
+            Log.d("log", "fail1")
+            return
+        }
+//        if (TextUtils.isEmpty(intent.getPackage())) {
+//            Log.d("log", "fail2")
+//            return
+//        }
+        Log.d("log", Uri.parse(url).toString())
+//        intent.addCategory(Intent.CATEGORY_BROWSABLE)
 
 
         val list: List<ResolveInfo> =
@@ -263,8 +321,34 @@ class SearchFragment : Fragment() {
         }
     }
 
+    fun shouldOverrideUrlLoading(view: WebView?, url: String): Boolean {
+        if (url.startsWith("intent:")) {
+            val intent: Intent
+            intent = try {
+                Intent.parseUri(url, Intent.URI_INTENT_SCHEME)
+            } catch (e: URISyntaxException) {
+                return false
+            }
+            if (TextUtils.isEmpty(intent.getPackage())) {
+                return false
+            }
+            val list: List<ResolveInfo> =
+                context?.packageManager!!.queryIntentActivities(intent, PackageManager.MATCH_DEFAULT_ONLY)
+            if (list == null || list.isEmpty()) {
+                startActivity(
+                    Intent(
+                        Intent.ACTION_VIEW,
+                        Uri.parse("market://details?id=" + intent.getPackage())
+                    )
+                )
+            } else {
+                startActivity(intent)
+            }
+            return true
+        }
+        return false
+    }
 
-    private var page = 1       // 현재 페이지
 
 
 }

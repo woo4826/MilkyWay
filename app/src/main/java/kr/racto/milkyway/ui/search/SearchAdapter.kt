@@ -53,15 +53,11 @@ class SearchAdapter (val items: MutableList<NursingRoomDTO?>)
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        if(holder is ItemHolder){
-            when (holder.itemViewType) {
-                TYPE_POST -> {
-                    holder.binding.name.text=items[position]!!.roomName
-                }
+        when (holder.itemViewType) {
+            TYPE_POST -> {
+                val itemHolder = holder as ItemHolder
+                itemHolder.binding.name.text=items[position]!!.roomName
             }
-
-        }else if (holder is LoadingViewHolder) {
-
         }
     }
 
@@ -69,9 +65,6 @@ class SearchAdapter (val items: MutableList<NursingRoomDTO?>)
         if (b) {
             this.items.add(null)
             notifyItemInserted(items.size-1)
-        } else {
-            this.items.removeAt(items.size-1)
-            notifyItemRemoved(items.size)
         }
     }
 
