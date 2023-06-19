@@ -50,7 +50,6 @@ class ReviewManagement : Fragment() {
             override fun onResponse(call: Call<List<Review>>, response: Response<List<Review>>) {
                 if (response.isSuccessful) {
                     val userReviewList = response.body()
-                    Log.i("review", response.body().toString())
 
                     if (userReviewList?.size != 0) {
                         reviewList.clear()

@@ -72,6 +72,8 @@ class LoginActivity : AppCompatActivity() {
                         finish()
                     } catch (e: Exception) {
                         Toast.makeText(this@LoginActivity, "로그인 실패", Toast.LENGTH_LONG).show()
+                        binding.editEmail.text.clear()
+                        binding.editPassword.text.clear()
                     } finally {
                         dismissLoadingDialog()
                     }

@@ -76,7 +76,6 @@ class RoomDetailActivity : AppCompatActivity() {
 
                         reviewlist.clear()
                         for(i in 0 until reviewList.size){
-                            Log.i("rating", reviewList[i].rating!!.toString())
                             reviewlist.add(DetailReview(reviewList[i].email!!,reviewList[i].rating!!, reviewList[i].title!!,reviewList[i].description!!))
                         }
                         adapter.notifyDataSetChanged()

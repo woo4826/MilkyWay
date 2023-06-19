@@ -79,7 +79,6 @@ class secondReviewFragment : Fragment() {
 
         binding.completion.setOnClickListener {
             val ratingNum = binding.ratingbar.rating.toDouble() // 별점 값
-            Log.i("inputRating", ratingNum.toString())
             val contents = binding.contents.text.toString() // 리뷰 텍스트
             val roomId = arguments?.getInt("roomId")!! // 수유실 id
             val userEmail = user?.email!!
@@ -101,7 +100,7 @@ class secondReviewFragment : Fragment() {
                     "address": "no data"
                 }
             """.trimIndent()
-            Log.i("inputReview", json)
+//            Log.i("inputReview", json)
 //            try {
 //                JSONObject(json)
 //                Toast.makeText(activity, "유효한 JSON 데이터입니다.", Toast.LENGTH_SHORT).show()
