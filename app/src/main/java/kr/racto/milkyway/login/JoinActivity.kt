@@ -81,7 +81,7 @@ class JoinActivity : AppCompatActivity() {
                             val usersRef = database.getReference("users")
                             val currentUser = FirebaseAuth.getInstance().currentUser
 
-                            usersRef.child(currentUser!!.uid).child("autoLogin").setValue(false)
+                            usersRef.child(currentUser!!.uid).child("autoLogin").setValue(true)
                             finish()
                         } else {
                             // If sign in fails, display a message to the user.

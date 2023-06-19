@@ -38,10 +38,11 @@
 
     <androidx.cardview.widget.CardView
         android:id="@+id/review_contents"
-        android:layout_width="320dp"
+        android:layout_width="match_parent"
         android:layout_height="240dp"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="265dp"
+        android:layout_marginHorizontal="16dp"
         app:cardBackgroundColor="#FBFBFB"
         app:cardCornerRadius="8dp"
         tools:ignore="DuplicateClickableBoundsCheck">
@@ -53,7 +54,8 @@
             android:layout_gravity="center_horizontal"
             android:background="@null"
             android:foreground="?android:attr/selectableItemBackground"
-            android:gravity="center"
+            android:gravity="center_horizontal"
+            android:layout_margin="20dp"
             android:hint="수유실 시설/환경/위치에 관한 리뷰"
             android:textSize="15sp" />
     </androidx.cardview.widget.CardView>
@@ -61,12 +63,11 @@
 
     <Button
         android:id="@+id/completion"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="48dp"
         android:minHeight="0dp"
         android:minWidth="0dp"
         android:layout_marginHorizontal="16dp"
-        android:paddingHorizontal="145dp"
         android:text="완료"
         android:textStyle="bold"
         android:layout_gravity="center_horizontal"
