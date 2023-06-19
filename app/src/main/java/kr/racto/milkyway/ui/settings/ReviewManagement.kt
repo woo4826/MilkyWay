@@ -52,14 +52,18 @@ class ReviewManagement : Fragment() {
                     val userReviewList = response.body()
                     Log.i("review", response.body().toString())
 
-                    if (userReviewList != null) {
+                    if (userReviewList?.size != 0) {
                         reviewList.clear()
                         reviewIdList.clear()
-                        for(i in 0 until userReviewList.size){
-                            reviewList.add(SettingsReview(userReviewList[i].roomName,userReviewList[i].rating,userReviewList[i].title,userReviewList[i].description))
-                            reviewIdList.add(userReviewList[i].reviewId)
+                        for(i in 0 until userReviewList!!.size){
+                            reviewList.add(SettingsReview(userReviewList!![i].roomName,userReviewList[i].rating,userReviewList[i].title,userReviewList[i].description))
+                            reviewIdList.add(userReviewList!![i].reviewId)
                         }
                         adapter.notifyDataSetChanged()
+                        binding.noReview.visibility = View.GONE
+                    } else{
+                        Toast.makeText(activity, "리뷰 없음", Toast.LENGTH_SHORT).show()
+                        binding.noReview.visibility = View.VISIBLE
                     }
 
 
@@ -167,6 +171,9 @@ class ReviewManagement : Fragment() {
                 override fun onResponse(call: Call<Boolean>, response: Response<Boolean>) {
                     if (response.isSuccessful) {
                         // 삭제 성공
+                        if (reviewList.isEmpty())
+                            binding.noReview.visibility = View.VISIBLE
+
                     } else {
                         if (response.code() == 500) {
                             // 서버 내부 오류인 경우 처리

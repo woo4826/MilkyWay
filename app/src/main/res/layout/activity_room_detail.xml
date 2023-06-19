@@ -72,6 +72,14 @@
                 android:minWidth="0dp"/>
         </LinearLayout>
 
+        <TextView
+            android:id="@+id/noReview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:textSize="18dp"
+            android:text="등록된 리뷰가 없어요😂" />
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerview"
             android:layout_width="match_parent"

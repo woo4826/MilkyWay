@@ -79,6 +79,7 @@ class secondReviewFragment : Fragment() {
 
         binding.completion.setOnClickListener {
             val ratingNum = binding.ratingbar.rating.toDouble() // 별점 값
+            Log.i("inputRating", ratingNum.toString())
             val contents = binding.contents.text.toString() // 리뷰 텍스트
             val roomId = arguments?.getInt("roomId")!! // 수유실 id
             val userEmail = user?.email!!
@@ -88,8 +89,6 @@ class secondReviewFragment : Fragment() {
             val month = calendar.get(Calendar.MONTH) + 1
             val day = calendar.get(Calendar.DAY_OF_MONTH)
             val dateString = year.toString()+"-"+month.toString()+"-"+day.toString()
-
-            val review = ReviewRoomDTO(dateString, contents, ratingNum, user?.email!!, roomId!!, roomName!!, "null")
 
             val json = """
                 {
@@ -102,7 +101,7 @@ class secondReviewFragment : Fragment() {
                     "address": "no data"
                 }
             """.trimIndent()
-            Log.i("review", json)
+            Log.i("inputReview", json)
 //            try {
 //                JSONObject(json)
 //                Toast.makeText(activity, "유효한 JSON 데이터입니다.", Toast.LENGTH_SHORT).show()
@@ -118,26 +117,27 @@ class secondReviewFragment : Fragment() {
                 override fun onResponse(call: Call<Boolean>, response: Response<Boolean>) {
                     if (response.isSuccessful) {
                         // 데이터 삽입 성공 처리
-                        Toast.makeText(activity, "삽입 성공.", Toast.LENGTH_SHORT).show()
+                        requireActivity().finish()
                     } else {
                         if (response.code() == 500) {
                             // 서버 내부 오류인 경우 처리
                             Toast.makeText(activity, "서버 내부 오류가 발생했습니다.", Toast.LENGTH_SHORT).show()
+                            requireActivity().finish()
                         } else {
                             // 다른 상태 코드에 대한 처리
                             // 예: response.code() == 404 - 페이지를 찾을 수 없음
                             //     response.code() == 401 - 인증 실패
                             //     등등
                             Toast.makeText(activity, "요청에 실패했습니다."+response.code().toString(), Toast.LENGTH_SHORT).show()
+                            requireActivity().finish()
                         }
                     }
                 }
 
                 override fun onFailure(call: Call<Boolean>, t: Throwable) {
-
+                    requireActivity().finish()
                 }
             })
-            requireActivity().finish()
         }
     }
 

@@ -3,6 +3,7 @@ package kr.racto.milkyway.ui.settings
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import kr.racto.milkyway.databinding.FragmentReviewManagementBinding
 import kr.racto.milkyway.databinding.RowReviewManagementBinding
 
 class SettingAdapter(var items:ArrayList<SettingsReview>): RecyclerView.Adapter<SettingAdapter.ViewHolder>() {

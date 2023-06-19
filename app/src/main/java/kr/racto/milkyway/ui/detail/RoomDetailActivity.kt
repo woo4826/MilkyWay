@@ -3,11 +3,14 @@ package kr.racto.milkyway.ui.detail
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
+import android.view.View
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import kr.racto.milkyway.ProfileDialog
+import kr.racto.milkyway.R
 import kr.racto.milkyway.databinding.ActivityRoomDetailBinding
 import kr.racto.milkyway.login.App.Companion.apiService
 import kr.racto.milkyway.model.RoomData
@@ -59,6 +62,8 @@ class RoomDetailActivity : AppCompatActivity() {
         call.enqueue(object : Callback<RoomData> {
             override fun onResponse(call: Call<RoomData>, response: Response<RoomData>) {
                 if (response.isSuccessful) {
+
+
                     val roomData = response.body()
 
                     val reviewList = roomData?.reviewList
@@ -67,12 +72,18 @@ class RoomDetailActivity : AppCompatActivity() {
                     val ratingAvg = roomData?.ratingAvg!!
                     val reviewCount = roomData?.reviewCount!!
 
-                    if(reviewList != null){
+                    if(reviewList != null && reviewList.size != 0){
+
                         reviewlist.clear()
                         for(i in 0 until reviewList.size){
+                            Log.i("rating", reviewList[i].rating!!.toString())
                             reviewlist.add(DetailReview(reviewList[i].email!!,reviewList[i].rating!!, reviewList[i].title!!,reviewList[i].description!!))
                         }
                         adapter.notifyDataSetChanged()
+                        binding.noReview.visibility = View.GONE
+                    }else{
+                        Toast.makeText(this@RoomDetailActivity, "리뷰 없음", Toast.LENGTH_SHORT).show()
+                        binding.noReview.visibility = View.VISIBLE
                     }
 
                 } else {
@@ -85,7 +96,8 @@ class RoomDetailActivity : AppCompatActivity() {
                         //     response.code() == 401 - 인증 실패
                         //     등등
                         // 400이면 리뷰가 없다고 처리
-                        Toast.makeText(this@RoomDetailActivity, "요청에 실패했습니다."+response.code().toString(), Toast.LENGTH_SHORT).show()
+                        // Toast.makeText(this@RoomDetailActivity, "요청에 실패했습니다."+response.code().toString(), Toast.LENGTH_SHORT).show()
+                        binding.noReview.visibility = View.VISIBLE
                     }
                 }
             }
