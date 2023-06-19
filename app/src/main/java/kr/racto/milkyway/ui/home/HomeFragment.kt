@@ -38,6 +38,8 @@ import kotlinx.coroutines.withContext
 import kr.racto.milkyway.MainActivity
 import kr.racto.milkyway.R
 import kr.racto.milkyway.databinding.FragmentHomeBinding
+import kr.racto.milkyway.login.App
+import kr.racto.milkyway.model.RoomData
 import kr.racto.milkyway.ui.MyViewModel
 import kr.racto.milkyway.ui.detail.RoomDetailActivity
 import org.jsoup.Jsoup
@@ -315,11 +317,6 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
         getRoomMainImgUrl(roomId)
 
         if (room != null) {
-            model.setLiveData(room)
-            (activity as MainActivity).showModal()
-        }
-
-        if (room != null) {
             setBottomInfo(View.VISIBLE, room, marker)
         } else {
             setBottomInfo(View.INVISIBLE)
@@ -329,6 +326,9 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
 
 
     fun setBottomInfo(state: Int, room: NursingRoomDTO? = null, marker: Marker? = null) {
+
+
+
         if (room == null || state == View.INVISIBLE) {
 
             binding.run {
@@ -341,6 +341,22 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
 //                roomInfo.text = ""
             }
         } else {
+            val call = App.apiService.getRoomReviewData(room?.roomNo!!.toInt())
+            call.enqueue(object : Callback<RoomData>{
+                override fun onResponse(call: Call<RoomData>, response: Response<RoomData>) {
+                    if(response.body()?.ratingAvg != null) {
+                        Toast.makeText(activity, response.body()?.reviewCount.toString(), Toast.LENGTH_SHORT).show()
+                        val rating = response.body()?.ratingAvg!!
+                        binding.roomRating.text = "평균 평점 : " + rating.toString()
+                    }
+                    else{
+                        binding.roomRating.text = "평균 평점 : 0.0"
+                    }
+                }
+                override fun onFailure(call: Call<RoomData>, t: Throwable) {
+
+                }
+            })
             if (marker != null)
                 getCurrentLocation(marker)
             binding.run {
@@ -348,9 +364,30 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
                 btnMove.isEnabled = true
                 binding.detailRow2.visibility = View.VISIBLE
                 binding.btnMove.visibility = View.VISIBLE
+                val roomDictionary = HashMap<String, String>()
+                val id = room.roomNo
+                val name = room.roomName
+                val address = room.address
+                val callnumber = room.managerTelNo
+                if(id != null){
+                    roomDictionary["roomId"] = id
+                }
+                if(name != null){
+                    roomDictionary["roomName"] = name
+                }
+                if(address != null){
+                    roomDictionary["address"] = address
+                }
+                if(callnumber != null){
+                    roomDictionary["managerTelNo"] = callnumber
+                }
                 btnMove.setOnClickListener {
                     //move to detail page
                     val i = Intent(activity, RoomDetailActivity::class.java)
+                    val bundle = Bundle()
+                    bundle.putSerializable("dictionary", roomDictionary)
+                    i.putExtras(bundle)
+                    startActivity(i)
                 }
             }
         }
