@@ -35,7 +35,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import kr.racto.milkyway.MainActivity
 import kr.racto.milkyway.R
 import kr.racto.milkyway.databinding.FragmentHomeBinding
 import kr.racto.milkyway.login.App
@@ -68,7 +67,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     var permissionlistener: PermissionListener = object : PermissionListener {
         override fun onPermissionGranted() {
-            Toast.makeText(requireContext(), "Permission Granted", Toast.LENGTH_SHORT).show()
+//            Toast.makeText(requireContext(), "Permission Granted", Toast.LENGTH_SHORT).show()
         }
 
         override fun onPermissionDenied(deniedPermissions: List<String>) {
@@ -328,7 +327,6 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
     fun setBottomInfo(state: Int, room: NursingRoomDTO? = null, marker: Marker? = null) {
 
 
-
         if (room == null || state == View.INVISIBLE) {
 
             binding.run {
@@ -341,17 +339,18 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
 //                roomInfo.text = ""
             }
         } else {
-            val call = App.apiService.getRoomReviewData(room?.roomNo!!.toInt())
-            call.enqueue(object : Callback<RoomData>{
+            val call = App.apiService.getRoomReviewData(room.roomNo!!.toInt())
+            call.enqueue(object : Callback<RoomData> {
                 override fun onResponse(call: Call<RoomData>, response: Response<RoomData>) {
-                    if(response.body()?.ratingAvg != null) {
-                        val rating = round(response.body()?.ratingAvg!!*10)/10
-                        binding.roomRating.text = "평균 평점 : " + rating.toString() + " ("+response.body()?.reviewCount.toString()+")"
-                    }
-                    else{
+                    if (response.body()?.ratingAvg != null) {
+                        val rating = round(response.body()?.ratingAvg!! * 10) / 10
+                        binding.roomRating.text =
+                            "평균 평점 : " + rating.toString() + " (" + response.body()?.reviewCount.toString() + ")"
+                    } else {
                         binding.roomRating.text = "리뷰 없음"
                     }
                 }
+
                 override fun onFailure(call: Call<RoomData>, t: Throwable) {
 
                 }
@@ -368,16 +367,16 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
                 val name = room.roomName
                 val address = room.address
                 val callnumber = room.managerTelNo
-                if(id != null){
+                if (id != null) {
                     roomDictionary["roomId"] = id
                 }
-                if(name != null){
+                if (name != null) {
                     roomDictionary["roomName"] = name
                 }
-                if(address != null){
+                if (address != null) {
                     roomDictionary["address"] = address
                 }
-                if(callnumber != null){
+                if (callnumber != null) {
                     roomDictionary["managerTelNo"] = callnumber
                 }
                 btnMove.setOnClickListener {
