@@ -124,6 +124,8 @@ class RoomDetailActivity : AppCompatActivity() {
                 startActivity(intent)
             }
         }
-
+        binding.iconBack.setOnClickListener {
+            finish()
+        }
     }
 }
