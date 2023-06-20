@@ -64,7 +64,6 @@ class LoginActivity : AppCompatActivity() {
                 coroutineScope.launch {
                     try {
                         auth.signInWithEmailAndPassword(email, password).await()
-                        Toast.makeText(this@LoginActivity, "로그인 성공", Toast.LENGTH_LONG).show()
                         val next = Intent(this@LoginActivity, MainActivity::class.java)
                         finishAffinity()
                         startActivity(next)
