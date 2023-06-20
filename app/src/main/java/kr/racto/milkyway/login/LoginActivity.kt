@@ -63,6 +63,7 @@ class LoginActivity : AppCompatActivity() {
                 showLoadingDialog() // 에러나서 일단 주석처리---------
                 coroutineScope.launch {
                     try {
+                        Toast.makeText(this@LoginActivity, "로그인 성공", Toast.LENGTH_LONG).show()
                         auth.signInWithEmailAndPassword(email, password).await()
                         val next = Intent(this@LoginActivity, MainActivity::class.java)
                         finishAffinity()
