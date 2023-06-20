@@ -21,6 +21,7 @@ import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.webkit.WebView
 import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -85,6 +86,12 @@ class SearchFragment : Fragment() {
     }
 
     fun init() {
+        binding!!.root.setOnClickListener {
+            // 키보드를 내리는 기능을 구현
+            val inputMethodManager =
+                requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            inputMethodManager.hideSoftInputFromWindow(binding!!.root.windowToken, 0)
+        }
         binding!!.rvMainBottomSheet.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         binding!!.rvMainBottomSheet.addItemDecoration(

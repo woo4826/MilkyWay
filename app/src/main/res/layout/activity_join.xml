@@ -5,83 +5,107 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="32dp"
     android:background="@color/white"
     tools:context=".login.JoinActivity">
 
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="80dp"
-        android:text="회원가입"
-        android:textColor="@color/black"
-        android:textSize="25dp"/>
-    <TextView
-        android:text="E-mail"
-        android:textSize="18dp"
-        android:textColor="@color/grey"
-        android:layout_marginBottom="15dp"
+        android:layout_marginBottom="20dp">
+        <ImageButton
+            android:id="@+id/icon_back"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_margin="5dp"
+            android:background="#FFFFFF"
+            android:scaleType="fitCenter"
+            android:src="@drawable/backimg"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="SpeakableTextPresentCheck" />
+    </LinearLayout>
+    <LinearLayout
+        android:orientation="vertical"
+        android:padding="32dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
-    <EditText
-        android:id="@+id/editEmail"
-        android:background="@drawable/login_input"
-        android:textSize="15dp"
-        android:ems="10"
-        android:paddingHorizontal="20dp"
-        android:textColor="@color/black"
-        android:layout_marginBottom="20dp"
-        android:textColorHint="@color/grey"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="E-mail을 입력하세요"/>
-    <TextView
-        android:text="비밀번호"
-        android:textSize="18dp"
-        android:textColor="@color/grey"
-        android:layout_marginBottom="15dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
-    <EditText
-        android:id="@+id/editpw"
-        android:background="@drawable/login_input"
-        android:textSize="15dp"
-        android:ems="10"
-        android:paddingHorizontal="20dp"
-        android:textColor="@color/black"
-        android:layout_marginBottom="20dp"
-        android:textColorHint="@color/grey"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:inputType="textPassword"
-        android:hint="비밀번호를 입력하세요"/>
-    <TextView
-        android:text="비밀번호 확인"
-        android:textSize="18dp"
-        android:textColor="@color/grey"
-        android:layout_marginBottom="15dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
-    <EditText
-        android:id="@+id/editpw2"
-        android:background="@drawable/login_input"
-        android:textSize="15dp"
-        android:ems="10"
-        android:paddingHorizontal="20dp"
-        android:textColor="@color/black"
-        android:layout_marginBottom="50dp"
-        android:textColorHint="@color/grey"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:inputType="textPassword"
-        android:hint="비밀번호를 다시 한번 입력하세요"/>
-    <TextView
-        android:gravity="center"
-        android:textColor="@color/white"
-        android:id="@+id/joinbtn"
-        android:background="@drawable/main_button"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:text="회원가입"/>
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="40dp"
+            android:text="회원가입"
+            android:textColor="@color/black"
+            android:textSize="20dp"/>
+        <TextView
+            android:text="E-mail"
+            android:textSize="15dp"
+            android:textColor="@color/grey"
+            android:layout_marginBottom="15dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+        <EditText
+            android:id="@+id/editEmail"
+            android:background="@drawable/login_input"
+            android:textSize="15dp"
+            android:ems="10"
+            android:paddingHorizontal="20dp"
+            android:textColor="@color/black"
+            android:layout_marginBottom="20dp"
+            android:textColorHint="@color/grey"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="E-mail을 입력하세요"/>
+        <TextView
+            android:text="비밀번호"
+            android:textSize="15dp"
+            android:textColor="@color/grey"
+            android:layout_marginBottom="15dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+        <EditText
+            android:id="@+id/editpw"
+            android:background="@drawable/login_input"
+            android:textSize="15dp"
+            android:ems="10"
+            android:paddingHorizontal="20dp"
+            android:textColor="@color/black"
+            android:layout_marginBottom="20dp"
+            android:textColorHint="@color/grey"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPassword"
+            android:hint="비밀번호를 입력하세요"/>
+        <TextView
+            android:text="비밀번호 확인"
+            android:textSize="15dp"
+            android:textColor="@color/grey"
+            android:layout_marginBottom="15dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+        <EditText
+            android:id="@+id/editpw2"
+            android:background="@drawable/login_input"
+            android:textSize="15dp"
+            android:ems="10"
+            android:paddingHorizontal="20dp"
+            android:textColor="@color/black"
+            android:layout_marginBottom="50dp"
+            android:textColorHint="@color/grey"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPassword"
+            android:hint="비밀번호를 다시 한번 입력하세요"/>
+        <TextView
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:id="@+id/joinbtn"
+            android:background="@drawable/main_button"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:text="회원가입"/>
+    </LinearLayout>
+
+
 
 </LinearLayout>

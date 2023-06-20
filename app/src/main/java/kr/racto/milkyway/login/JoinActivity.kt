@@ -45,6 +45,9 @@ class JoinActivity : AppCompatActivity() {
                 getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             inputMethodManager.hideSoftInputFromWindow(binding.root.windowToken, 0)
         }
+        binding.iconBack.setOnClickListener {
+            finish()
+        }
         binding.joinbtn.setOnClickListener {
             showLoadingDialog()
             var isGoToJoin = true
