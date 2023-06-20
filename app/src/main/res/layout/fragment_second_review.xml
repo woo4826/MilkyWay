@@ -46,17 +46,15 @@
         app:cardBackgroundColor="#FBFBFB"
         app:cardCornerRadius="8dp"
         tools:ignore="DuplicateClickableBoundsCheck">
-
         <EditText
             android:id="@+id/contents"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_gravity="center_horizontal"
             android:background="@null"
+            android:gravity="top|left"
+            android:padding="15dp"
             android:foreground="?android:attr/selectableItemBackground"
-            android:gravity="center_horizontal"
-            android:layout_margin="20dp"
-            android:hint="수유실 시설/환경/위치에 관한 리뷰"
+            android:hint="수유실 시설/환경/위치에 관한 리뷰 작성"
             android:textSize="15sp" />
     </androidx.cardview.widget.CardView>
 

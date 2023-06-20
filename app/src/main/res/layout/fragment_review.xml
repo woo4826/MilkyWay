@@ -6,9 +6,9 @@
     tools:context=".review.ReviewFragment">
 
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
+        android:gravity="center"
         android:text="수유실의 시설/환경은 어떠셨나요?"
         android:textSize="23sp"
         android:textStyle="bold"
