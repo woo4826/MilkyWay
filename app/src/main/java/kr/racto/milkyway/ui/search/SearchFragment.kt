@@ -21,7 +21,6 @@ import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.webkit.WebView
 import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat.getSystemService
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -29,6 +28,11 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import kr.racto.milkyway.LoadingDialog
 import kr.racto.milkyway.databinding.FragmentSearchBinding
 import kr.racto.milkyway.ui.MyViewModel
 import kr.racto.milkyway.ui.detail.RoomDetailActivity
@@ -54,6 +58,7 @@ class SearchFragment : Fragment() {
     private var initFlag = false
 
     var searchKeyword: String? = null
+
     //    var searchKeyword: String? = "광진"
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -63,6 +68,15 @@ class SearchFragment : Fragment() {
         return binding!!.root
     }
 
+    fun showLoadingDialog() {
+        val dialog = LoadingDialog(requireContext())
+        CoroutineScope(Dispatchers.Main).launch {
+            dialog.show()
+            delay(2000)
+            dialog.dismiss()
+        }
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         fusedLocationClient =
@@ -70,10 +84,11 @@ class SearchFragment : Fragment() {
         init()
         val editTextSearch = binding!!.searchEditText
         editTextSearch.requestFocus()
-        val imm = requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        val imm =
+            requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         imm.showSoftInput(editTextSearch, InputMethodManager.SHOW_IMPLICIT)
         editTextSearch.setOnKeyListener { v, keyCode, event ->
-            initFlag=false
+            initFlag = false
             isLoading = false
             when (keyCode) {
 
@@ -118,10 +133,10 @@ class SearchFragment : Fragment() {
                 val layoutManager = binding!!.rvMainBottomSheet.layoutManager
 
                 if (!isLoading && initFlag) {
-                    if((recyclerView.layoutManager as LinearLayoutManager?)!!.findLastCompletelyVisibleItemPosition() == searchAdapter.items.size - 1){
+                    if ((recyclerView.layoutManager as LinearLayoutManager?)!!.findLastCompletelyVisibleItemPosition() == searchAdapter.items.size - 1) {
 
                         searchLocation()
-                        isLoading=true
+                        isLoading = true
 
                     }
                 }
@@ -136,19 +151,19 @@ class SearchFragment : Fragment() {
                 val roomDictionary = HashMap<String, String>()
                 val nursingRoomItem = searchAdapter.items[position]
                 val id = nursingRoomItem!!.roomNo
-                val name =nursingRoomItem!!.roomName
-                val address = nursingRoomItem!!.address
-                val callnumber = nursingRoomItem!!.managerTelNo
-                if(id != null){
+                val name = nursingRoomItem.roomName
+                val address = nursingRoomItem.address
+                val callnumber = nursingRoomItem.managerTelNo
+                if (id != null) {
                     roomDictionary["roomId"] = id
                 }
-                if(name != null){
+                if (name != null) {
                     roomDictionary["roomName"] = name
                 }
-                if(address != null){
+                if (address != null) {
                     roomDictionary["address"] = address
                 }
-                if(callnumber != null){
+                if (callnumber != null) {
                     roomDictionary["managerTelNo"] = callnumber
                 }
                 val i = Intent(activity, RoomDetailActivity::class.java)
@@ -222,41 +237,47 @@ class SearchFragment : Fragment() {
 
                         searchAdapter.items.addAll(response.body()!!.nursingRoomDTO)
                         searchAdapter.notifyDataSetChanged()
-                        initFlag=true
+                        initFlag = true
                     }
+
                 }
 
                 override fun onFailure(call: Call<SearchResDTO>, t: Throwable) {
                     // 실패
                     Log.d("log", t.message.toString())
                     Log.d("log", "fail")
+
                 }
             })
         }, 1000)
     }
 
     fun search() {
+
         searchKeyword = binding!!.searchEditText.text.toString()
-        page=1
+        showLoadingDialog()
+        page = 1
         searchAdapter.items.clear()
         searchAdapter.notifyDataSetChanged()
         searchLoadInit()
-        val imm = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        val imm =
+            requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         val currentFocusView = requireActivity().currentFocus
         if (currentFocusView != null) {
             imm.hideSoftInputFromWindow(currentFocusView.windowToken, 0)
         }
     }
+
     fun searchLocation() {
         page++
         val handler = android.os.Handler()
         handler.postDelayed({
             searchAdapter.items.add(null)
             val itemsSize = searchAdapter.items.size
-            searchAdapter.notifyItemInserted(itemsSize-1)
+            searchAdapter.notifyItemInserted(itemsSize - 1)
 
 
-        },16)
+        }, 16)
 
 
 //        searchAdapter.items.add(null)
@@ -276,18 +297,18 @@ class SearchFragment : Fragment() {
                     call: Call<SearchResDTO>,
                     response: Response<SearchResDTO>
                 ) {
-                    var itemSize= searchAdapter.items.size
-                    searchAdapter.items.removeAt(itemSize-1)
+                    var itemSize = searchAdapter.items.size
+                    searchAdapter.items.removeAt(itemSize - 1)
                     Log.d("log", response.toString())
                     Log.d("log", response.body().toString())
                     if (response.body() != null && response.body()!!.nursingRoomDTO.isNotEmpty()) {
                         searchAdapter.items.addAll(response.body()!!.nursingRoomDTO)
                     }
                     if (response.body()!!.nursingRoomDTO.isEmpty()) {
-                        initFlag=false
+                        initFlag = false
                     }
                     searchAdapter.notifyDataSetChanged()
-                    isLoading=false
+                    isLoading = false
                 }
 
                 override fun onFailure(call: Call<SearchResDTO>, t: Throwable) {
@@ -312,9 +333,10 @@ class SearchFragment : Fragment() {
     ) {
         val packageName = "kr.racto.milkyway"
         val str_encode = URLEncoder.encode(dname, "UTF-8")
-        var url ="nmap://route/$method?dlat=$dlat&dlng=$dlng&dname=$str_encode&appname=$packageName"
+        var url =
+            "nmap://route/$method?dlat=$dlat&dlng=$dlng&dname=$str_encode&appname=$packageName"
 //        var url="nmap://route/$method?slat=$slat&slng=$slng&sname=$sname&dlat=$dlat&dlng=$dlng&dname=$str_encode&appname=$packageName"
-        val intent = Intent(Intent.ACTION_VIEW,Uri.parse(url))
+        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
 
         val list: List<ResolveInfo> =
             context.packageManager.queryIntentActivities(intent, PackageManager.MATCH_DEFAULT_ONLY)
@@ -342,7 +364,10 @@ class SearchFragment : Fragment() {
                 return false
             }
             val list: List<ResolveInfo> =
-                context?.packageManager!!.queryIntentActivities(intent, PackageManager.MATCH_DEFAULT_ONLY)
+                context?.packageManager!!.queryIntentActivities(
+                    intent,
+                    PackageManager.MATCH_DEFAULT_ONLY
+                )
             if (list == null || list.isEmpty()) {
                 startActivity(
                     Intent(
@@ -357,7 +382,6 @@ class SearchFragment : Fragment() {
         }
         return false
     }
-
 
 
 }
