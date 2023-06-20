@@ -17,6 +17,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import android.webkit.WebView
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
@@ -64,6 +65,10 @@ class SearchFragment : Fragment() {
         fusedLocationClient =
             LocationServices.getFusedLocationProviderClient(requireContext())
         init()
+        val editTextSearch = binding!!.searchEditText
+        editTextSearch.requestFocus()
+        val imm = requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.showSoftInput(editTextSearch, InputMethodManager.SHOW_IMPLICIT)
     }
 
     override fun onDestroyView() {
@@ -92,6 +97,11 @@ class SearchFragment : Fragment() {
 
             if((binding!!.rvMainBottomSheet.layoutManager as LinearLayoutManager?)!!.findLastCompletelyVisibleItemPosition() == searchAdapter.items.size - 1){
                 isLoading=true
+            }
+            val imm = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            val currentFocusView = requireActivity().currentFocus
+            if (currentFocusView != null) {
+                imm.hideSoftInputFromWindow(currentFocusView.windowToken, 0)
             }
         }
 
@@ -277,7 +287,7 @@ class SearchFragment : Fragment() {
 
     fun openNaverMaps(
         context: Context,
-        method: String = "walk",
+        method: String = "bicycle",
         slat: Double,
         slng: Double,
         sname: String,
@@ -287,25 +297,9 @@ class SearchFragment : Fragment() {
     ) {
         val packageName = "kr.racto.milkyway"
         val str_encode = URLEncoder.encode(dname, "UTF-8")
-
-//        var url ="nmap://route/$method?dlat=$dlat&dlng=$dlng&dname=$dname"
-        var url ="nmap://route/$method?dlat=$dlat&dlng=$dlng&dname=$str_encode"
-//            "nmap://route/$method?slat=$slat&slng=$slng&sname=$sname&dlat=$dlat&dlng=$dlng&dname=$dname&appname=$packageName"
-
-        val intent: Intent
-        intent = try {
-            Intent.parseUri(url, Intent.URI_INTENT_SCHEME)
-        } catch (e: URISyntaxException) {
-            Log.d("log", "fail1")
-            return
-        }
-//        if (TextUtils.isEmpty(intent.getPackage())) {
-//            Log.d("log", "fail2")
-//            return
-//        }
-        Log.d("log", Uri.parse(url).toString())
-//        intent.addCategory(Intent.CATEGORY_BROWSABLE)
-
+        var url ="nmap://route/$method?dlat=$dlat&dlng=$dlng&dname=$str_encode&appname=$packageName"
+//        var url="nmap://route/$method?slat=$slat&slng=$slng&sname=$sname&dlat=$dlat&dlng=$dlng&dname=$str_encode&appname=$packageName"
+        val intent = Intent(Intent.ACTION_VIEW,Uri.parse(url))
 
         val list: List<ResolveInfo> =
             context.packageManager.queryIntentActivities(intent, PackageManager.MATCH_DEFAULT_ONLY)
