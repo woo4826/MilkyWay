@@ -8,6 +8,7 @@
         android:id="@+id/titleLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:padding="10dp"
         android:gravity="center_vertical">
 
         <TextView
@@ -15,7 +16,6 @@
             android:text="위치 이름"
             android:textSize="18dp"
             android:textColor="@color/black"
-            android:padding="10dp"
             android:layout_weight="3"
             android:ellipsize="end"
             android:maxLines="1"
@@ -26,7 +26,7 @@
             android:id="@+id/button"
             android:text="길찾기"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content">
 
         </Button>
 
