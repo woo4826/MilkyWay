@@ -3,10 +3,8 @@ package kr.racto.milkyway
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.view.WindowManager
-import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
@@ -18,7 +16,6 @@ import com.google.firebase.auth.FirebaseUser
 import kr.racto.milkyway.databinding.ActivityMainBinding
 import kr.racto.milkyway.ui.MyViewModel
 import kr.racto.milkyway.ui.detail.DetailFragment
-import java.lang.Exception
 
 
 class MainActivity : AppCompatActivity() {
@@ -43,21 +40,10 @@ class MainActivity : AppCompatActivity() {
 
 
         window.statusBarColor = resources.getColor(R.color.black, theme) // api 23 이상
+
         val navView: BottomNavigationView = binding.navView
-
         val navController = findNavController(R.id.nav_host_fragment_activity_main)
-        // Passing each menu ID as a set of Ids because each
-        // menu should be considered as top level destinations.
-
-//        비회원인 경우, 아예 설정 파트로들어갈 수 없게 구현
-        navController.addOnDestinationChangedListener { _, destination, _ ->
-            if (destination.id == R.id.navigation_settings && user == null) {
-                navController.navigateUp()
-                ProfileDialog(this).show()
-            }
-        }
-
-
+        navView.setupWithNavController(navController)
         val appBarConfiguration = AppBarConfiguration(
             setOf(
                 R.id.navigation_home,
@@ -66,7 +52,16 @@ class MainActivity : AppCompatActivity() {
                 R.id.navigation_settings,
             )
         )
-        navView.setupWithNavController(navController)
+        navView.setOnItemSelectedListener { menuItem ->
+            // 선택되면 안되는 항목인 경우 클릭 이벤트를 무시하고 true를 반환합니다.
+            if (menuItem.itemId == R.id.navigation_settings && user == null) {
+                navController.popBackStack()
+
+                ProfileDialog(this).show()
+                return@setOnItemSelectedListener false
+            }
+            return@setOnItemSelectedListener true
+        }
         settinginit()
     }
 
