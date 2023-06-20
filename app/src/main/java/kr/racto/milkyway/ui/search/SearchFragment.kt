@@ -51,9 +51,10 @@ class SearchFragment : Fragment() {
     var slng: Double? = null
     private var isLoading = false
     private var page = 1       // 현재 페이지
+    private var initFlag = false
 
     var searchKeyword: String? = null
-//    var searchKeyword: String? = "광진"
+    //    var searchKeyword: String? = "광진"
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -72,7 +73,10 @@ class SearchFragment : Fragment() {
         val imm = requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         imm.showSoftInput(editTextSearch, InputMethodManager.SHOW_IMPLICIT)
         editTextSearch.setOnKeyListener { v, keyCode, event ->
+            initFlag=false
+            isLoading = false
             when (keyCode) {
+
                 KeyEvent.KEYCODE_ENTER -> search()
             }
             false
@@ -113,11 +117,12 @@ class SearchFragment : Fragment() {
 
                 val layoutManager = binding!!.rvMainBottomSheet.layoutManager
 
-                if (!isLoading) {
+                if (!isLoading && initFlag) {
                     if((recyclerView.layoutManager as LinearLayoutManager?)!!.findLastCompletelyVisibleItemPosition() == searchAdapter.items.size - 1){
-                        page++
-                        isLoading=true
+
                         searchLocation()
+                        isLoading=true
+
                     }
                 }
             }
@@ -217,7 +222,7 @@ class SearchFragment : Fragment() {
 
                         searchAdapter.items.addAll(response.body()!!.nursingRoomDTO)
                         searchAdapter.notifyDataSetChanged()
-
+                        initFlag=true
                     }
                 }
 
@@ -234,28 +239,25 @@ class SearchFragment : Fragment() {
         searchKeyword = binding!!.searchEditText.text.toString()
         page=1
         searchAdapter.items.clear()
-        isLoading = false
+        searchAdapter.notifyDataSetChanged()
         searchLoadInit()
-
-        if((binding!!.rvMainBottomSheet.layoutManager as LinearLayoutManager?)!!.findLastCompletelyVisibleItemPosition() == searchAdapter.items.size - 1){
-            isLoading=true
-        }
         val imm = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         val currentFocusView = requireActivity().currentFocus
         if (currentFocusView != null) {
             imm.hideSoftInputFromWindow(currentFocusView.windowToken, 0)
         }
     }
-
     fun searchLocation() {
+        page++
         val handler = android.os.Handler()
-        if(isLoading){
-            handler.postDelayed({
-                searchAdapter.items.add(null)
-                val itemsSize = searchAdapter.items.size
-                searchAdapter.notifyItemInserted(itemsSize-1)
-            },16)
-        }
+        handler.postDelayed({
+            searchAdapter.items.add(null)
+            val itemsSize = searchAdapter.items.size
+            searchAdapter.notifyItemInserted(itemsSize-1)
+
+
+        },16)
+
 
 //        searchAdapter.items.add(null)
 //        val itemsSize = searchAdapter.items.size
@@ -274,22 +276,17 @@ class SearchFragment : Fragment() {
                     call: Call<SearchResDTO>,
                     response: Response<SearchResDTO>
                 ) {
+                    var itemSize= searchAdapter.items.size
+                    searchAdapter.items.removeAt(itemSize-1)
                     Log.d("log", response.toString())
                     Log.d("log", response.body().toString())
                     if (response.body() != null && response.body()!!.nursingRoomDTO.isNotEmpty()) {
-                        var itemSize= searchAdapter.items.size
-                        searchAdapter.items.removeAt(itemSize-1)
-                        itemSize=searchAdapter.items.size
-                        searchAdapter.notifyItemRemoved(itemSize)
                         searchAdapter.items.addAll(response.body()!!.nursingRoomDTO)
-                        searchAdapter.notifyDataSetChanged()
-
-                    }else{
-                        var itemSize= searchAdapter.items.size
-                        searchAdapter.items.removeAt(itemSize-1)
-                        itemSize=searchAdapter.items.size
-                        searchAdapter.notifyItemRemoved(itemSize)
                     }
+                    if (response.body()!!.nursingRoomDTO.isEmpty()) {
+                        initFlag=false
+                    }
+                    searchAdapter.notifyDataSetChanged()
                     isLoading=false
                 }
 
