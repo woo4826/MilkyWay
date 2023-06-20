@@ -50,6 +50,7 @@ class MainReviewActivity : AppCompatActivity() {
         bundle.putString("roomName",roomName)
         bundle.putInt("roomId", roomId)
         nextFragment.arguments=bundle
+        ft.setCustomAnimations(R.anim.enter_animation,R.anim.exit_animation)
         ft.replace(R.id.review_frame,nextFragment).commit()
 
     }
