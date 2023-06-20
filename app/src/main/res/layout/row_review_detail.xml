@@ -31,6 +31,7 @@
                 android:layout_height="wrap_content"
                 android:isIndicator="true"
                 android:layout_gravity="center"
+                android:progressTint="#ffe140"
                 android:numStars="5" />
 
             <View

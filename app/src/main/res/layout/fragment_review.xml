@@ -31,6 +31,7 @@
         android:layout_gravity="center_horizontal"
         android:isIndicator="false"
         tools:ignore="SpeakableTextPresentCheck"
+        android:progressTint="#ffe140"
         android:layout_marginTop="50dp"/>
 
     <TextView

@@ -59,6 +59,7 @@
                     android:isIndicator="true"
                     android:layout_gravity="center"
                     android:stepSize="0.5"
+                    android:progressTint="#ffe140"
                     android:numStars="5" />
                 <TextView
                     android:text="0.0"
