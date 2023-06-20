@@ -73,7 +73,7 @@ class RoomDetailActivity : AppCompatActivity() {
                     val ratingAvg = roomData?.ratingAvg!!
                     val reviewCount = roomData?.reviewCount!!
 
-                    binding.reviewAvg.text = (round(ratingAvg*10)/10).toString()
+                    binding.reviewAvg.text = (round(ratingAvg*10)/10).toString()+" ("+reviewCount.toString()+")"
                     binding.ratingAvg.rating = (round(ratingAvg*2)/2).toFloat()
 
                     if(reviewList != null && reviewList.size != 0){

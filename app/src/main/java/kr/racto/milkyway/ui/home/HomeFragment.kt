@@ -346,10 +346,10 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
                 override fun onResponse(call: Call<RoomData>, response: Response<RoomData>) {
                     if(response.body()?.ratingAvg != null) {
                         val rating = round(response.body()?.ratingAvg!!*10)/10
-                        binding.roomRating.text = "평균 평점 : " + rating.toString()
+                        binding.roomRating.text = "평균 평점 : " + rating.toString() + " ("+response.body()?.reviewCount.toString()+")"
                     }
                     else{
-                        binding.roomRating.text = "평균 평점 : 0.0"
+                        binding.roomRating.text = "리뷰 없음"
                     }
                 }
                 override fun onFailure(call: Call<RoomData>, t: Throwable) {
