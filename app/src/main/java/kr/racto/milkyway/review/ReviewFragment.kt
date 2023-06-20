@@ -43,7 +43,7 @@ class ReviewFragment : Fragment() {
             main.Ratingvalue = value
             binding.ratingbar.postDelayed({
                 main.changeFrag()
-            },500)
+            },700)
         }
     }
 }
