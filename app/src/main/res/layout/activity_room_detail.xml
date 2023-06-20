@@ -5,7 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="16dp"
     tools:context=".ui.detail.RoomDetailActivity">
 
     <LinearLayout
@@ -26,103 +25,110 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/room_info"
+        android:orientation="vertical"
+        android:paddingHorizontal="16dp"
+        android:paddingBottom="16dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
-        android:orientation="vertical">
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:id="@+id/room_info"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/room_name"
-            android:text="수유실 이름"
-            android:textSize="20dp"
-            android:textStyle="bold"
-            android:textColor="@color/black"
-            android:layout_width="wrap_content"
-            android:padding="5dp"
-            android:layout_height="wrap_content"/>
+            <TextView
+                android:id="@+id/room_name"
+                android:text="수유실 이름"
+                android:textSize="20dp"
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                android:layout_width="wrap_content"
+                android:padding="5dp"
+                android:layout_height="wrap_content"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="5dp"
+                android:gravity="center">
+                <RatingBar
+                    android:id="@+id/ratingAvg"
+                    style="@android:style/Widget.DeviceDefault.RatingBar.Small"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:isIndicator="true"
+                    android:layout_gravity="center"
+                    android:stepSize="0.5"
+                    android:numStars="5" />
+                <TextView
+                    android:text="0.0"
+                    android:textSize="12dp"
+                    android:id="@+id/reviewAvg"
+                    android:paddingHorizontal="5dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:minHeight="0dp"
+                    android:minWidth="0dp"/>
+            </LinearLayout>
+            <TextView
+                android:id="@+id/room_address"
+                android:text="상세 주소"
+                android:textColor="@color/black"
+                android:padding="5dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+            <TextView
+                android:id="@+id/room_callnumber"
+                android:text="수유실 연락처"
+                android:textColor="@color/black"
+                android:padding="5dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+        </LinearLayout>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="5dp"
-            android:gravity="center">
-            <RatingBar
-                android:id="@+id/ratingAvg"
-                style="@android:style/Widget.DeviceDefault.RatingBar.Small"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:isIndicator="true"
-                android:layout_gravity="center"
-                android:stepSize="0.5"
-                android:numStars="5" />
-            <TextView
-                android:text="0.0"
-                android:textSize="12dp"
-                android:id="@+id/reviewAvg"
-                android:paddingHorizontal="5dp"
+            android:padding="10dp"
+            android:gravity="right">
+
+
+            <Button
+                android:text="리뷰등록"
+                android:textSize="12sp"
+                android:paddingVertical="10dp"
+                android:paddingHorizontal="20dp"
+                android:id="@+id/reviewAdd"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:minHeight="0dp"
                 android:minWidth="0dp"/>
         </LinearLayout>
-        <TextView
-            android:id="@+id/room_address"
-            android:text="상세 주소"
-            android:textColor="@color/black"
-            android:padding="5dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-        <TextView
-            android:id="@+id/room_callnumber"
-            android:text="수유실 연락처"
-            android:textColor="@color/black"
-            android:padding="5dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
 
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="10dp"
-        android:gravity="right">
-
-
-        <Button
-            android:text="리뷰등록"
-            android:textSize="12sp"
-            android:paddingVertical="10dp"
-            android:paddingHorizontal="20dp"
-            android:id="@+id/reviewAdd"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:minHeight="0dp"
-            android:minWidth="0dp"/>
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:padding="16dp"
-        android:background="@drawable/room_detail_layout"
-        android:orientation="vertical">
-
-
-
-        <TextView
-            android:id="@+id/noReview"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:gravity="center"
-            android:textSize="18dp"
-            android:text="등록된 리뷰가 없어요😂" />
+            android:padding="16dp"
+            android:background="@drawable/room_detail_layout"
+            android:orientation="vertical">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerview"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
 
+
+            <TextView
+                android:id="@+id/noReview"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:textSize="18dp"
+                android:text="등록된 리뷰가 없어요😂" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerview"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+        </LinearLayout>
     </LinearLayout>
 
 </LinearLayout>

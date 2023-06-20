@@ -62,7 +62,8 @@
     <Button
         android:id="@+id/completion"
         android:layout_width="match_parent"
-        android:layout_height="48dp"
+        android:layout_height="50dp"
+        android:background="@drawable/main_button"
         android:minHeight="0dp"
         android:minWidth="0dp"
         android:layout_marginHorizontal="16dp"

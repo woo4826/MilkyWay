@@ -79,9 +79,9 @@
         android:gravity="center"
         android:textColor="@color/white"
         android:id="@+id/joinbtn"
-        android:background="@drawable/login_button"
+        android:background="@drawable/main_button"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
         android:text="회원가입"/>
 
 </LinearLayout>

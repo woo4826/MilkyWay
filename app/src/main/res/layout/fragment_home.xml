@@ -68,8 +68,8 @@
         android:minHeight="0dp"
         android:src="@drawable/baseline_my_location_24"
         android:textAlignment="center"
-        android:tint="@color/purple_500"
-        app:backgroundTint="@color/purple_500"
+        android:tint="@color/purple"
+        app:backgroundTint="@color/purple"
         app:fabCustomSize="44dp"
         app:layout_constraintBottom_toTopOf="@+id/detailRow1"
         app:layout_constraintStart_toStartOf="@+id/frameLayout"
@@ -144,7 +144,7 @@
             android:layout_height="40dp"
             android:gravity="center"
             android:maxLines="1"
-            android:textColor="#6C5CE7"
+            android:textColor="@color/purple"
             android:textSize="12sp"
             tools:text="" />
 
@@ -154,7 +154,7 @@
             android:layout_height="40dp"
             android:gravity="center"
             android:maxLines="1"
-            android:textColor="#6C5CE7"
+            android:textColor="@color/purple"
             android:textSize="12sp"
             tools:text="" />
 
@@ -165,7 +165,7 @@
 
             android:layout_weight="1"
             android:gravity="center"
-            android:textColor="#6C5CE7"
+            android:textColor="@color/purple"
             android:textSize="12sp"
             tools:text="" />
 
@@ -179,7 +179,7 @@
         android:layout_marginTop="23.74dp"
         android:layout_marginRight="16dp"
         android:layout_marginBottom="56dp"
-        android:backgroundTint="#6C5CE7"
+        android:backgroundTint="@color/purple"
         android:minWidth="0dp"
         android:minHeight="0dp"
         android:text="상세 페이지로 이동"
