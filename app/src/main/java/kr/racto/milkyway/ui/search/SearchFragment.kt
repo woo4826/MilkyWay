@@ -14,6 +14,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.text.TextUtils
 import android.util.Log
+import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -69,6 +70,12 @@ class SearchFragment : Fragment() {
         editTextSearch.requestFocus()
         val imm = requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         imm.showSoftInput(editTextSearch, InputMethodManager.SHOW_IMPLICIT)
+        editTextSearch.setOnKeyListener { v, keyCode, event ->
+            when (keyCode) {
+                KeyEvent.KEYCODE_ENTER -> search()
+            }
+            false
+        }
     }
 
     override fun onDestroyView() {
@@ -89,20 +96,7 @@ class SearchFragment : Fragment() {
         searchAdapter = SearchAdapter(roomList)
 
         binding!!.searchButton.setOnClickListener {
-            searchKeyword = binding!!.searchEditText.text.toString()
-            page=1
-            searchAdapter.items.clear()
-            isLoading = false
-            searchLoadInit()
-
-            if((binding!!.rvMainBottomSheet.layoutManager as LinearLayoutManager?)!!.findLastCompletelyVisibleItemPosition() == searchAdapter.items.size - 1){
-                isLoading=true
-            }
-            val imm = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-            val currentFocusView = requireActivity().currentFocus
-            if (currentFocusView != null) {
-                imm.hideSoftInputFromWindow(currentFocusView.windowToken, 0)
-            }
+            search()
         }
 
         binding!!.rvMainBottomSheet.addOnScrollListener(object : RecyclerView.OnScrollListener() {
@@ -227,6 +221,23 @@ class SearchFragment : Fragment() {
                 }
             })
         }, 1000)
+    }
+
+    fun search() {
+        searchKeyword = binding!!.searchEditText.text.toString()
+        page=1
+        searchAdapter.items.clear()
+        isLoading = false
+        searchLoadInit()
+
+        if((binding!!.rvMainBottomSheet.layoutManager as LinearLayoutManager?)!!.findLastCompletelyVisibleItemPosition() == searchAdapter.items.size - 1){
+            isLoading=true
+        }
+        val imm = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        val currentFocusView = requireActivity().currentFocus
+        if (currentFocusView != null) {
+            imm.hideSoftInputFromWindow(currentFocusView.windowToken, 0)
+        }
     }
 
     fun searchLocation() {
