@@ -95,9 +95,9 @@ class SearchFragment : Fragment() {
         )
         searchAdapter = SearchAdapter(roomList)
 
-        binding!!.searchButton.setOnClickListener {
-            search()
-        }
+//        binding!!.searchButton.setOnClickListener {
+//            search()
+//        }
 
         binding!!.rvMainBottomSheet.addOnScrollListener(object : RecyclerView.OnScrollListener() {
 
