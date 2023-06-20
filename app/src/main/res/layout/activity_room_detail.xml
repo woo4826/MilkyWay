@@ -49,17 +49,30 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:layout_marginBottom="20dp">
-            <Button
-                android:text="평균 평점"
-                android:textSize="12dp"
-                android:paddingVertical="10dp"
-                android:paddingHorizontal="20dp"
-                android:id="@+id/reviewAvg"
-                android:layout_marginRight="140dp"
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:minHeight="0dp"
-                android:minWidth="0dp"/>
+                android:layout_marginRight="100dp">
+                <TextView
+                    android:text="평균 평점"
+                    android:textSize="12dp"
+                    android:paddingVertical="10dp"
+                    android:id="@+id/reviewAvg"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:minHeight="0dp"
+                    android:minWidth="0dp"/>
+                <RatingBar
+                    android:id="@+id/ratingAvg"
+                    style="@android:style/Widget.DeviceDefault.RatingBar.Small"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:isIndicator="true"
+                    android:layout_gravity="center"
+                    android:stepSize="0.5"
+                    android:numStars="5" />
+            </LinearLayout>
+
             <Button
                 android:text="리뷰등록"
                 android:textSize="12sp"

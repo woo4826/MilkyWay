@@ -345,7 +345,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
             call.enqueue(object : Callback<RoomData>{
                 override fun onResponse(call: Call<RoomData>, response: Response<RoomData>) {
                     if(response.body()?.ratingAvg != null) {
-                        val rating = response.body()?.ratingAvg!!
+                        val rating = round(response.body()?.ratingAvg!!*10)/10
                         binding.roomRating.text = "평균 평점 : " + rating.toString()
                     }
                     else{

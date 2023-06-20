@@ -19,6 +19,7 @@ import kr.racto.milkyway.ui.settings.SettingsReview
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import kotlin.math.round
 
 class RoomDetailActivity : AppCompatActivity() {
     lateinit var binding: ActivityRoomDetailBinding
@@ -71,6 +72,9 @@ class RoomDetailActivity : AppCompatActivity() {
                     val address = roomData?.address!!
                     val ratingAvg = roomData?.ratingAvg!!
                     val reviewCount = roomData?.reviewCount!!
+
+                    binding.reviewAvg.text = (round(ratingAvg*10)/10).toString()
+                    binding.ratingAvg.rating = (round(ratingAvg*2)/2).toFloat()
 
                     if(reviewList != null && reviewList.size != 0){
 
