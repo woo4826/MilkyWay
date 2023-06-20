@@ -41,7 +41,9 @@ class ReviewFragment : Fragment() {
             val main = activity as MainReviewActivity
             binding.ratingText.text = value
             main.Ratingvalue = value
-            main.changeFrag()
+            binding.ratingbar.postDelayed({
+                main.changeFrag()
+            },500)
         }
     }
 }
