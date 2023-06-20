@@ -70,26 +70,22 @@
         <TextView
             android:id="@+id/bottom_sheet_title"
             android:layout_width="match_parent"
-            android:layout_height="40dp"
+            android:layout_height="wrap_content"
             android:gravity="center"
             android:background="#ACACAC"
             android:text="수유실 리스트"
             android:textColor="@android:color/black"
-            android:textSize="12dp"
+            android:textSize="16dp"
             android:textStyle="bold" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_main_bottom_sheet"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="550dp"
             android:layout_marginTop="20dp"
             android:clipToPadding="false"
             android:paddingBottom="20dp"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="100dp">
 
-        </TextView>
     </LinearLayout>
 </LinearLayout>
