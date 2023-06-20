@@ -2,17 +2,15 @@ package kr.racto.milkyway.login
 
 import android.content.Context
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Dispatchers.Main
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import kr.racto.milkyway.LoadingDialog
@@ -68,6 +66,7 @@ class LoginActivity : AppCompatActivity() {
                         auth.signInWithEmailAndPassword(email, password).await()
                         Toast.makeText(this@LoginActivity, "로그인 성공", Toast.LENGTH_LONG).show()
                         val next = Intent(this@LoginActivity, MainActivity::class.java)
+                        finishAffinity()
                         startActivity(next)
                         finish()
                     } catch (e: Exception) {
@@ -86,6 +85,7 @@ class LoginActivity : AppCompatActivity() {
         }
         binding.nonmemberbtn.setOnClickListener {
             val i = Intent(this, MainActivity::class.java)
+            finishAffinity()
             startActivity(i)
             FirebaseAuth.getInstance().signOut()
             finish()

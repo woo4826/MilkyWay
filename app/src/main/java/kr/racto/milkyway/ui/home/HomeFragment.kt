@@ -345,7 +345,6 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
             call.enqueue(object : Callback<RoomData>{
                 override fun onResponse(call: Call<RoomData>, response: Response<RoomData>) {
                     if(response.body()?.ratingAvg != null) {
-                        Toast.makeText(activity, response.body()?.reviewCount.toString(), Toast.LENGTH_SHORT).show()
                         val rating = response.body()?.ratingAvg!!
                         binding.roomRating.text = "평균 평점 : " + rating.toString()
                     }

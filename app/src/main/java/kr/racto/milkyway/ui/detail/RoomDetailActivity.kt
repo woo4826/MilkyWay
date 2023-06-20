@@ -81,7 +81,6 @@ class RoomDetailActivity : AppCompatActivity() {
                         adapter.notifyDataSetChanged()
                         binding.noReview.visibility = View.GONE
                     }else{
-                        Toast.makeText(this@RoomDetailActivity, "리뷰 없음", Toast.LENGTH_SHORT).show()
                         binding.noReview.visibility = View.VISIBLE
                     }
 
