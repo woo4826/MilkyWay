@@ -9,34 +9,91 @@
     tools:context=".ui.detail.RoomDetailActivity">
 
     <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:src="@drawable/backimg" />
+    </LinearLayout>
+
+    <LinearLayout
         android:id="@+id/room_info"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="30dp"
-        android:padding="16dp"
-        android:background="@drawable/room_detail_layout"
+        android:gravity="center_horizontal"
         android:orientation="vertical">
 
         <TextView
             android:id="@+id/room_name"
             android:text="수유실 이름"
+            android:textSize="20dp"
+            android:textStyle="bold"
             android:textColor="@color/black"
             android:layout_width="wrap_content"
+            android:padding="5dp"
             android:layout_height="wrap_content"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:gravity="center">
+            <RatingBar
+                android:id="@+id/ratingAvg"
+                style="@android:style/Widget.DeviceDefault.RatingBar.Small"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:isIndicator="true"
+                android:layout_gravity="center"
+                android:stepSize="0.5"
+                android:numStars="5" />
+            <TextView
+                android:text="0.0"
+                android:textSize="12dp"
+                android:id="@+id/reviewAvg"
+                android:paddingHorizontal="5dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:minHeight="0dp"
+                android:minWidth="0dp"/>
+        </LinearLayout>
         <TextView
             android:id="@+id/room_address"
             android:text="상세 주소"
             android:textColor="@color/black"
+            android:padding="5dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
         <TextView
             android:id="@+id/room_callnumber"
             android:text="수유실 연락처"
             android:textColor="@color/black"
+            android:padding="5dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
 
     </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:gravity="right">
+
+
+        <Button
+            android:text="리뷰등록"
+            android:textSize="12sp"
+            android:paddingVertical="10dp"
+            android:paddingHorizontal="20dp"
+            android:id="@+id/reviewAdd"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minHeight="0dp"
+            android:minWidth="0dp"/>
+    </LinearLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -44,46 +101,7 @@
         android:background="@drawable/room_detail_layout"
         android:orientation="vertical">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:layout_marginBottom="20dp">
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="100dp">
-                <TextView
-                    android:text="평균 평점"
-                    android:textSize="12dp"
-                    android:paddingVertical="10dp"
-                    android:id="@+id/reviewAvg"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:minHeight="0dp"
-                    android:minWidth="0dp"/>
-                <RatingBar
-                    android:id="@+id/ratingAvg"
-                    style="@android:style/Widget.DeviceDefault.RatingBar.Small"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:isIndicator="true"
-                    android:layout_gravity="center"
-                    android:stepSize="0.5"
-                    android:numStars="5" />
-            </LinearLayout>
 
-            <Button
-                android:text="리뷰등록"
-                android:textSize="12sp"
-                android:paddingVertical="10dp"
-                android:paddingHorizontal="20dp"
-                android:id="@+id/reviewAdd"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:minHeight="0dp"
-                android:minWidth="0dp"/>
-        </LinearLayout>
 
         <TextView
             android:id="@+id/noReview"
