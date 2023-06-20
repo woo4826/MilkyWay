@@ -27,8 +27,6 @@ class ProfileDialog(context: Context) : Dialog(context) { // 뷰를 띄워야하
     }
 
     private fun initViews() = with(binding) {
-        // 뒤로가기 버튼, 빈 화면 터치를 통해 dialog가 사라지지 않도록
-        //setCancelable(false)
 
         // background를 투명하게 만듦
         window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
