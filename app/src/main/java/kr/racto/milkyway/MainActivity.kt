@@ -8,7 +8,6 @@ import android.view.WindowManager
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
-import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.auth.FirebaseAuth
@@ -44,22 +43,15 @@ class MainActivity : AppCompatActivity() {
         val navView: BottomNavigationView = binding.navView
         val navController = findNavController(R.id.nav_host_fragment_activity_main)
         navView.setupWithNavController(navController)
-        val appBarConfiguration = AppBarConfiguration(
-            setOf(
-                R.id.navigation_home,
-                R.id.navigation_search,
-                R.id.navigation_information,
-                R.id.navigation_settings,
-            )
-        )
+
         navView.setOnItemSelectedListener { menuItem ->
             // 선택되면 안되는 항목인 경우 클릭 이벤트를 무시하고 true를 반환합니다.
             if (menuItem.itemId == R.id.navigation_settings && user == null) {
-                navController.popBackStack()
-
                 ProfileDialog(this).show()
                 return@setOnItemSelectedListener false
             }
+            navController.navigate(menuItem.itemId)
+
             return@setOnItemSelectedListener true
         }
         settinginit()
