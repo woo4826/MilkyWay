@@ -109,3 +109,4 @@ kotlin-ide/
 /.idea/
 .gradle/buildOutputCleanup/cache.properties
 local.properties
+app/release/app-release.apk
