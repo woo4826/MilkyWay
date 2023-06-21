@@ -22,7 +22,7 @@ import kr.racto.milkyway.databinding.ActivityJoinBinding
 class JoinActivity : AppCompatActivity() {
     private lateinit var auth: FirebaseAuth
     lateinit var binding: ActivityJoinBinding
-    lateinit var dialog: Dialog
+    private var dialog:LoadingDialog?=null
     override fun onCreate(savedInstanceState: Bundle?)  {
         super.onCreate(savedInstanceState)
         auth = Firebase.auth
@@ -41,9 +41,9 @@ class JoinActivity : AppCompatActivity() {
     fun showLoadingDialog(){
         dialog=LoadingDialog(this)
         CoroutineScope(Main).launch {
-            dialog.show()
+            dialog!!.show()
             delay(2000)
-            dialog.dismiss()
+            dialog!!.dismiss()
         }
     }
 
